@@ -137,6 +137,46 @@ waarvan de hash in de database staat. Profielfoto's worden verkleind tot maximaa
 BLOB in SQLite bewaard. Ze zijn bereikbaar via `/foto/<id>` met een willekeurige id, zodat ze
 niet te raden zijn maar wel op een gedeeld advies kunnen worden getoond.
 
+## Deployment
+
+De app draait op de Plesk-server van Strato als subdomein van `studiovanderheide.nl`:
+
+- **URL:** https://oer.studiovanderheide.nl
+- **App-map:** `/var/www/vhosts/studiovanderheide.nl/oer.studiovanderheide.nl/app`
+- **Node:** `/opt/plesk/node/22/bin/node` (Plesk-node 22)
+- **Proces:** systemd-unit `oervoer`, geluisterd op `127.0.0.1:4310`
+- **Proxy:** Plesk-nginx (80/443) → Node. De regel staat in
+  `/var/www/vhosts/system/oer.studiovanderheide.nl/conf/vhost_nginx.conf`.
+
+`/beheer` is met HTTP Basic auth afgeschermd, zowel in nginx als in de Apache-vhosts. De
+gebruikersnaam is `beheer`; het wachtwoord staat niet in deze repository maar in
+`/root/oervoer-beheer.txt` op de server. De htpasswd staat in
+`/var/www/vhosts/system/oer.studiovanderheide.nl/conf/beheer.htpasswd`.
+
+### Bijwerken
+
+```bash
+cd /var/www/vhosts/studiovanderheide.nl/oer.studiovanderheide.nl/app
+runuser -u espenvdh -- git pull
+runuser -u espenvdh -- env -C "$PWD" HOME=/var/www/vhosts/studiovanderheide.nl \
+  PATH=/opt/plesk/node/22/bin:/usr/local/bin:/usr/bin:/bin npm ci --include=dev
+runuser -u espenvdh -- env -C "$PWD" HOME=/var/www/vhosts/studiovanderheide.nl \
+  PATH=/opt/plesk/node/22/bin:/usr/local/bin:/usr/bin:/bin npm run build
+systemctl restart oervoer
+```
+
+`--include=dev` is nodig: zonder de devDependencies wordt Tailwind niet gebouwd. De `env -C`
+voorkomt dat npm in de subscription-root terechtkomt en PostCSS zijn plugin niet vindt.
+
+### Backup
+
+De database staat in `.data/oervoer.db` (WAL-modus). Maak een consistente kopie met:
+
+```bash
+sqlite3 /var/www/vhosts/studiovanderheide.nl/oer.studiovanderheide.nl/app/.data/oervoer.db \
+  ".backup /root/backups/oervoer-$(date +%F).db"
+```
+
 ## Bewust niet gedaan
 
 - Het advies noemt geen concrete producten of SKU's; het blijft bij grammen en verhoudingen.

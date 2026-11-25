@@ -89,3 +89,25 @@
   - Getest: registreren met foto, dier opslaan met foto, voorgevulde wizard, advies automatisch
     in het account, uitloggen/inloggen, data-isolatie tussen accounts en 404 bij een dier van
     een ander. `tsc --noEmit` en `next build` slagen.
+
+## 2026-11-25 (Deploy op Plesk / Strato)
+
+- Findings: De app moest naar `oer.studiovanderheide.nl` op de bestaande Plesk-server.
+  Poort 3000 was bezet en Plesk gebruikt 80/443 (nginx), 7080/7081 (Apache) en 8443/8880
+  (panel). Plesk-nginx bleek niet naar Apache te proxyen maar met `vhost_nginx.conf`
+  rechtstreeks naar de Node-app, waardoor Basic auth in de Apache-vhost geen effect had.
+- Conclusions: Node op 127.0.0.1:4310 achter de bestaande Plesk-nginx, als systemd-unit
+  onder de subscription-user. Basic auth voor `/beheer` in nginx (`location ^~ /beheer`),
+  met de Apache-Location als tweede laag. Geen extra webserver of poort naast Plesk.
+- Actions:
+  - Subdomein en Let's Encrypt-certificaat via Plesk aangemaakt; documentroot
+    `/var/www/vhosts/studiovanderheide.nl/oer.studiovanderheide.nl`.
+  - Repo gecloned naar `.../app`, gebouwd met Plesk Node 22. `npm ci --include=dev` en
+    `runuser ... env -C` nodig omdat anders devDependencies en de werkmap ontbreken.
+  - `/etc/systemd/system/oervoer.service` toegevoegd en geënabileerd.
+  - Proxy's in `conf/vhost.conf`, `conf/vhost_ssl.conf` en `conf/vhost_nginx.conf`;
+    Basic auth met `/root/oervoer-beheer.txt` en `conf/beheer.htpasswd`. Na elke wijziging
+    `plesk repair web oer.studiovanderheide.nl -y`.
+  - Gecontroleerd: homepage en inloggen 200; `/beheer`, `/beheer/orders` en
+    `/beheer/voorraad` 401 zonder en 200 met auth; registreren en inloggen over HTTPS werken.
+  - README voorzien van deploy-, update- en backupprocedure.
