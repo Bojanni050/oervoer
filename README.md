@@ -170,11 +170,21 @@ voorkomt dat npm in de subscription-root terechtkomt en PostCSS zijn plugin niet
 
 ### Backup
 
-De database staat in `.data/oervoer.db` (WAL-modus). Maak een consistente kopie met:
+De database staat in `.data/oervoer.db` (WAL-modus). Een consistente kopie maak je met
+`sqlite3 ... ".backup ..."`; gewoon `cp` is niet betrouwbaar zolang de app schrijft.
+
+Op de server draait daarvoor een dagelijkse cron:
+
+- **Script:** `/usr/local/sbin/oervoer-backup.sh`
+- **Cron:** `/etc/cron.d/oervoer-backup`, elke dag om 03:15
+- **Bestemming:** `/root/backups/oervoer-YYYY-MM-DD.db` (14 dagen bewaard)
+- **Log:** `/var/log/oervoer-backup.log`
+
+Het script controleert na het kopiëren de integriteit en verwijdert daarna pas de oude
+backups. Handmatig een extra backup maken kan met:
 
 ```bash
-sqlite3 /var/www/vhosts/studiovanderheide.nl/oer.studiovanderheide.nl/app/.data/oervoer.db \
-  ".backup /root/backups/oervoer-$(date +%F).db"
+/usr/local/sbin/oervoer-backup.sh
 ```
 
 ## Bewust niet gedaan

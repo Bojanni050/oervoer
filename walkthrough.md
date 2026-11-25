@@ -111,3 +111,14 @@
   - Gecontroleerd: homepage en inloggen 200; `/beheer`, `/beheer/orders` en
     `/beheer/voorraad` 401 zonder en 200 met auth; registreren en inloggen over HTTPS werken.
   - README voorzien van deploy-, update- en backupprocedure.
+
+## 2026-11-25 (Dagelijkse databasebackup)
+
+- Findings: De SQLite-database draait in WAL-modus; een gewone `cp` kan een incomplete of
+  inconsistente kopie opleveren. Er was alleen een handmatige `.backup`-instructie.
+- Conclusions: Een root-script met `sqlite3 .backup` plus `PRAGMA integrity_check` vóór
+  rotatie. Dagelijks om 03:15, 14 dagen bewaren. Zo kan een corrupte kopie nooit de goede
+  backups verdringen.
+- Actions: `/usr/local/sbin/oervoer-backup.sh` en `/etc/cron.d/oervoer-backup` op de server;
+  backups in `/root/backups/oervoer-YYYY-MM-DD.db` met log in `/var/log/oervoer-backup.log`.
+  README-sectie Backup bijgewerkt. Handmatige testrun geslaagd (143.360 bytes, integrity ok).
