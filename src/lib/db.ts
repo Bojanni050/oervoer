@@ -123,6 +123,7 @@ function openDb(): DatabaseSync {
       password_hash TEXT NOT NULL,
       name TEXT NOT NULL,
       photo_id TEXT REFERENCES photos(id) ON DELETE SET NULL,
+      role TEXT NOT NULL DEFAULT 'user',
       created_at TEXT NOT NULL
     );
 
@@ -157,6 +158,7 @@ function openDb(): DatabaseSync {
   // Migratie voor bestaande databases van vóór de accountfunctionaliteit.
   addColumnIfMissing(db, "advices", "user_id", "INTEGER REFERENCES users(id) ON DELETE SET NULL");
   addColumnIfMissing(db, "advices", "pet_id", "INTEGER REFERENCES pets(id) ON DELETE SET NULL");
+  addColumnIfMissing(db, "users", "role", "TEXT NOT NULL DEFAULT 'user'");
   db.exec("CREATE INDEX IF NOT EXISTS idx_advices_user ON advices(user_id)");
 
   globalThis.__oervoerDb = db;
@@ -688,6 +690,7 @@ function mapUser(row: SqlRow): UserRecord {
     email: String(row.email),
     name: String(row.name),
     photoId: row.photo_id == null ? null : String(row.photo_id),
+    role: row.role === "admin" ? "admin" : "user",
     createdAt: String(row.created_at),
   };
 }

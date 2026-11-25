@@ -58,6 +58,8 @@ npm start
 - **Printen en CSV** — een compacte printweergave en een CSV-export per picklijst.
 - **Voorraad** — 346 producten, zoeken, filteren op vleessoort, lage voorraad en uitverkocht,
   en aantallen direct bijwerken.
+- **Beveiligd** — beheer valt onder de gewone app-login. Alleen accounts met de rol `admin`
+  komen erin; andere bezoekers worden naar hun account gestuurd.
 
 ## Hoe het rekent
 
@@ -116,6 +118,7 @@ src/
     db.ts                    SQLite-schema, queries en seeding
     globals.ts               constanten uit globals.py
     csv.ts                   CSV-parser/exporter
+scripts/set-admin.mjs        account promoveren tot beheerder
 test/products.csv            productbron voor de initiële voorraad
 oervoer/, gtk/, data/        originele Python 2 / GTK-app (archief)
 oervoer-django/              originele Django-poging (archief)
@@ -148,10 +151,16 @@ De app draait op de Plesk-server van Strato als subdomein van `studiovanderheide
 - **Proxy:** Plesk-nginx (80/443) → Node. De regel staat in
   `/var/www/vhosts/system/oer.studiovanderheide.nl/conf/vhost_nginx.conf`.
 
-`/beheer` is met HTTP Basic auth afgeschermd, zowel in nginx als in de Apache-vhosts. De
-gebruikersnaam is `beheer`; het wachtwoord staat niet in deze repository maar in
-`/root/oervoer-beheer.txt` op de server. De htpasswd staat in
-`/var/www/vhosts/system/oer.studiovanderheide.nl/conf/beheer.htpasswd`.
+`/beheer` valt onder de gewone app-login. Uitgelogde bezoekers gaan naar `/inloggen`, accounts
+zonder admin-rol naar `/account`. Een bestaand account promoveren doe je op de server:
+
+```bash
+cd /var/www/vhosts/studiovanderheide.nl/oer.studiovanderheide.nl/app
+npm run admin -- iemand@voorbeeld.nl
+```
+
+Het account moet zich eerst via de site hebben geregistreerd. De rol staat in `users.role`;
+er wordt bewust geen eerste gebruiker automatisch admin gemaakt.
 
 ### Bijwerken
 

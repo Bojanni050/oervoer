@@ -122,3 +122,20 @@
 - Actions: `/usr/local/sbin/oervoer-backup.sh` en `/etc/cron.d/oervoer-backup` op de server;
   backups in `/root/backups/oervoer-YYYY-MM-DD.db` met log in `/var/log/oervoer-backup.log`.
   README-sectie Backup bijgewerkt. Handmatige testrun geslaagd (143.360 bytes, integrity ok).
+
+## 2026-11-25 (Inloggen voor beheer)
+
+- Findings: `/beheer` was op de server afgeschermd met HTTP Basic auth. Dat gaf een
+  browserpopup in plaats van een normaal inlogscherm, en de inloggegevens stonden los van
+  de accounts in de app.
+- Conclusions: beheer achter de bestaande app-login gezet met een `admin`-rol. Geen
+  automatische eerste beheerder, omdat de site publiek is; een bestaand account wordt
+  expliciet gepromoveerd. De role-check zit ook in de server actions, niet alleen in de
+  layout, zodat formulieren niet buiten de UI om aanroepbaar zijn.
+- Actions:
+  - `users.role` toegevoegd (migratie + `UserRole`), `requireAdmin()` in `auth.ts`.
+  - Beheer-layout is async en roept `requireAdmin()` aan; alle zeven beheer-actions doen
+    hetzelfde. Niet-admins gaan naar `/account?fout=geen-toegang`.
+  - `scripts/set-admin.mjs` + `npm run admin -- <e-mail>` om te promoveren.
+  - Accountpagina toont een beheerlink voor admins en een uitleg bij geweigerde toegang.
+  - README bijgewerkt; Basic auth op de server verwijderd.

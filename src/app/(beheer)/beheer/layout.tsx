@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/shell";
+import { requireAdmin } from "@/lib/auth";
 
 export const metadata = {
   title: {
@@ -7,7 +8,9 @@ export const metadata = {
   },
 };
 
-export default function BeheerLayout({ children }: { children: React.ReactNode }) {
+export default async function BeheerLayout({ children }: { children: React.ReactNode }) {
+  await requireAdmin("/beheer");
+
   return (
     <>
       <Sidebar />

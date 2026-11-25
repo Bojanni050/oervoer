@@ -14,6 +14,7 @@ import {
 } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import type { AdviceInput } from "@/lib/advice";
+import { requireAdmin } from "@/lib/auth";
 
 export type FormState = { error?: string };
 
@@ -28,6 +29,7 @@ export async function createOrderAction(
   _previous: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  await requireAdmin("/beheer/orders/nieuw");
   let orderId: number;
   try {
     orderId = createOrder({
@@ -53,6 +55,7 @@ export async function createOrderAction(
 }
 
 export async function generateAction(formData: FormData): Promise<void> {
+  await requireAdmin();
   const orderId = Number(formData.get("orderId"));
   if (!Number.isFinite(orderId)) return;
 
@@ -75,6 +78,7 @@ export async function generateAction(formData: FormData): Promise<void> {
 }
 
 export async function discardPicklistAction(formData: FormData): Promise<void> {
+  await requireAdmin();
   const orderId = Number(formData.get("orderId"));
   if (!Number.isFinite(orderId)) return;
   discardPicklist(orderId);
@@ -86,6 +90,7 @@ export async function discardPicklistAction(formData: FormData): Promise<void> {
 }
 
 export async function deleteOrderAction(formData: FormData): Promise<void> {
+  await requireAdmin();
   const orderId = Number(formData.get("orderId"));
   if (!Number.isFinite(orderId)) return;
   deleteOrder(orderId);
@@ -96,6 +101,7 @@ export async function deleteOrderAction(formData: FormData): Promise<void> {
 }
 
 export async function markDoneAction(formData: FormData): Promise<void> {
+  await requireAdmin();
   const orderId = Number(formData.get("orderId"));
   if (!Number.isFinite(orderId)) return;
   updateOrderStatus(orderId, "afgerond");
@@ -106,6 +112,7 @@ export async function markDoneAction(formData: FormData): Promise<void> {
 }
 
 export async function setQtyAction(formData: FormData): Promise<void> {
+  await requireAdmin();
   const sku = String(formData.get("sku") ?? "");
   const qty = Number(formData.get("qty"));
   if (!sku || !Number.isFinite(qty)) return;
@@ -115,6 +122,7 @@ export async function setQtyAction(formData: FormData): Promise<void> {
 }
 
 export async function adjustQtyAction(formData: FormData): Promise<void> {
+  await requireAdmin();
   const sku = String(formData.get("sku") ?? "");
   const delta = Number(formData.get("delta"));
   const current = Number(formData.get("current"));

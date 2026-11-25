@@ -14,10 +14,10 @@ export const metadata: Metadata = { title: "Mijn account" };
 export default async function AccountPage({
   searchParams,
 }: {
-  searchParams: Promise<{ opgeslagen?: string }>;
+  searchParams: Promise<{ opgeslagen?: string; fout?: string }>;
 }) {
   const user = await requireUser("/account");
-  const { opgeslagen } = await searchParams;
+  const { opgeslagen, fout } = await searchParams;
   const pets = listPets(user.id);
   const advices = listAdvicesForUser(user.id);
 
@@ -40,6 +40,12 @@ export default async function AccountPage({
       {opgeslagen ? (
         <p className="rounded-xl border border-moss/25 bg-moss-soft px-4 py-3 text-sm text-moss">
           {opgeslagen === "profiel" ? "Je profiel is opgeslagen." : "Je dier is opgeslagen."}
+        </p>
+      ) : null}
+
+      {fout === "geen-toegang" ? (
+        <p className="rounded-xl border border-rust/30 bg-rust-soft px-4 py-3 text-sm text-rust">
+          Je account heeft geen toegang tot beheer. Vraag een beheerder om je rechten.
         </p>
       ) : null}
 
@@ -68,6 +74,13 @@ export default async function AccountPage({
           <div className="mt-5 border-t border-line pt-5">
             <ProfileForm user={user} />
           </div>
+
+          {user.role === "admin" ? (
+            <Link href="/beheer" className="btn btn-secondary mt-4 w-full justify-center text-xs">
+              Naar beheer
+              <ArrowRight className="size-3.5" strokeWidth={1.9} />
+            </Link>
+          ) : null}
 
           <form action={logoutAction} className="mt-4 border-t border-line pt-4">
             <button type="submit" className="text-xs font-medium text-muted hover:text-rust">

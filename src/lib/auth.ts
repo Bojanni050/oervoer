@@ -62,6 +62,13 @@ export async function requireUser(nextPath = "/account"): Promise<UserRecord> {
   return user;
 }
 
+export async function requireAdmin(nextPath = "/beheer"): Promise<UserRecord> {
+  const user = await getCurrentUser();
+  if (!user) redirect(`/inloggen?next=${encodeURIComponent(nextPath)}`);
+  if (user.role !== "admin") redirect("/account?fout=geen-toegang");
+  return user;
+}
+
 export function normalizeEmail(value: string): string {
   return value.trim().toLowerCase();
 }

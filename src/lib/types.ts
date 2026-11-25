@@ -85,12 +85,15 @@ export interface AdviceRecord {
   createdAt: string;
 }
 
+export type UserRole = "user" | "admin";
+
 export interface UserRecord {
   id: number;
   publicId: string;
   email: string;
   name: string;
   photoId: string | null;
+  role: UserRole;
   createdAt: string;
 }
 
