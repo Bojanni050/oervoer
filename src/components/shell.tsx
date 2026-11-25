@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, LayoutDashboard, Package } from "lucide-react";
+import { ArrowLeft, ClipboardList, LayoutDashboard, Package } from "lucide-react";
 
 const NAV = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/orders", label: "Orders", icon: ClipboardList },
-  { href: "/voorraad", label: "Voorraad", icon: Package },
+  { href: "/beheer", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/beheer/orders", label: "Orders", icon: ClipboardList },
+  { href: "/beheer/voorraad", label: "Voorraad", icon: Package },
 ];
 
-function PawMark() {
+export function PawMark() {
   return (
     <span className="grid size-10 place-items-center rounded-full bg-moss-soft text-moss">
       <svg viewBox="0 0 32 32" className="size-6" fill="currentColor" aria-hidden>
@@ -29,11 +29,11 @@ export function Sidebar() {
   return (
     <>
       <aside className="no-print fixed inset-y-0 left-0 z-30 hidden w-[15.5rem] flex-col border-r border-line bg-paper/70 px-5 py-7 backdrop-blur lg:flex">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/beheer" className="flex items-center gap-3">
           <PawMark />
           <span className="leading-tight">
             <span className="block font-display text-xl tracking-tight">OerVoer</span>
-            <span className="eyebrow">Picklist-wizard</span>
+            <span className="eyebrow">Beheer</span>
           </span>
         </Link>
 
@@ -58,6 +58,13 @@ export function Sidebar() {
         </nav>
 
         <div className="mt-auto space-y-3 border-t border-line pt-5">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-sm font-medium text-moss hover:text-moss-dark"
+          >
+            <ArrowLeft className="size-4" strokeWidth={1.8} />
+            Naar de adviesapp
+          </Link>
           <p className="text-xs leading-relaxed text-muted">
             Rauw voer voor honden en katten. Picklijsten op basis van de echte voorraad.
           </p>
@@ -68,7 +75,7 @@ export function Sidebar() {
       </aside>
 
       <div className="no-print sticky top-0 z-30 flex items-center gap-4 border-b border-line bg-bone/90 px-4 py-3 backdrop-blur lg:hidden">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/beheer" className="flex items-center gap-2">
           <PawMark />
           <span className="font-display text-lg">OerVoer</span>
         </Link>

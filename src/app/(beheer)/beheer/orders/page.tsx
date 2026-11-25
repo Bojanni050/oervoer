@@ -38,7 +38,7 @@ export default async function OrdersPage({
         title="Orders"
         description="Elke order is één dier met één pakket. Open een order om de picklijst te maken."
         actions={
-          <Link href="/orders/nieuw" className="btn btn-primary">
+          <Link href="/beheer/orders/nieuw" className="btn btn-primary">
             <Plus className="size-4" /> Nieuwe order
           </Link>
         }
@@ -49,7 +49,7 @@ export default async function OrdersPage({
           {TABS.map((tab) => (
             <Link
               key={tab.key}
-              href={`/orders?${new URLSearchParams({
+              href={`/beheer/orders?${new URLSearchParams({
                 ...(tab.key !== "alle" ? { status: tab.key } : {}),
                 ...(query ? { q: query } : {}),
               }).toString()}`}
@@ -69,7 +69,7 @@ export default async function OrdersPage({
           ))}
         </nav>
 
-        <form className="relative" action="/orders" method="get">
+        <form className="relative" action="/beheer/orders" method="get">
           {active !== "alle" ? <input type="hidden" name="status" value={active} /> : null}
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
           <input
@@ -91,7 +91,7 @@ export default async function OrdersPage({
               : "Zodra er een order binnenkomt, staat hij hier klaar om te picken."
           }
         >
-          <Link href="/orders/nieuw" className="btn btn-primary">
+          <Link href="/beheer/orders/nieuw" className="btn btn-primary">
             <Plus className="size-4" /> Order toevoegen
           </Link>
         </EmptyState>
@@ -114,7 +114,7 @@ export default async function OrdersPage({
                 return (
                   <tr key={order.id}>
                     <td>
-                      <Link href={`/orders/${order.id}`} className="flex items-center gap-3">
+                      <Link href={`/beheer/orders/${order.id}`} className="flex items-center gap-3">
                         <span className="grid size-9 shrink-0 place-items-center rounded-full bg-moss-soft font-display text-sm text-moss">
                           {initials(order.animal)}
                         </span>

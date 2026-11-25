@@ -9,7 +9,7 @@ export default function NewOrderPage() {
   return (
     <div>
       <Link
-        href="/orders"
+        href="/beheer/orders"
         className="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-ink"
       >
         <ArrowLeft className="size-4" /> Terug naar orders

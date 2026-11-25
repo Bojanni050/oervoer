@@ -1,25 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Sidebar } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: {
-    default: "OerVoer · Picklist-wizard",
+    default: "OerVoer · Voedingsadvies op maat",
     template: "%s · OerVoer",
   },
   description:
-    "Stel picklijsten samen uit de voorraad, order voor order. Rauw voer voor honden en katten.",
+    "Bereken in een paar stappen hoeveel rauw voer je hond of kat nodig heeft, en welke samenstelling bij je dier past.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="nl">
-      <body>
-        <Sidebar />
-        <div className="lg:pl-[15.5rem]">
-          <main className="mx-auto w-full max-w-6xl px-4 py-7 sm:px-8 lg:py-11">{children}</main>
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

@@ -24,10 +24,10 @@ export default function DashboardPage() {
         description="Alle openstaande orders, picklijsten en de actuele voorraad op één plek."
         actions={
           <>
-            <Link href="/orders/nieuw" className="btn btn-primary">
+            <Link href="/beheer/orders/nieuw" className="btn btn-primary">
               <Plus className="size-4" /> Nieuwe order
             </Link>
-            <Link href="/orders" className="btn btn-secondary">
+            <Link href="/beheer/orders" className="btn btn-secondary">
               <ClipboardList className="size-4" /> Alle orders
             </Link>
           </>
@@ -69,7 +69,7 @@ export default function DashboardPage() {
               <h2 className="mt-1 text-xl">Klaar om te pakken</h2>
             </div>
             <Link
-              href="/orders"
+              href="/beheer/orders"
               className="group inline-flex items-center gap-1 text-sm font-semibold text-moss"
             >
               Alles
@@ -86,7 +86,7 @@ export default function DashboardPage() {
               {orders.map((order) => (
                 <li key={order.id} className="border-b border-line/70 last:border-b-0">
                   <Link
-                    href={`/orders/${order.id}`}
+                    href={`/beheer/orders/${order.id}`}
                     className="flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-moss-soft/40"
                   >
                     <span className="grid size-10 shrink-0 place-items-center rounded-full bg-moss-soft font-display text-sm text-moss">
@@ -157,7 +157,7 @@ export default function DashboardPage() {
             )}
 
             <Link
-              href="/voorraad?filter=laag"
+              href="/beheer/voorraad?filter=laag"
               className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-moss"
             >
               Voorraad beheren <ArrowUpRight className="size-4" />

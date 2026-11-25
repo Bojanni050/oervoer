@@ -1,3 +1,5 @@
+import type { AdviceResult } from "./advice";
+
 export type Dier = "KAT" | "HOND";
 export type Portie = "beide" | "kleine porties" | "grote porties";
 export type PackageKind = "100" | "PLUS" | "COMBI";
@@ -64,6 +66,46 @@ export interface PicklistRecord {
   totalKg: number;
   mealSize: number;
   days: number;
+  createdAt: string;
+}
+
+export interface AdviceRecord {
+  id: string;
+  animal: string;
+  ras: Dier;
+  weight: number;
+  pup: boolean;
+  portie: Portie;
+  kind: PackageKind;
+  packageKg: number;
+  donts: string[];
+  result: AdviceResult;
+  userId: number | null;
+  petId: number | null;
+  createdAt: string;
+}
+
+export interface UserRecord {
+  id: number;
+  publicId: string;
+  email: string;
+  name: string;
+  photoId: string | null;
+  createdAt: string;
+}
+
+export interface PetRecord {
+  id: number;
+  publicId: string;
+  userId: number;
+  name: string;
+  ras: Dier;
+  weight: number;
+  pup: boolean;
+  portie: Portie;
+  donts: string[];
+  photoId: string | null;
+  notes: string;
   createdAt: string;
 }
 

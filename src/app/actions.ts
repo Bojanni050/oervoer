@@ -3,13 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
+  createAdvice,
   createOrder,
   deleteOrder,
   discardPicklist,
   generateForOrder,
+  getPetByPublicId,
   setProductQty,
   updateOrderStatus,
 } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth";
+import type { AdviceInput } from "@/lib/advice";
 
 export type FormState = { error?: string };
 
@@ -43,9 +47,9 @@ export async function createOrderAction(
     return { error: error instanceof Error ? error.message : "Order opslaan mislukt." };
   }
 
-  revalidatePath("/");
-  revalidatePath("/orders");
-  redirect(`/orders/${orderId}`);
+  revalidatePath("/beheer");
+  revalidatePath("/beheer/orders");
+  redirect(`/beheer/orders/${orderId}`);
 }
 
 export async function generateAction(formData: FormData): Promise<void> {
@@ -59,46 +63,46 @@ export async function generateAction(formData: FormData): Promise<void> {
     problem = error instanceof Error ? error.message : "Picklijst genereren mislukt.";
   }
 
-  revalidatePath("/");
-  revalidatePath("/orders");
-  revalidatePath(`/orders/${orderId}`);
-  revalidatePath("/voorraad");
+  revalidatePath("/beheer");
+  revalidatePath("/beheer/orders");
+  revalidatePath(`/beheer/orders/${orderId}`);
+  revalidatePath("/beheer/voorraad");
 
   if (problem) {
-    redirect(`/orders/${orderId}?fout=${encodeURIComponent(problem)}`);
+    redirect(`/beheer/orders/${orderId}?fout=${encodeURIComponent(problem)}`);
   }
-  redirect(`/orders/${orderId}`);
+  redirect(`/beheer/orders/${orderId}`);
 }
 
 export async function discardPicklistAction(formData: FormData): Promise<void> {
   const orderId = Number(formData.get("orderId"));
   if (!Number.isFinite(orderId)) return;
   discardPicklist(orderId);
-  revalidatePath("/");
-  revalidatePath("/orders");
-  revalidatePath(`/orders/${orderId}`);
-  revalidatePath("/voorraad");
-  redirect(`/orders/${orderId}`);
+  revalidatePath("/beheer");
+  revalidatePath("/beheer/orders");
+  revalidatePath(`/beheer/orders/${orderId}`);
+  revalidatePath("/beheer/voorraad");
+  redirect(`/beheer/orders/${orderId}`);
 }
 
 export async function deleteOrderAction(formData: FormData): Promise<void> {
   const orderId = Number(formData.get("orderId"));
   if (!Number.isFinite(orderId)) return;
   deleteOrder(orderId);
-  revalidatePath("/");
-  revalidatePath("/orders");
-  revalidatePath("/voorraad");
-  redirect("/orders");
+  revalidatePath("/beheer");
+  revalidatePath("/beheer/orders");
+  revalidatePath("/beheer/voorraad");
+  redirect("/beheer/orders");
 }
 
 export async function markDoneAction(formData: FormData): Promise<void> {
   const orderId = Number(formData.get("orderId"));
   if (!Number.isFinite(orderId)) return;
   updateOrderStatus(orderId, "afgerond");
-  revalidatePath("/");
-  revalidatePath("/orders");
-  revalidatePath(`/orders/${orderId}`);
-  redirect(`/orders/${orderId}`);
+  revalidatePath("/beheer");
+  revalidatePath("/beheer/orders");
+  revalidatePath(`/beheer/orders/${orderId}`);
+  redirect(`/beheer/orders/${orderId}`);
 }
 
 export async function setQtyAction(formData: FormData): Promise<void> {
@@ -106,8 +110,8 @@ export async function setQtyAction(formData: FormData): Promise<void> {
   const qty = Number(formData.get("qty"));
   if (!sku || !Number.isFinite(qty)) return;
   setProductQty(sku, qty);
-  revalidatePath("/voorraad");
-  revalidatePath("/");
+  revalidatePath("/beheer/voorraad");
+  revalidatePath("/beheer");
 }
 
 export async function adjustQtyAction(formData: FormData): Promise<void> {
@@ -116,6 +120,25 @@ export async function adjustQtyAction(formData: FormData): Promise<void> {
   const current = Number(formData.get("current"));
   if (!sku || !Number.isFinite(delta)) return;
   setProductQty(sku, (Number.isFinite(current) ? current : 0) + delta);
-  revalidatePath("/voorraad");
-  revalidatePath("/");
+  revalidatePath("/beheer/voorraad");
+  revalidatePath("/beheer");
+}
+
+export async function createAdviceAction(
+  input: AdviceInput,
+  petPublicId?: string,
+): Promise<{ id?: string; error?: string }> {
+  try {
+    const user = await getCurrentUser();
+    let petId: number | null = null;
+    if (user && petPublicId) {
+      const pet = getPetByPublicId(petPublicId);
+      if (pet && pet.userId === user.id) petId = pet.id;
+    }
+    return { id: createAdvice(input, { userId: user?.id ?? null, petId }) };
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : "Advies opslaan mislukt.",
+    };
+  }
 }

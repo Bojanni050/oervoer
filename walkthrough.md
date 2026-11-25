@@ -38,3 +38,54 @@
   - `lib/` en `lib64/` in `.gitignore` verankerd aan de root. Zonder die fix werden
     `src/lib/*.ts` als Python-buildartefact genegeerd en zou de app niet compileen na
     een fresh clone. Gecontroleerd dat alle lib-bestanden nu in de commit zitten.
+
+## 2026-11-25 (Ombouw naar voedingsadvies-app)
+
+- Findings: De app was een picklist-tool voor de slagerij. De wens is een publieke app waarin
+  een bezoeker de gegevens van zijn dier invoert en een advies krijgt, waarbij de interne
+  pakketten vertaald worden naar gewone taal (meer gemalen, meer karkas, van beide wat).
+- Conclusions: De bestaande generator blijft nodig voor de picklijsten, dus die verhuist naar
+  `/beheer` in een eigen route group. Het advies is een aparte, pure laag (`advice.ts`) die
+  dezelfde verhoudingen gebruikt maar geen producten selecteert. Elk advies wordt opgeslagen
+  zodat het een printbare, deelbare link krijgt. De openbare app en het beheer krijgen elk
+  hun eigen layout; de rootlayout is weer kaal.
+- Actions:
+  - `src/app/(public)/` — nieuwe startpagina met hero, wizard, uitleg en stijlenkaarten;
+    `advies/[id]` printbare uitslag met samenstellingsbalk, wensen, overgangsschema en
+    waarschuwingen; publieke layout met header/footer; eigen not-found.
+  - `src/app/(beheer)/beheer/` — dashboard, orders en voorraad verplaatst; eigen layout met
+    sidebar en metadata. Alle interne links en revalidatiepaden naar `/beheer/...`.
+  - `src/lib/advice.ts` — dagrantsoen (35/25 g per kg), maaltijden (2 of 3 bij pup/kitten),
+    aanbevolen pakketgrootte, menu-opbouw met dezelfde recepten, vertaling van de stijlen,
+    notities bij vermijden van vis/pens en waarschuwingen bij pup/kitten en zware katten.
+  - `src/lib/types.ts`, `db.ts`, `actions.ts` — `advices`-tabel, `createAdvice`, `getAdvice`
+    en `createAdviceAction`; id van 12 tekens.
+  - `src/components/advice-wizard.tsx` — driegestappenformulier met live samenvatting.
+  - `src/components/shell.tsx` — navigatie naar `/beheer`, link terug naar de adviesapp,
+    `PawMark` geëxporteerd voor de publieke header.
+  - Percentageafronding en grammen in `compositionFor` gecorrigeerd: eerst procenten
+    afronden, totaal op 100 brengen en daar de grammen van afleiden. Zonder die volgorde
+    verscheen `17.799999999999997%` in beeld.
+  - README herschreven voor de nieuwe opzet.
+
+## 2026-11-25 (Accounts, dieren en foto's)
+
+- Findings: het advies was anoniem en een bezoeker kon een dier of eerder advies niet terugvinden.
+  Er was behoefte aan een account met opgeslagen dieren (inclusief foto) en een adviesgeschiedenis.
+- Conclusions: auth zonder externe dependency (scrypt + sessietokens waarvan alleen de hash in
+  SQLite staat), foto's als BLOB in dezelfde database zodat er geen losse uploadmap ontstaat bij
+  back-ups of deploys, en een optionele koppeling: anoniem advies blijft werken. De wizard vult
+  zich vanuit een opgeslagen dier, maar een advies blijft een snapshot van de gegevens op dat
+  moment.
+- Actions:
+  - `src/lib/auth.ts`, `src/lib/photo.ts` toegevoegd; `src/lib/db.ts` uitgebreid met `users`,
+    `pets`, `sessions`, `photos`, migratie van `advices.user_id`/`pet_id` en alle queries.
+  - `src/app/account-actions.ts` voor registreren, inloggen, uitloggen, profiel en dieren.
+  - `src/app/(public)/inloggen`, `/registreren` en `/account` (inclusief dierformulieren);
+    `src/app/foto/[id]/route.ts` voor foto's uit de database.
+  - `src/components/photo-field.tsx`, `auth-forms.tsx`, `pet-form.tsx`, `profile-form.tsx`,
+    `confirm-button.tsx`; publieke header toont avatar of inloglink.
+  - `AdviceWizard` accepteert opgeslagen dieren en geeft het gekozen dier mee aan het advies.
+  - Getest: registreren met foto, dier opslaan met foto, voorgevulde wizard, advies automatisch
+    in het account, uitloggen/inloggen, data-isolatie tussen accounts en 404 bij een dier van
+    een ander. `tsc --noEmit` en `next build` slagen.

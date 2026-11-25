@@ -59,7 +59,7 @@ export default async function OrderDetailPage({
     <div className="print-shell">
       <div className="no-print">
         <Link
-          href="/orders"
+          href="/beheer/orders"
           className="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-ink"
         >
           <ArrowLeft className="size-4" /> Alle orders
@@ -211,7 +211,7 @@ export default async function OrderDetailPage({
             {picklist ? (
               <div className="no-print flex items-center gap-2">
                 <a
-                  href={`/orders/${order.id}/export`}
+                  href={`/beheer/orders/${order.id}/export`}
                   className="btn btn-secondary"
                   download
                 >

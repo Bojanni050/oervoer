@@ -1,6 +1,8 @@
 import { DatabaseSync } from "node:sqlite";
+import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { buildAdvice, type AdviceInput, type AdviceResult } from "./advice";
 import { parseCsvObjects } from "./csv";
 import {
   daysFor,
@@ -12,16 +14,19 @@ import {
   type OrderInput,
 } from "./picklist";
 import type {
+  AdviceRecord,
   Dier,
   OrderRecord,
   OrderStatus,
   PackageKind,
+  PetRecord,
   PicklistItem,
   PicklistRecord,
   PicklistWarning,
   Portie,
   Product,
   ProductRow,
+  UserRecord,
 } from "./types";
 import { PACKAGE_KINDS, PORTIES } from "./globals";
 
@@ -90,12 +95,85 @@ function openDb(): DatabaseSync {
       created_at TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS advices (
+      id TEXT PRIMARY KEY,
+      animal TEXT NOT NULL DEFAULT '',
+      ras TEXT NOT NULL,
+      weight REAL NOT NULL,
+      pup INTEGER NOT NULL DEFAULT 0,
+      portie TEXT NOT NULL DEFAULT 'beide',
+      kind TEXT NOT NULL,
+      package_kg REAL NOT NULL,
+      donts TEXT NOT NULL DEFAULT '[]',
+      result TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS photos (
+      id TEXT PRIMARY KEY,
+      content_type TEXT NOT NULL,
+      data BLOB NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      public_id TEXT NOT NULL UNIQUE,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      name TEXT NOT NULL,
+      photo_id TEXT REFERENCES photos(id) ON DELETE SET NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS sessions (
+      token_hash TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      expires_at TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS pets (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      public_id TEXT NOT NULL UNIQUE,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      name TEXT NOT NULL,
+      ras TEXT NOT NULL DEFAULT 'HOND',
+      weight REAL NOT NULL,
+      pup INTEGER NOT NULL DEFAULT 0,
+      portie TEXT NOT NULL DEFAULT 'beide',
+      donts TEXT NOT NULL DEFAULT '[]',
+      photo_id TEXT REFERENCES photos(id) ON DELETE SET NULL,
+      notes TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_picklists_order ON picklists(order_id);
     CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+    CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
+    CREATE INDEX IF NOT EXISTS idx_pets_user ON pets(user_id);
   `);
+
+  // Migratie voor bestaande databases van vóór de accountfunctionaliteit.
+  addColumnIfMissing(db, "advices", "user_id", "INTEGER REFERENCES users(id) ON DELETE SET NULL");
+  addColumnIfMissing(db, "advices", "pet_id", "INTEGER REFERENCES pets(id) ON DELETE SET NULL");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_advices_user ON advices(user_id)");
+
   globalThis.__oervoerDb = db;
   seedIfEmpty(db);
   return db;
+}
+
+function addColumnIfMissing(
+  db: DatabaseSync,
+  table: string,
+  column: string,
+  definition: string,
+): void {
+  const columns = db.prepare(`PRAGMA table_info(${table})`).all() as SqlRow[];
+  if (!columns.some((entry) => String(entry.name) === column)) {
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  }
 }
 
 function seedIfEmpty(db: DatabaseSync): void {
@@ -506,6 +584,319 @@ export function discardPicklist(orderId: number): void {
   restoreInventory(db, picklist.items);
   db.prepare("DELETE FROM picklists WHERE order_id = ?").run(orderId);
   db.prepare("UPDATE orders SET status = 'nieuw' WHERE id = ?").run(orderId);
+}
+
+/* ------------------------------------------------------------------ */
+/* Voedingsadviezen                                                   */
+/* ------------------------------------------------------------------ */
+
+export interface AdviceOwner {
+  userId?: number | null;
+  petId?: number | null;
+}
+
+export function createAdvice(input: AdviceInput, owner?: AdviceOwner): string {
+  const db = openDb();
+  const result = buildAdvice(input);
+  const id = randomUUID().replace(/-/g, "").slice(0, 12);
+
+  db.prepare(
+    `INSERT INTO advices
+      (id, animal, ras, weight, pup, portie, kind, package_kg, donts, result, user_id, pet_id, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    id,
+    input.animal?.trim() ?? "",
+    input.ras,
+    input.weight,
+    input.pup ? 1 : 0,
+    input.portie,
+    input.kind,
+    input.packageKg,
+    JSON.stringify(input.donts),
+    JSON.stringify(result),
+    owner?.userId ?? null,
+    owner?.petId ?? null,
+    new Date().toISOString(),
+  );
+
+  return id;
+}
+
+function mapAdvice(row: SqlRow): AdviceRecord {
+  return {
+    id: String(row.id),
+    animal: String(row.animal),
+    ras: String(row.ras) as Dier,
+    weight: Number(row.weight),
+    pup: Boolean(row.pup),
+    portie: String(row.portie) as Portie,
+    kind: String(row.kind) as PackageKind,
+    packageKg: Number(row.package_kg),
+    donts: safeJson<string[]>(String(row.donts), []),
+    result: safeJson<AdviceResult>(String(row.result), {} as AdviceResult),
+    userId: row.user_id == null ? null : Number(row.user_id),
+    petId: row.pet_id == null ? null : Number(row.pet_id),
+    createdAt: String(row.created_at),
+  };
+}
+
+export function listAdvicesForUser(userId: number): AdviceRecord[] {
+  const db = openDb();
+  return (
+    db
+      .prepare("SELECT * FROM advices WHERE user_id = ? ORDER BY created_at DESC")
+      .all(userId) as SqlRow[]
+  ).map(mapAdvice);
+}
+
+export function getAdvice(id: string): AdviceRecord | null {
+  const db = openDb();
+  const row = db.prepare("SELECT * FROM advices WHERE id = ?").get(id) as SqlRow | undefined;
+  return row ? mapAdvice(row) : null;
+}
+
+/* ------------------------------------------------------------------ */
+/* Foto's, accounts en dieren                                         */
+/* ------------------------------------------------------------------ */
+
+export function savePhoto(photo: { data: Uint8Array; contentType: string }): string {
+  const db = openDb();
+  const id = randomUUID().replace(/-/g, "").slice(0, 16);
+  db.prepare("INSERT INTO photos (id, content_type, data, created_at) VALUES (?, ?, ?, ?)").run(
+    id,
+    photo.contentType,
+    photo.data,
+    new Date().toISOString(),
+  );
+  return id;
+}
+
+export function getPhoto(id: string): { contentType: string; data: Uint8Array } | null {
+  const db = openDb();
+  const row = db.prepare("SELECT content_type, data FROM photos WHERE id = ?").get(id) as
+    | { content_type: string; data: Uint8Array }
+    | undefined;
+  if (!row) return null;
+  return { contentType: row.content_type, data: row.data };
+}
+
+function mapUser(row: SqlRow): UserRecord {
+  return {
+    id: Number(row.id),
+    publicId: String(row.public_id),
+    email: String(row.email),
+    name: String(row.name),
+    photoId: row.photo_id == null ? null : String(row.photo_id),
+    createdAt: String(row.created_at),
+  };
+}
+
+export interface NewUserInput {
+  name: string;
+  email: string;
+  passwordHash: string;
+  photoId?: string | null;
+}
+
+export function createUser(input: NewUserInput): UserRecord {
+  const db = openDb();
+  const id = randomUUID().replace(/-/g, "").slice(0, 12);
+  try {
+    const result = db
+      .prepare(
+        `INSERT INTO users (public_id, email, password_hash, name, photo_id, created_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        id,
+        input.email,
+        input.passwordHash,
+        input.name,
+        input.photoId ?? null,
+        new Date().toISOString(),
+      );
+    const row = db
+      .prepare("SELECT * FROM users WHERE id = ?")
+      .get(Number(result.lastInsertRowid)) as SqlRow;
+    return mapUser(row);
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("UNIQUE")) {
+      throw new Error("Er bestaat al een account met dit e-mailadres.");
+    }
+    throw error;
+  }
+}
+
+export function getUserByEmail(
+  email: string,
+): (UserRecord & { passwordHash: string }) | null {
+  const db = openDb();
+  const row = db.prepare("SELECT * FROM users WHERE email = ?").get(email) as SqlRow | undefined;
+  if (!row) return null;
+  return { ...mapUser(row), passwordHash: String(row.password_hash) };
+}
+
+export function updateUserProfile(
+  userId: number,
+  input: { name: string; photoId?: string | null },
+): void {
+  const name = input.name.trim();
+  if (!name) throw new Error("Vul je naam in.");
+  const db = openDb();
+  db.prepare("UPDATE users SET name = ?, photo_id = COALESCE(?, photo_id) WHERE id = ?").run(
+    name,
+    input.photoId ?? null,
+    userId,
+  );
+}
+
+export function createSession(userId: number, tokenHash: string, expiresAt: string): void {
+  const db = openDb();
+  const now = new Date().toISOString();
+  db.prepare("DELETE FROM sessions WHERE expires_at < ?").run(now);
+  db.prepare(
+    "INSERT INTO sessions (token_hash, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)",
+  ).run(tokenHash, userId, expiresAt, now);
+}
+
+export function getUserBySessionHash(tokenHash: string): UserRecord | null {
+  const db = openDb();
+  const row = db
+    .prepare(
+      `SELECT users.* FROM sessions
+       JOIN users ON users.id = sessions.user_id
+       WHERE sessions.token_hash = ? AND sessions.expires_at >= ?`,
+    )
+    .get(tokenHash, new Date().toISOString()) as SqlRow | undefined;
+  return row ? mapUser(row) : null;
+}
+
+export function deleteSession(tokenHash: string): void {
+  openDb().prepare("DELETE FROM sessions WHERE token_hash = ?").run(tokenHash);
+}
+
+function mapPet(row: SqlRow): PetRecord {
+  return {
+    id: Number(row.id),
+    publicId: String(row.public_id),
+    userId: Number(row.user_id),
+    name: String(row.name),
+    ras: String(row.ras) as Dier,
+    weight: Number(row.weight),
+    pup: Boolean(row.pup),
+    portie: String(row.portie) as Portie,
+    donts: safeJson<string[]>(String(row.donts), []),
+    photoId: row.photo_id == null ? null : String(row.photo_id),
+    notes: String(row.notes),
+    createdAt: String(row.created_at),
+  };
+}
+
+export interface PetInput {
+  name: string;
+  ras: string;
+  weight: number;
+  pup?: boolean;
+  portie?: string;
+  donts?: string[];
+  photoId?: string | null;
+  notes?: string;
+}
+
+function cleanPetInput(input: PetInput) {
+  const name = input.name.trim();
+  if (!name) throw new Error("Vul de naam van je dier in.");
+  if (!(input.weight >= 0.5 && input.weight <= 90)) {
+    throw new Error("Vul een gewicht tussen 0,5 en 90 kg in.");
+  }
+  return {
+    name,
+    ras: input.ras.toUpperCase() === "KAT" ? ("KAT" as const) : ("HOND" as const),
+    weight: input.weight,
+    pup: input.pup ? 1 : 0,
+    portie: (PORTIES as readonly string[]).includes(input.portie ?? "")
+      ? (input.portie as string)
+      : "beide",
+    donts: [
+      ...new Set((input.donts ?? []).map((value) => value.trim().toUpperCase()).filter(Boolean)),
+    ],
+    photoId: input.photoId ?? null,
+    notes: (input.notes ?? "").trim(),
+  };
+}
+
+export function listPets(userId: number): PetRecord[] {
+  const db = openDb();
+  return (
+    db.prepare("SELECT * FROM pets WHERE user_id = ? ORDER BY created_at ASC").all(userId) as SqlRow[]
+  ).map(mapPet);
+}
+
+export function getPetByPublicId(publicId: string): PetRecord | null {
+  const db = openDb();
+  const row = db.prepare("SELECT * FROM pets WHERE public_id = ?").get(publicId) as
+    | SqlRow
+    | undefined;
+  return row ? mapPet(row) : null;
+}
+
+export function createPet(userId: number, input: PetInput): PetRecord {
+  const clean = cleanPetInput(input);
+  const db = openDb();
+  const publicId = randomUUID().replace(/-/g, "").slice(0, 12);
+  const result = db
+    .prepare(
+      `INSERT INTO pets
+        (public_id, user_id, name, ras, weight, pup, portie, donts, photo_id, notes, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+    .run(
+      publicId,
+      userId,
+      clean.name,
+      clean.ras,
+      clean.weight,
+      clean.pup,
+      clean.portie,
+      JSON.stringify(clean.donts),
+      clean.photoId,
+      clean.notes,
+      new Date().toISOString(),
+    );
+  const row = db
+    .prepare("SELECT * FROM pets WHERE id = ?")
+    .get(Number(result.lastInsertRowid)) as SqlRow;
+  return mapPet(row);
+}
+
+export function updatePet(userId: number, publicId: string, input: PetInput): void {
+  const clean = cleanPetInput(input);
+  const db = openDb();
+  const result = db
+    .prepare(
+      `UPDATE pets SET
+        name = ?, ras = ?, weight = ?, pup = ?, portie = ?, donts = ?,
+        photo_id = COALESCE(?, photo_id), notes = ?
+       WHERE public_id = ? AND user_id = ?`,
+    )
+    .run(
+      clean.name,
+      clean.ras,
+      clean.weight,
+      clean.pup,
+      clean.portie,
+      JSON.stringify(clean.donts),
+      clean.photoId,
+      clean.notes,
+      publicId,
+      userId,
+    );
+  if (result.changes === 0) throw new Error("Dit dier hoort niet bij je account.");
+}
+
+export function deletePet(userId: number, publicId: string): void {
+  openDb().prepare("DELETE FROM pets WHERE public_id = ? AND user_id = ?").run(publicId, userId);
 }
 
 /* ------------------------------------------------------------------ */

@@ -43,7 +43,7 @@ export default async function VoorraadPage({
     if (nextFilter !== "alles") search.set("filter", nextFilter);
     if (nextType !== "alle") search.set("type", nextType);
     const value = search.toString();
-    return value ? `/voorraad?${value}` : "/voorraad";
+    return value ? `/beheer/voorraad?${value}` : "/beheer/voorraad";
   };
 
   return (
@@ -85,7 +85,7 @@ export default async function VoorraadPage({
           ))}
         </div>
 
-        <form action="/voorraad" method="get" className="flex flex-wrap items-center gap-2">
+        <form action="/beheer/voorraad" method="get" className="flex flex-wrap items-center gap-2">
           {filter !== "alles" ? <input type="hidden" name="filter" value={filter} /> : null}
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
