@@ -164,3 +164,39 @@
   - README en homepage-copy bijgewerkt.
   - Typecheck en build slagen; lokaal gecontroleerd met een hond (kip + eend, rund vermeden,
     meer karkas, 10 kg): de rundregel ontbreekt en de grammen zijn over kip en eend verdeeld.
+
+## 2026-11-25 (DARF-producten in de boodschappenlijst)
+
+- Findings: De boodschappenlijst noemde alleen generieke ingredienten. De DARF-catalogus
+  (kof=107) bevat 130 producten, maar de oude import las alleen de ankertekst: gewicht en
+  prijs waren daardoor onbetrouwbaar en "Niet leverbaar" belandde in de productnaam. De
+  detailpagina's bevatten wel de ingrediënten en samenstelling, maar die werden niet gebruikt.
+- Conclusions: Een ALRODA Puur-product is één dier met karkas, spier en orgaan; dat is de
+  smaakbasis voor de delen gemalen, karkas en spier. Pens, orgaan, bot en vis moeten echte
+  losse delen zijn, anders klopt de koppeling met de berekening niet. Complete KVV-maaltijden
+  (DARF, MEAT4DOGS) blijven buiten beeld: die zouden de samenstelling vervangen in plaats van
+  invullen. Zonder passend DARF-product blijft de generieke catalogus als fallback staan.
+- Actions:
+  - `scripts/import-darf.mjs` herschreven: productkaarten via `pcard-brand`, `pcard-name`,
+    `pcard-weight`, `pcard-price` en labels; gewicht uit de kaart of slug; prijs uit de kaart
+    of `pdp-price`. Detailpagina's leveren ingrediënten, samenstelling (`dc-hero`, `dc-otile`)
+    en analyse (`dc-arow`) en worden gecachet in `.data/darf-cache`.
+  - Classificatie toegevoegd: `heel` (ALRODA Puur), `pens`, `orgaan`, `bot`, `vis`, `spier`,
+    `karkas`, `gemalen`, `compleet`, `vet`, `onbekend`; 130 producten in
+    `data/darf-products.json` en `shop_products`, 128 leverbaar.
+  - `src/lib/darf.ts` kiest per deel: heel dier op smaak (grootste verpakking die past),
+    los orgaan (lever vóór hart vóór long), los bot (nek vóór kop vóór rib), pens op
+    voorkeurssmaak en vis (zalm alleen als gekozen).
+  - `src/lib/shopping.ts` koppelt elke regel eerst aan een DARF-product en valt anders terug
+    op de generieke catalogus. De grammen en verhoudingen zijn niet aangepast.
+  - Adviespagina toont per product gewicht, prijs en een externe link; `heel dier` staat als
+    toelichting. Printbaarheid blijft: de linkiconen zijn `no-print`.
+  - README bijgewerkt met de DARF-import, classificatie en het onderscheid tussen snapshot en
+    rekenregels.
+  - Getest: `npm run typecheck` en `npm run build` slagen. Lokaal een advies zonder likes
+    (hond, 10 kg, PLUS) geeft 4 smaken en 6 concrete producten; een advies met kip + eend
+    (10 kg, meer karkas) geeft kip/eend-karkas, kip/eend-spier, kip-orgaan, kip-bot en de
+    generieke eend-orgaan-fallback; een advies met 6 smaken (kip, rund, lam, eend, hert,
+    konijn, 10 kg, meer karkas) geeft voor elke smaak een heel-dierproduct en echte losse
+    delen waar beschikbaar. De samenstelling bleef 15/15/35/5,3/11,9/17,8% (1500/1500/3500/
+    530/1190/1780 g).

@@ -42,8 +42,9 @@ npm start
 - **Smaakvoorkeur** — kies waar je dier dol op is. Die keuze bepaalt welke producten in de
   boodschappenlijst komen en hoe de grammen over de smaken worden verdeeld.
 - **Boodschappenlijst** — bij elk advies horen concrete producten per samenstellingsdeel, met
-  winkeltype (supermarkt, slager, visboer of online). Afvinkbaar op papier en printbaar met het
-  advies mee.
+  winkeltype (supermarkt, slager, visboer of online). Waar mogelijk staat er een echt
+  DARF-product bij met gewicht, prijs en link; ontbreekt dat, dan valt de regel terug op een
+  generieke suggestie. Afvinkbaar op papier en printbaar met het advies mee.
 - **Eigen link** — elk advies wordt opgeslagen en is printbaar via `/advies/<id>`. Handig om
   mee te geven of later terug te zoeken.
 - **Account** — registreren met naam, e-mail en een optionele profielfoto. Daarna kun je je
@@ -92,6 +93,38 @@ smaakvariatie en de kleinste gewichtsafwijking wint. Restricties gelden op smaak
 (bijv. `KIP.LEVER`), vleessoort en kat/hond-geschiktheid; viskoppen komen maximaal één keer
 per menu voor.
 
+## DARF-producten
+
+De boodschappenlijst verwijst naar echte producten uit de DARF Versvoer-catalogus. Die
+catalogus wordt met een script ingelezen en als snapshot in `data/darf-products.json`
+bewaard; dezelfde producten staan in de tabel `shop_products`.
+
+```bash
+node scripts/import-darf.mjs              # 15 categoriepagina's, detailpagina's uit cache
+node scripts/import-darf.mjs --refresh    # detailpagina's opnieuw ophalen
+node scripts/import-darf.mjs --no-details # alleen kaartdata (snel, zonder ingrediënten)
+```
+
+Het script leest per productkaart merk, naam, gewicht en prijs, en haalt van de detailpagina
+de ingrediënten, samenstelling en analyse op. Op basis daarvan krijgt elk product een deel:
+
+| Deel | Betekenis |
+| --- | --- |
+| `heel` | ALRODA Puur van één dier (karkas, spier en orgaan in één product) |
+| `pens`, `orgaan`, `bot`, `vis` | Echte losse delen uit de BARF- en ALRODA-lijn |
+| `spier`, `karkas`, `gemalen` | Overige losse delen |
+| `compleet` | Kant-en-klare KVV-maaltijd; doet niet mee in het advies |
+| `vet`, `onbekend` | Niet bruikbaar of niet meer leverbaar |
+
+`shoppingListFor` gebruikt een heel-dierproduct als smaakbasis voor de delen gemalen, karkas
+en spier. Pens, orgaan, bot en vis komen uit de losse delen. Zo blijft de berekende
+samenstelling leidend en worden er geen complete KVV-maaltijden als vervanging getoond. Als
+een product voor een smaak of deel ontbreekt, valt de regel terug op de generieke catalogus.
+
+Prijzen en gewichten zijn een momentopname van darf.nl. De app toont ze als voorbeeld; de
+grammen uit het advies blijven de norm. De detailpagina's worden lokaal gecachet in
+`.data/darf-cache` (git-ignored) zodat opnieuw importeren snel gaat.
+
 ## Projectstructuur
 
 ```
@@ -117,16 +150,20 @@ src/
   components/                wizard, formulieren, foto-upload, UI
   lib/
     advice.ts                dagrantsoen en menu-opbouw voor het advies
-    shopping.ts              producten en boodschappenlijst per smaak
+    shopping.ts              boodschappenlijst per smaak, met DARF en fallback
+    darf.ts                  DARF-producten kiezen per samenstellingsdeel
     auth.ts                  wachtwoorden, sessies en cookie
     photo.ts                 uploadvalidatie en opslag als BLOB
     picklist.ts              port van de originele generator
     db.ts                    SQLite-schema, queries en seeding
     globals.ts               constanten uit globals.py
     csv.ts                   CSV-parser/exporter
+scripts/import-darf.mjs      DARF-catalogus scrapen naar JSON en shop_products
 scripts/set-admin.mjs        account promoveren tot beheerder
+data/darf-products.json      snapshot van de DARF-producten voor de app
 test/products.csv            productbron voor de initiële voorraad
-oervoer/, gtk/, data/        originele Python 2 / GTK-app (archief)
+oervoer/, gtk/               originele Python 2 / GTK-app (archief)
+data/                        DARF-snapshot en archiefbestanden
 oervoer-django/              originele Django-poging (archief)
 ```
 
@@ -135,12 +172,12 @@ oervoer-django/              originele Django-poging (archief)
 De SQLite-database staat in `.data/oervoer.db` en is git-ignored. Verwijder het bestand om
 opnieuw te beginnen; de volgende start zaait opnieuw.
 
-De tabellen zijn `products`, `orders`, `picklists`, `advices`, `users`, `pets`, `sessions` en
-`photos`. In `advices.likes` staan de gekozen smaken; `users.role` bepaalt wie beheer mag
-openen. Een picklijst bewaart een snapshot van de regels en een advies bewaart de volledige
-uitkomst, zodat printen altijd hetzelfde resultaat geeft, ook als de voorraad of de rekenregels
-daarna veranderen. Een advies van een ingelogde bezoeker verwijst naar het account en,
-indien gekozen, naar het opgeslagen dier.
+De tabellen zijn `products`, `orders`, `picklists`, `advices`, `users`, `pets`, `sessions`,
+`photos` en `shop_products`. In `advices.likes` staan de gekozen smaken; `users.role` bepaalt
+wie beheer mag openen. Een picklijst bewaart een snapshot van de regels en een advies bewaart
+de volledige uitkomst, zodat printen altijd hetzelfde resultaat geeft, ook als de voorraad of
+de rekenregels daarna veranderen. Een advies van een ingelogde bezoeker verwijst naar het
+account en, indien gekozen, naar het opgeslagen dier.
 
 Wachtwoorden worden met scrypt gehasht; de sessiecookie is httpOnly en bevat alleen een token
 waarvan de hash in de database staat. Profielfoto's worden verkleind tot maximaal 720 px en als
@@ -205,8 +242,10 @@ backups. Handmatig een extra backup maken kan met:
 
 ## Bewust niet gedaan
 
-- Het advies noemt geen concrete producten of SKU's; het blijft bij grammen en verhoudingen.
-  De vertaling naar echte producten gebeurt in de picklijst.
+- De berekening blijft bij grammen en verhoudingen. De boodschappenlijst noemt concrete
+  DARF-producten als voorbeeld, maar dat is een momentopname van de webshop en geen
+  onderdeel van de rekenregels. De slagerij gebruikt voor de picklijst nog steeds de eigen
+  voorraad.
 - Het advies is een berekening, geen medisch advies. Bij puppy's, kittens en dieren met een
   aandoening staat een waarschuwing om met de dierenarts te overleggen.
 - Accounts zijn bewust eenvoudig: geen e-mailverificatie, wachtwoord-reset of inloggen via een

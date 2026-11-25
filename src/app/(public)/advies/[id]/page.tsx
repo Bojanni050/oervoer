@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check, Info, Printer as PrinterIcon, ShoppingBasket } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, Info, Printer as PrinterIcon, ShoppingBasket } from "lucide-react";
 import { PrintButton } from "@/components/order-actions";
 import { getAdvice } from "@/lib/db";
 import {
@@ -11,7 +11,12 @@ import {
   styleLabel,
 } from "@/lib/advice";
 import { formatDate } from "@/lib/format";
-import { shoppingListFor, storeSummary } from "@/lib/shopping";
+import {
+  formatShopPrice,
+  formatShopWeight,
+  shoppingListFor,
+  storeSummary,
+} from "@/lib/shopping";
 
 export const dynamic = "force-dynamic";
 
@@ -196,15 +201,40 @@ export default async function AdvicePage({ params }: PageProps) {
                   {line.products.map((product) => (
                     <li
                       key={`${line.key}-${product.name}`}
-                      className="flex items-center gap-2 rounded-full bg-bone/70 px-3 py-1.5 text-xs"
+                      className="flex items-start gap-2 rounded-xl bg-bone/70 px-3 py-2 text-xs"
                     >
                       <span
                         aria-hidden="true"
-                        className="size-3 shrink-0 rounded-[2px] border border-line bg-paper"
+                        className="mt-0.5 size-3 shrink-0 rounded-[2px] border border-line bg-paper"
                       />
-                      <span>{product.name}</span>
-                      <span className="text-[0.58rem] uppercase tracking-[0.1em] text-muted">
-                        {product.store}
+                      <span className="min-w-0">
+                        {product.url ? (
+                          <a
+                            href={product.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="font-medium underline decoration-line underline-offset-2 hover:text-moss hover:decoration-moss"
+                          >
+                            {product.name}
+                            <ExternalLink
+                              aria-hidden="true"
+                              className="no-print ml-1 inline size-3 align-[-1px]"
+                              strokeWidth={1.9}
+                            />
+                          </a>
+                        ) : (
+                          <span className="font-medium">{product.name}</span>
+                        )}
+                        <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-[0.68rem] text-muted">
+                          {product.weightG ? (
+                            <span className="num">{formatShopWeight(product.weightG)}</span>
+                          ) : null}
+                          {product.priceCents ? (
+                            <span className="num">{formatShopPrice(product.priceCents)}</span>
+                          ) : null}
+                          <span className="uppercase tracking-[0.1em]">{product.store}</span>
+                          {product.note ? <span className="text-moss">{product.note}</span> : null}
+                        </span>
                       </span>
                     </li>
                   ))}
@@ -215,8 +245,9 @@ export default async function AdvicePage({ params }: PageProps) {
 
           <p className="mt-4 flex gap-2 text-xs leading-relaxed text-muted">
             <ShoppingBasket className="mt-0.5 size-4 shrink-0 text-moss" strokeWidth={1.8} />
-            Dit zijn suggesties, geen vaste producten. Kies wat je dier lekker vindt en wat je
-            lokaal kunt krijgen. Let bij bot op dat het niet te klein gesneden is.
+            De producten, gewichten en prijzen komen van darf.nl en kunnen afwijken. Een
+            DARF-product is een voorbeeld van de juiste soort en smaak; de grammen hierboven
+            blijven leidend. Let bij bot op dat het niet te klein gesneden is.
           </p>
         </section>
 
