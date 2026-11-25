@@ -45,7 +45,9 @@ export const ADVICE_STYLES: Record<PackageKind, { label: string; tagline: string
       "De helft meer gemalen, de helft meer karkas. Zo wisselt je dier tussen zacht en stevig voer.",
     bestFor: "Dieren die moeten wennen aan karkas of graag afwisseling hebben.",
   },
-};export const STYLE_ORDER: PackageKind[] = ["PLUS", "100", "COMBI"];
+};
+
+export const STYLE_ORDER: PackageKind[] = ["PLUS", "100", "COMBI"];
 
 export interface AdviceInput {
   animal?: string;
@@ -56,6 +58,7 @@ export interface AdviceInput {
   kind: PackageKind;
   packageKg: number;
   donts: string[];
+  likes?: string[];
 }
 
 export interface CompositionPart {

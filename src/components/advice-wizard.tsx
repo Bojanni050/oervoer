@@ -45,6 +45,10 @@ const PORTIE_OPTIONS: Array<{ value: Portie; label: string; description: string 
   { value: "grote porties", label: "Grote stukken", description: "Vanaf ongeveer 500 gram per stuk." },
 ];
 
+const LIKES = PROTEINS.filter(
+  (protein) => protein.value !== "PENS" && protein.value !== "ORGAAN",
+);
+
 export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: AdviceWizardProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -58,6 +62,7 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
   const [weight, setWeight] = useState(initialPet ? String(initialPet.weight).replace(".", ",") : "");
   const [pup, setPup] = useState(initialPet?.pup ?? false);
   const [donts, setDonts] = useState<string[]>(initialPet?.donts ?? []);
+  const [likes, setLikes] = useState<string[]>([]);
   const [portie, setPortie] = useState<Portie>(initialPet?.portie ?? "beide");
   const [kind, setKind] = useState<PackageKind>("PLUS");
   const [packageKg, setPackageKg] = useState<number>(10);
@@ -69,6 +74,7 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
     setWeight(String(pet.weight).replace(".", ","));
     setPup(pet.pup);
     setDonts(pet.donts);
+    setLikes([]);
     setPortie(pet.portie);
   }
 
@@ -79,6 +85,7 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
     setWeight("");
     setPup(false);
     setDonts([]);
+    setLikes([]);
     setPortie("beide");
   }
 
@@ -95,6 +102,7 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
     kind,
     packageKg,
     donts,
+    likes,
   };
 
   let advice = null;
@@ -110,6 +118,12 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
 
   function toggleDont(value: string) {
     setDonts((current) =>
+      current.includes(value) ? current.filter((entry) => entry !== value) : [...current, value],
+    );
+  }
+
+  function toggleLike(value: string) {
+    setLikes((current) =>
       current.includes(value) ? current.filter((entry) => entry !== value) : [...current, value],
     );
   }
@@ -340,7 +354,36 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
                 <p className="eyebrow mb-1">Stap 2</p>
                 <h2 className="text-2xl">Wat past bij je dier?</h2>
                 <p className="mt-1 text-sm text-muted">
-                  Geef aan wat je dier liever niet eet en hoe groot de stukken mogen zijn.
+                  Geef aan waar je dier dol op is, wat het liever niet eet en hoe groot de stukken
+                  mogen zijn.
+                </p>
+              </div>
+
+              <div>
+                <span className="mb-2 block text-sm font-medium">Waar is je dier dol op?</span>
+                <div className="flex flex-wrap gap-2">
+                  {LIKES.map((protein) => {
+                    const active = likes.includes(protein.value);
+                    return (
+                      <button
+                        key={protein.value}
+                        type="button"
+                        onClick={() => toggleLike(protein.value)}
+                        aria-pressed={active}
+                        className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
+                          active
+                            ? "border-moss bg-moss-soft text-moss"
+                            : "border-line bg-paper text-muted hover:border-moss/40 hover:text-ink"
+                        }`}
+                      >
+                        {protein.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="mt-2 text-xs text-muted">
+                  Optioneel. Met deze smaken maken we straks een boodschappenlijst met concrete
+                  producten.
                 </p>
               </div>
 

@@ -139,3 +139,28 @@
   - `scripts/set-admin.mjs` + `npm run admin -- <e-mail>` om te promoveren.
   - Accountpagina toont een beheerlink voor admins en een uitleg bij geweigerde toegang.
   - README bijgewerkt; Basic auth op de server verwijderd.
+
+## 2026-11-25 (Smaakvoorkeur en boodschappenlijst)
+
+- Findings: Het advies gaf alleen grammen en verhoudingen. Daardoor bleef het abstract: een
+  bezoeker weet wel hoeveel karkas en spier er in het pakket zit, maar niet wat hij daarvoor
+  in huis moet halen. De pakketten zijn wel vertaald naar "meer gemalen" en "meer karkas",
+  maar er stonden geen concrete producten bij.
+- Conclusions: De smaak van het dier bepaalt welke producten logisch zijn. Daarom is
+  `likes` een onderdeel van het advies geworden en verdeelt de boodschappenlijst de grammen
+  per samenstellingsdeel over de gekozen smaken. De catalogus noemt bewust gangbare
+  ingrediënten (supermarkt, slager, visboer, online) in plaats van vaste SKU's: een advies
+  moet bruikbaar blijven als een winkel iets niet heeft. Zonder smaakvoorkeur valt de lijst
+  terug op kip en rund.
+- Actions:
+  - `src/lib/shopping.ts` toegevoegd met catalogus per eiwit en per deel (gemalen, karkas,
+    spier, bot, orgaan), vis- en pensproducten, verdeling van grammen en winkelsamenvatting.
+  - `AdviceInput` en `AdviceRecord` hebben `likes`; de adviestabel kreeg een `likes`-kolom
+    met migratie voor bestaande databases.
+  - Wizard stap 2 heeft een chipsblok "Waar is je dier dol op?"; de keuze wordt niet bij een
+    opgeslagen dier bewaard, omdat smaak per advies kan verschillen.
+  - Adviespagina toont een printbare boodschappenlijst met afvinkbare producten en een rij
+    "Dol op" bij de wensen.
+  - README en homepage-copy bijgewerkt.
+  - Typecheck en build slagen; lokaal gecontroleerd met een hond (kip + eend, rund vermeden,
+    meer karkas, 10 kg): de rundregel ontbreekt en de grammen zijn over kip en eend verdeeld.

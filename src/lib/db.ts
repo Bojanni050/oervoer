@@ -105,6 +105,7 @@ function openDb(): DatabaseSync {
       kind TEXT NOT NULL,
       package_kg REAL NOT NULL,
       donts TEXT NOT NULL DEFAULT '[]',
+      likes TEXT NOT NULL DEFAULT '[]',
       result TEXT NOT NULL,
       created_at TEXT NOT NULL
     );
@@ -159,6 +160,7 @@ function openDb(): DatabaseSync {
   addColumnIfMissing(db, "advices", "user_id", "INTEGER REFERENCES users(id) ON DELETE SET NULL");
   addColumnIfMissing(db, "advices", "pet_id", "INTEGER REFERENCES pets(id) ON DELETE SET NULL");
   addColumnIfMissing(db, "users", "role", "TEXT NOT NULL DEFAULT 'user'");
+  addColumnIfMissing(db, "advices", "likes", "TEXT NOT NULL DEFAULT '[]'");
   db.exec("CREATE INDEX IF NOT EXISTS idx_advices_user ON advices(user_id)");
 
   globalThis.__oervoerDb = db;
@@ -604,8 +606,8 @@ export function createAdvice(input: AdviceInput, owner?: AdviceOwner): string {
 
   db.prepare(
     `INSERT INTO advices
-      (id, animal, ras, weight, pup, portie, kind, package_kg, donts, result, user_id, pet_id, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (id, animal, ras, weight, pup, portie, kind, package_kg, donts, likes, result, user_id, pet_id, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   ).run(
     id,
     input.animal?.trim() ?? "",
@@ -616,6 +618,7 @@ export function createAdvice(input: AdviceInput, owner?: AdviceOwner): string {
     input.kind,
     input.packageKg,
     JSON.stringify(input.donts),
+    JSON.stringify(input.likes ?? []),
     JSON.stringify(result),
     owner?.userId ?? null,
     owner?.petId ?? null,
@@ -636,6 +639,7 @@ function mapAdvice(row: SqlRow): AdviceRecord {
     kind: String(row.kind) as PackageKind,
     packageKg: Number(row.package_kg),
     donts: safeJson<string[]>(String(row.donts), []),
+    likes: safeJson<string[]>(String(row.likes ?? "[]"), []),
     result: safeJson<AdviceResult>(String(row.result), {} as AdviceResult),
     userId: row.user_id == null ? null : Number(row.user_id),
     petId: row.pet_id == null ? null : Number(row.pet_id),

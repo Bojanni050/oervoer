@@ -79,6 +79,7 @@ export interface AdviceRecord {
   kind: PackageKind;
   packageKg: number;
   donts: string[];
+  likes: string[];
   result: AdviceResult;
   userId: number | null;
   petId: number | null;

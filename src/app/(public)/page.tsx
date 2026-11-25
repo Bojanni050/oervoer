@@ -23,7 +23,7 @@ const STEPS = [
   },
   {
     title: "Kies een stijl",
-    text: "Meer gemalen, meer karkas of van beide wat. Je ziet meteen hoeveel gram per dag en hoe lang een pakket meegaat.",
+    text: "Meer gemalen, meer karkas of van beide wat. Je ziet meteen hoeveel gram per dag, hoe lang een pakket meegaat en welke producten je in huis haalt.",
   },
 ];
 
@@ -58,8 +58,8 @@ export default async function HomePage({
             <em className="font-display italic text-moss">echt</em> nodig?
           </h1>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-            In drie stappen bereken je het dagrantsoen en kies je een menu dat past bij je dier.
-            Geen ingewikkelde tabellen, wel eerlijk voer met een duidelijke opbouw.
+            In drie stappen bereken je het dagrantsoen, kies je een menu dat past bij je dier en zie
+            je welke producten je nodig hebt.
           </p>
           <a href="#advies" className="btn btn-primary mt-6">
             Start het advies

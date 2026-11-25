@@ -35,10 +35,15 @@ npm start
 
 ### Advies (openbaar)
 
-- **Drie stappen** — dier (soort, gewicht, pup/kitten), wensen (wat je dier niet eet en de
-  voorkeur voor kleine of grote stukken) en stijl (menu-opbouw en pakketgrootte).
+- **Drie stappen** — dier (soort, gewicht, pup/kitten), wensen (waar je dier dol op is, wat het
+  niet eet en de voorkeur voor kleine of grote stukken) en stijl (menu-opbouw en pakketgrootte).
 - **Direct resultaat** — gram per dag, gram per maaltijd, hoe lang het pakket meegaat en de
   procentuele samenstelling met grammen.
+- **Smaakvoorkeur** — kies waar je dier dol op is. Die keuze bepaalt welke producten in de
+  boodschappenlijst komen en hoe de grammen over de smaken worden verdeeld.
+- **Boodschappenlijst** — bij elk advies horen concrete producten per samenstellingsdeel, met
+  winkeltype (supermarkt, slager, visboer of online). Afvinkbaar op papier en printbaar met het
+  advies mee.
 - **Eigen link** — elk advies wordt opgeslagen en is printbaar via `/advies/<id>`. Handig om
   mee te geven of later terug te zoeken.
 - **Account** — registreren met naam, e-mail en een optionele profielfoto. Daarna kun je je
@@ -112,6 +117,7 @@ src/
   components/                wizard, formulieren, foto-upload, UI
   lib/
     advice.ts                dagrantsoen en menu-opbouw voor het advies
+    shopping.ts              producten en boodschappenlijst per smaak
     auth.ts                  wachtwoorden, sessies en cookie
     photo.ts                 uploadvalidatie en opslag als BLOB
     picklist.ts              port van de originele generator
@@ -130,7 +136,8 @@ De SQLite-database staat in `.data/oervoer.db` en is git-ignored. Verwijder het 
 opnieuw te beginnen; de volgende start zaait opnieuw.
 
 De tabellen zijn `products`, `orders`, `picklists`, `advices`, `users`, `pets`, `sessions` en
-`photos`. Een picklijst bewaart een snapshot van de regels en een advies bewaart de volledige
+`photos`. In `advices.likes` staan de gekozen smaken; `users.role` bepaalt wie beheer mag
+openen. Een picklijst bewaart een snapshot van de regels en een advies bewaart de volledige
 uitkomst, zodat printen altijd hetzelfde resultaat geeft, ook als de voorraad of de rekenregels
 daarna veranderen. Een advies van een ingelogde bezoeker verwijst naar het account en,
 indien gekozen, naar het opgeslagen dier.

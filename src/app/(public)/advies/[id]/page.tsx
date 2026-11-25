@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check, Info, Printer as PrinterIcon } from "lucide-react";
+import { ArrowLeft, Check, Info, Printer as PrinterIcon, ShoppingBasket } from "lucide-react";
 import { PrintButton } from "@/components/order-actions";
 import { getAdvice } from "@/lib/db";
 import {
@@ -11,6 +11,7 @@ import {
   styleLabel,
 } from "@/lib/advice";
 import { formatDate } from "@/lib/format";
+import { shoppingListFor, storeSummary } from "@/lib/shopping";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +51,8 @@ export default async function AdvicePage({ params }: PageProps) {
   const name = advice.animal || (advice.ras === "KAT" ? "je kat" : "je hond");
   const style = ADVICE_STYLES[advice.kind];
   const isCat = advice.ras === "KAT";
+  const shopping = shoppingListFor(advice, result.composition);
+  const stores = storeSummary(shopping);
 
   return (
     <div className="print-shell mx-auto max-w-3xl">
@@ -164,6 +167,59 @@ export default async function AdvicePage({ params }: PageProps) {
           </p>
         </section>
 
+        <section className="border-b border-line px-6 py-7 sm:px-9">
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <p className="eyebrow mb-1">Boodschappenlijst</p>
+              <h2 className="text-2xl">Dit heb je nodig</h2>
+            </div>
+            {stores.length > 0 ? (
+              <p className="text-xs text-muted">
+                Te koop bij {stores.map((store) => store.toLowerCase()).join(", ")}
+              </p>
+            ) : null}
+          </div>
+
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+            De hoeveelheden zijn afgeleid van de samenstelling van je pakket en gelden voor één
+            pakket. Koop ze per stuk of per kilo, net wat handig is.
+          </p>
+
+          <div className="mt-4 divide-y divide-line/70 border-y border-line/70">
+            {shopping.map((line) => (
+              <div key={line.key} className="grid gap-2 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
+                <div>
+                  <p className="text-sm font-medium">{line.label}</p>
+                  <p className="num text-xs text-muted">{formatAdviceGrams(line.grams)}</p>
+                </div>
+                <ul className="flex flex-wrap gap-1.5">
+                  {line.products.map((product) => (
+                    <li
+                      key={`${line.key}-${product.name}`}
+                      className="flex items-center gap-2 rounded-full bg-bone/70 px-3 py-1.5 text-xs"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="size-3 shrink-0 rounded-[2px] border border-line bg-paper"
+                      />
+                      <span>{product.name}</span>
+                      <span className="text-[0.58rem] uppercase tracking-[0.1em] text-muted">
+                        {product.store}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-4 flex gap-2 text-xs leading-relaxed text-muted">
+            <ShoppingBasket className="mt-0.5 size-4 shrink-0 text-moss" strokeWidth={1.8} />
+            Dit zijn suggesties, geen vaste producten. Kies wat je dier lekker vindt en wat je
+            lokaal kunt krijgen. Let bij bot op dat het niet te klein gesneden is.
+          </p>
+        </section>
+
         <section className="grid gap-6 border-b border-line px-6 py-7 sm:grid-cols-2 sm:px-9">
           <div>
             <p className="eyebrow mb-1">Jouw wensen</p>
@@ -181,6 +237,14 @@ export default async function AdvicePage({ params }: PageProps) {
                         .map((entry) => entry.toLowerCase())
                         .join(", ")
                     : "Geen uitsluitingen"}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-3 border-b border-line/60 pb-2">
+                <dt className="text-muted">Dol op</dt>
+                <dd className="text-right font-medium">
+                  {advice.likes.length > 0
+                    ? advice.likes.map((entry) => entry.toLowerCase()).join(", ")
+                    : "Nog geen voorkeur opgegeven"}
                 </dd>
               </div>
               <div className="flex justify-between gap-3">
