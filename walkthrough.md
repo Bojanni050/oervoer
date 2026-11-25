@@ -32,3 +32,9 @@
   - End-to-end gecontroleerd in de browser: dashboard, orders, order aanmaken, picklijst
     genereren voor hond (PLUS), kat (100%) en hond (COMBI, grote porties, PENS vermijden),
     opnieuw genereren, CSV-export en printweergave. `tsc --noEmit` en `next build` slagen.
+- Publicatie:
+  - Nieuwe repo `https://github.com/Bojanni050/oervoer` (leeg, publiek) als `origin`
+    ingesteld; oude fork blijft bereikbaar als `upstream`.
+  - `lib/` en `lib64/` in `.gitignore` verankerd aan de root. Zonder die fix werden
+    `src/lib/*.ts` als Python-buildartefact genegeerd en zou de app niet compileen na
+    een fresh clone. Gecontroleerd dat alle lib-bestanden nu in de commit zitten.
