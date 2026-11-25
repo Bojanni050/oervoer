@@ -382,8 +382,8 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
                   })}
                 </div>
                 <p className="mt-2 text-xs text-muted">
-                  Optioneel. Met deze smaken maken we straks een boodschappenlijst met concrete
-                  producten.
+                  Optioneel. Kies je niets, dan maken we een afwisselende mix van vier gangbare
+                  smaken.
                 </p>
               </div>
 

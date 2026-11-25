@@ -151,7 +151,7 @@
   per samenstellingsdeel over de gekozen smaken. De catalogus noemt bewust gangbare
   ingrediënten (supermarkt, slager, visboer, online) in plaats van vaste SKU's: een advies
   moet bruikbaar blijven als een winkel iets niet heeft. Zonder smaakvoorkeur valt de lijst
-  terug op kip en rund.
+  terug op een mix van vier gangbare smaken: kip, rund, lam en eend.
 - Actions:
   - `src/lib/shopping.ts` toegevoegd met catalogus per eiwit en per deel (gemalen, karkas,
     spier, bot, orgaan), vis- en pensproducten, verdeling van grammen en winkelsamenvatting.

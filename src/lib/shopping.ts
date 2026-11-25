@@ -180,6 +180,19 @@ function genericOrganProducts(): ShopProduct[] {
  * Verdeelt de grammen per samenstellingsdeel over de opgegeven smaken. Zonder
  * smaakvoorkeur wordt een kleine, gangbare mix gebruikt.
  */
+const DEFAULT_MEATS = ["KIP", "RUND", "LAM", "EEND"];
+
+function defaultMeatChoices(donts: string[]): string[] {
+  const blocked = new Set(donts.map((value) => value.toUpperCase()));
+  const common = DEFAULT_MEATS.filter((meat) => !blocked.has(meat));
+  if (common.length >= 3) return common;
+
+  const extra = Object.keys(CATALOG).filter(
+    (meat) => !blocked.has(meat) && !common.includes(meat) && meatLikes([meat]).length > 0,
+  );
+  return [...common, ...extra].slice(0, 4);
+}
+
 export function shoppingListFor(
   advice: Pick<AdviceRecord, "likes" | "donts" | "ras">,
   composition: CompositionPart[],
@@ -188,7 +201,7 @@ export function shoppingListFor(
     (like) => !advice.donts.some((dont) => dont.toUpperCase() === like.toUpperCase()),
   );
   const preferred = meatLikes(likes);
-  const meatChoices = preferred.length > 0 ? preferred : ["KIP", "RUND"];
+  const meatChoices = preferred.length > 0 ? preferred : defaultMeatChoices(advice.donts);
   const lines: ShoppingLine[] = [];
 
   for (const part of composition) {
