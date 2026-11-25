@@ -13,8 +13,8 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -52,3 +52,19 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+
+# Lokale SQLite-database (wordt bij eerste start gevuld uit test/products.csv)
+.data/
+
+# TypeScript
+*.tsbuildinfo
+
+# Playwright
+.playwright-mcp/

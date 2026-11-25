@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bone: #f2ede2;
+  --color-paper: #fbf8f1;
+  --color-ink: #1e1b16;
+  --color-muted: #6e6558;
+  --color-line: #ded4c1;
+  --color-moss: #2f4a35;
+  --color-moss-dark: #233829;
+  --color-moss-soft: #e2e8d9;
+  --color-rust: #a0432b;
+  --color-rust-soft: #f3e2db;
+  --color-ochre: #b5843c;
+  --color-ochre-soft: #f4ead7;
+
+  --font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, ui-serif, serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-xl: 1.15rem;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-bone);
+    background-image:
+      radial-gradient(1100px 500px at 100% -10%, rgba(47, 74, 53, 0.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(160, 67, 43, 0.05), transparent 60%);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background: var(--color-moss);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .surface {
+    @apply rounded-2xl border border-line bg-paper;
+    box-shadow: 0 1px 0 rgba(30, 27, 22, 0.04), 0 12px 30px -24px rgba(30, 27, 22, 0.35);
+  }
+
+  .eyebrow {
+    @apply text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted;
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply border-moss bg-moss text-white hover:bg-moss-dark;
+  }
+
+  .btn-secondary {
+    @apply border-line bg-paper text-ink hover:border-moss hover:text-moss;
+  }
+
+  .btn-ghost {
+    @apply border-transparent bg-transparent text-muted hover:text-ink;
+  }
+
+  .btn-danger {
+    @apply border-rust/30 bg-rust-soft text-rust hover:border-rust hover:bg-rust hover:text-white;
+  }
+
+  .field {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .field > span {
+    @apply text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-[0.95rem] text-ink outline-none transition;
+  }
+
+  .input:focus {
+    @apply border-moss;
+    box-shadow: 0 0 0 3px rgba(47, 74, 53, 0.14);
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium;
+  }
+
+  .table {
+    @apply w-full border-collapse text-left text-sm;
+  }
+
+  .table thead th {
+    @apply border-b border-line px-3 py-2.5 text-[0.64rem] font-semibold uppercase tracking-[0.13em] text-muted;
+  }
+
+  .table tbody td {
+    @apply border-b border-line/70 px-3 py-3 align-middle;
+  }
+
+  .table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .table tbody tr:hover {
+    background: rgba(226, 232, 217, 0.35);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media print {
+  body {
+    background: #fff !important;
+    background-image: none !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-shell {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  .surface {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .order-grid {
+    display: block !important;
+  }
+
+  .order-grid > * + * {
+    margin-top: 16px;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+}
