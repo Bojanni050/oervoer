@@ -93,6 +93,36 @@ smaakvariatie en de kleinste gewichtsafwijking wint. Restricties gelden op smaak
 (bijv. `KIP.LEVER`), vleessoort en kat/hond-geschiktheid; viskoppen komen maximaal één keer
 per menu voor.
 
+### Calcium en fosfor
+
+Bij elk advies en elke picklijst wordt het calcium- en fosforgehalte berekend. Dat gebeurt per
+100 g voer, want botpercentage is daar geen maat voor: in de DARF-catalogus bevat kipnek 0,39%
+calcium en lamsbot 0,13%, en karkassen lopen op tot 1,30%. Een menu met veel lam- of rundbot
+kan dus evenveel "bot" hebben als een menu met gevogeltebot en toch te weinig calcium leveren.
+
+| bron | waar |
+| --- | --- |
+| DARF-producten | analyse in `data/darf-products.json` (calcium en fosfor per 100 g) |
+| eigen SKU's | `products.calcium` / `products.fosfor`, gevuld uit `data/product-nutrition.csv` |
+| ontbreekt een waarde | terugval per vleestype in `src/lib/minerals.ts` |
+
+De uitkomst wordt getoetst aan de band van FEDIAF (2025): calcium in g per 100 g droge stof en
+per 1000 kcal, omgerekend naar g per 100 g voer bij ~30% droge stof.
+
+| dier | calcium per 100 g voer | calcium per 1000 kcal |
+| --- | --- | --- |
+| volwassen hond | 0,17 – 0,75 | 1,45 – 6,25 |
+| pup (vroege groei, < 14 weken) | 0,30 – 0,48 | 2,50 – 4,00 |
+| volwassen kat | vanaf 0,16 | vanaf 1,33 |
+| kitten | vanaf 0,30 | vanaf 2,50 |
+
+De calcium/fosfor-verhouding hoort tussen 1:1 en 2:1 te liggen (bij groei tot 1,8:1). Het
+advies toont de cijfers naast de samenstelling, de boodschappenlijst toont ze per regel en de
+picklijst krijgt een `Ca`-kolom plus een tegel met het oordeel; de CSV-export bevat
+`calcium_pct`, `fosfor_pct` en een samenvatting onderaan. Een omrekening per 1000 kcal kan
+alleen als de energiewaarde van alle regels bekend is; de losse DARF-botproducten hebben die
+niet, dus die regel staat dan op "onbekend".
+
 ## DARF-producten
 
 De boodschappenlijst verwijst naar echte producten uit de DARF Versvoer-catalogus. Die
@@ -157,10 +187,12 @@ src/
     picklist.ts              port van de originele generator
     db.ts                    SQLite-schema, queries en seeding
     globals.ts               constanten uit globals.py
+    minerals.ts              calciumbanden, terugvalwaarden en de mineralenberekening
     csv.ts                   CSV-parser/exporter
 scripts/import-darf.mjs      DARF-catalogus scrapen naar JSON en shop_products
 scripts/set-admin.mjs        account promoveren tot beheerder
 data/darf-products.json      snapshot van de DARF-producten voor de app
+data/product-nutrition.csv   eigen calcium- en fosforanalyses per SKU (g per 100 g)
 test/products.csv            productbron voor de initiële voorraad
 oervoer/, gtk/               originele Python 2 / GTK-app (archief)
 data/                        DARF-snapshot en archiefbestanden
@@ -174,7 +206,9 @@ opnieuw te beginnen; de volgende start zaait opnieuw.
 
 De tabellen zijn `products`, `orders`, `picklists`, `advices`, `users`, `pets`, `sessions`,
 `photos` en `shop_products`. In `advices.likes` staan de gekozen smaken; `users.role` bepaalt
-wie beheer mag openen. Een picklijst bewaart een snapshot van de regels en een advies bewaart
+wie beheer mag openen. `products.calcium` en `products.fosfor` (g per 100 g product) worden bij
+het starten gevuld uit `data/product-nutrition.csv` en blijven staan bij een herseed; ontbreekt
+een waarde, dan geldt de terugval per vleestype uit `src/lib/minerals.ts`. Een picklijst bewaart een snapshot van de regels en een advies bewaart
 de volledige uitkomst, zodat printen altijd hetzelfde resultaat geeft, ook als de voorraad of
 de rekenregels daarna veranderen. Een advies van een ingelogde bezoeker verwijst naar het
 account en, indien gekozen, naar het opgeslagen dier.

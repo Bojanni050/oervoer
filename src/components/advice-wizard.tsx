@@ -11,6 +11,7 @@ import {
   PROTEINS,
   STYLE_ORDER,
   adviceDaysLabel,
+  adviceMinerals,
   buildAdvice,
   daysForPackage,
   formatAdviceGrams,
@@ -18,6 +19,7 @@ import {
   recommendedPackageKg,
   type AdviceInput,
 } from "@/lib/advice";
+import { formatMineral, mineralStatusLabel } from "@/lib/minerals";
 import type { Dier, PackageKind, Portie } from "@/lib/types";
 
 const STEPS = ["Je dier", "Wensen", "Stijl"] as const;
@@ -115,6 +117,7 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
   }
 
   const recommended = validWeight ? recommendedPackageKg(ras, weightNumber) : 10;
+  const minerals = advice ? adviceMinerals(advice.composition, ras, pup, advice.dailyGrams) : null;
 
   function toggleDont(value: string) {
     setDonts((current) =>
@@ -634,11 +637,24 @@ export function AdviceWizard({ pets = [], defaultPetId, loggedIn = false }: Advi
                 <dt className="text-white/65">Gaat mee</dt>
                 <dd className="font-medium">{adviceDaysLabel(advice.days)}</dd>
               </div>
+              {minerals ? (
+                <div className="flex justify-between gap-3">
+                  <dt className="text-white/65">Calcium</dt>
+                  <dd className="font-medium">{formatMineral(minerals.dailyCalciumG)} g per dag</dd>
+                </div>
+              ) : null}
             </dl>
 
             {advice.notes.length > 0 ? (
               <p className="mt-4 rounded-xl bg-white/10 px-3 py-2.5 text-xs leading-relaxed text-white/80">
                 {advice.notes[0]}
+              </p>
+            ) : null}
+
+            {minerals ? (
+              <p className="mt-2 text-xs leading-relaxed text-white/70">
+                {mineralStatusLabel(minerals.report.status)} ·{" "}
+                {formatMineral(minerals.report.calciumPer100g)} g calcium per 100 g voer
               </p>
             ) : null}
           </>
