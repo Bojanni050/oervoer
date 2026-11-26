@@ -29,6 +29,12 @@ import {
   VIS_GEMALEN,
   LIKE_FACTOR,
 } from "./globals";
+import {
+  productMinerals,
+  summariseMinerals,
+  type MineralBand,
+  type MineralReport,
+} from "./minerals";
 import type {
   Dier,
   OrderRecord,
@@ -109,7 +115,18 @@ export function productFromRow(row: ProductRow): Product {
     geschiktMenu: (row.geschiktmenu || "").trim().toUpperCase() === "JA",
     geschiktVoor: (row["geschikt voor"] || "").toUpperCase(),
     normWeight: weight / verpaktPer,
+    calcium: parseRowNumber(row.calcium),
+    fosfor: parseRowNumber(row.fosfor),
   };
+}
+
+/** Waarde uit een optionele CSV-kolom; null als die leeg, "-" of onleesbaar is. */
+function parseRowNumber(value: string | undefined): number | null {
+  if (!value) return null;
+  const text = value.trim();
+  if (!text || text === "-") return null;
+  const parsed = Number.parseFloat(text.replace(",", "."));
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 export function isMenuProduct(product: Product): boolean {
@@ -442,6 +459,7 @@ export function generatePicklist(
       existing.count += 1;
       existing.totalKg = Number((existing.totalKg + product.weight).toFixed(3));
     } else {
+      const minerals = productMinerals(product);
       grouped.set(product.sku, {
         sku: product.sku,
         name: product.name,
@@ -451,6 +469,8 @@ export function generatePicklist(
         weight: product.weight,
         count: 1,
         totalKg: Number(product.weight.toFixed(3)),
+        calcium: minerals.calcium,
+        fosfor: minerals.fosfor,
       });
     }
   }
@@ -476,4 +496,23 @@ function productSuitableForCat(product: Product): boolean {
 
 function productSuitableForDog(product: Product): boolean {
   return product.geschiktVoor.includes("HOND");
+}
+
+/**
+ * Calcium en fosfor van een complete picklijst, getoetst aan de band van het
+ * dier. Werkt ook op picklijsten die vóór de mineralenberekening zijn gemaakt:
+ * die regels missen `calcium` en vallen dan terug op hun vleestype.
+ */
+export function picklistMineralReport(items: PicklistItem[], band: MineralBand): MineralReport {
+  return summariseMinerals(
+    items.map((item) => ({
+      grams: item.totalKg * 1000,
+      minerals: productMinerals({
+        typeVlees: item.typeVlees,
+        calcium: item.calcium ?? null,
+        fosfor: item.fosfor ?? null,
+      }),
+    })),
+    band,
+  );
 }

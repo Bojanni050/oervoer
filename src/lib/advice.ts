@@ -4,6 +4,14 @@
  * over maaltijden en de samenstelling van het gekozen pakket.
  */
 import { CAT_FACTOR, DOG_FACTOR } from "./globals";
+import {
+  bandFor,
+  calciumRangePer100g,
+  partMinerals,
+  summariseMinerals,
+  type MineralBand,
+  type MineralReport,
+} from "./minerals";
 import type { Dier, PackageKind, Portie } from "./types";
 
 export const PACKAGE_SIZES = [5, 10, 15, 20] as const;
@@ -262,6 +270,67 @@ export function buildAdvice(input: AdviceInput): AdviceResult {
     composition: compositionFor(input),
     notes,
     warnings,
+  };
+}
+
+export interface AdviceMineralPart {
+  key: string;
+  label: string;
+  grams: number;
+  /** g calcium per 100 g van dit deel. */
+  calcium: number | null;
+  /** Bijdrage van dit deel aan het calcium in het hele pakket. */
+  calciumG: number;
+}
+
+export interface AdviceMinerals {
+  report: MineralReport;
+  parts: AdviceMineralPart[];
+  band: MineralBand;
+  rangeMin: number;
+  rangeMax: number | null;
+  /** Calcium in het dagrantsoen, op basis van de samenstelling per 100 g. */
+  dailyCalciumG: number;
+}
+
+/**
+ * Calcium en fosfor van een menu, berekend uit de samenstelling. De waarden per
+ * deel komen uit de analyses van de losse producten (zie `minerals.ts`); de
+ * uitkomst wordt getoetst aan de FEDIAF-band van dit dier.
+ */
+export function adviceMinerals(
+  composition: CompositionPart[],
+  ras: Dier,
+  pup: boolean,
+  dailyGrams: number,
+): AdviceMinerals {
+  const band = bandFor(ras, pup);
+  const items = composition.map((part) => ({
+    grams: part.grams,
+    minerals: partMinerals(part.key),
+  }));
+  const report = summariseMinerals(items, band);
+  const range = calciumRangePer100g(band);
+  const parts: AdviceMineralPart[] = composition.map((part) => {
+    const minerals = partMinerals(part.key);
+    return {
+      key: part.key,
+      label: part.label,
+      grams: part.grams,
+      calcium: minerals.calcium,
+      calciumG:
+        minerals.calcium === null
+          ? 0
+          : Math.round(((part.grams * minerals.calcium) / 100) * 100) / 100,
+    };
+  });
+  return {
+    report,
+    parts,
+    band,
+    rangeMin: range.min,
+    rangeMax: range.max,
+    dailyCalciumG: Math.round(((report.calciumPer100g / 100) * dailyGrams) * 100) / 100,
   };
 }
 

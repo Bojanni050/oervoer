@@ -21,9 +21,20 @@ import {
 import { getOrder, getPicklist } from "@/lib/db";
 import { formatDate, formatDateTime, formatGram, formatKg, initials } from "@/lib/format";
 import { PACKAGE_LABELS } from "@/lib/globals";
+import { bandFor, formatMineral, mineralStatusLabel, productMinerals } from "@/lib/minerals";
+import { picklistMineralReport } from "@/lib/picklist";
 import type { PicklistItem } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+
+/** Calcium van een picklijstregel: eigen analyse, anders de terugval van het vleestype. */
+function itemCalcium(item: PicklistItem): number | null {
+  return productMinerals({
+    typeVlees: item.typeVlees,
+    calcium: item.calcium ?? null,
+    fosfor: item.fosfor ?? null,
+  }).calcium;
+}
 
 export default async function OrderDetailPage({
   params,
@@ -54,6 +65,10 @@ export default async function OrderDetailPage({
   }
 
   const dailyMeal = picklist ? picklist.mealSize * 2 : 0;
+  const minerals = picklist ? picklistMineralReport(picklist.items, bandFor(order.ras, order.pup)) : null;
+  const calciumPerDay = minerals && picklist && picklist.days > 0
+    ? minerals.calciumG / picklist.days
+    : null;
 
   return (
     <div className="print-shell">
@@ -255,13 +270,14 @@ export default async function OrderDetailPage({
                       <th>Vak</th>
                       <th className="text-right">Per stuk</th>
                       <th className="text-right">Totaal</th>
+                      <th className="text-right">Ca</th>
                     </tr>
                   </thead>
                   <tbody>
                     {groups.map((group) => (
                       <Fragment key={`group-${group.type}`}>
                         <tr className="bg-moss-soft/50">
-                          <td colSpan={5} className="py-2">
+                          <td colSpan={6} className="py-2">
                             <span className="flex items-baseline justify-between gap-3">
                               <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-moss">
                                 {group.type}
@@ -272,28 +288,34 @@ export default async function OrderDetailPage({
                             </span>
                           </td>
                         </tr>
-                        {group.items.map((item) => (
-                          <tr key={item.sku}>
-                            <td className="num font-display text-lg">{item.count}×</td>
-                            <td>
-                              <span className="font-medium">{item.name}</span>
-                              <span className="mt-0.5 block font-mono text-[0.62rem] uppercase tracking-wide text-muted">
-                                {item.sku}
-                                {item.smaak ? ` · ${item.smaak}` : ""}
-                              </span>
-                            </td>
-                            <td className="text-xs text-muted">{item.shelf || "—"}</td>
-                            <td className="num text-right">{formatGram(item.weight)}</td>
-                            <td className="num text-right font-medium">{formatGram(item.totalKg)}</td>
-                          </tr>
-                        ))}
+                        {group.items.map((item) => {
+                          const calcium = itemCalcium(item);
+                          return (
+                            <tr key={item.sku}>
+                              <td className="num font-display text-lg">{item.count}×</td>
+                              <td>
+                                <span className="font-medium">{item.name}</span>
+                                <span className="mt-0.5 block font-mono text-[0.62rem] uppercase tracking-wide text-muted">
+                                  {item.sku}
+                                  {item.smaak ? ` · ${item.smaak}` : ""}
+                                </span>
+                              </td>
+                              <td className="text-xs text-muted">{item.shelf || "—"}</td>
+                              <td className="num text-right">{formatGram(item.weight)}</td>
+                              <td className="num text-right font-medium">{formatGram(item.totalKg)}</td>
+                              <td className="num text-right text-muted">
+                                {calcium === null ? "—" : `${formatMineral(calcium)}%`}
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </Fragment>
                     ))}
                   </tbody>
                 </table>
               </div>
 
-              <div className="grid gap-px border-t border-line bg-line sm:grid-cols-3">
+              <div className="grid gap-px border-t border-line bg-line sm:grid-cols-4">
                 <div className="bg-paper px-5 py-4">
                   <p className="eyebrow">Totaal gewicht</p>
                   <p className="num mt-1 font-display text-2xl">{formatKg(picklist.totalKg)}</p>
@@ -307,6 +329,18 @@ export default async function OrderDetailPage({
                 <div className="bg-paper px-5 py-4">
                   <p className="eyebrow">Dagrantsoen</p>
                   <p className="num mt-1 font-display text-2xl">{Math.round(dailyMeal * 1000)} g</p>
+                </div>
+                <div className="bg-paper px-5 py-4">
+                  <p className="eyebrow">Calcium per 100 g</p>
+                  <p className="num mt-1 font-display text-2xl">
+                    {minerals ? `${formatMineral(minerals.calciumPer100g)} g` : "—"}
+                  </p>
+                  <p className="mt-1 text-[0.68rem] leading-relaxed text-muted">
+                    {minerals ? mineralStatusLabel(minerals.status) : "Geen picklijst"}
+                    {calciumPerDay === null
+                      ? ""
+                      : ` · ${formatMineral(calciumPerDay)} g per dag`}
+                  </p>
                 </div>
               </div>
             </>

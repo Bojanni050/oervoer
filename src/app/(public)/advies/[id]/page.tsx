@@ -6,15 +6,18 @@ import { PrintButton } from "@/components/order-actions";
 import { getAdvice } from "@/lib/db";
 import {
   ADVICE_STYLES,
+  adviceMinerals,
   formatAdviceGrams,
   portieLabel,
   styleLabel,
 } from "@/lib/advice";
+import { formatMineral, mineralStatusLabel } from "@/lib/minerals";
 import { formatDate } from "@/lib/format";
 import {
   formatShopPrice,
   formatShopWeight,
   shoppingListFor,
+  shoppingMineralReport,
   storeSummary,
 } from "@/lib/shopping";
 
@@ -58,6 +61,13 @@ export default async function AdvicePage({ params }: PageProps) {
   const isCat = advice.ras === "KAT";
   const shopping = shoppingListFor(advice, result.composition);
   const stores = storeSummary(shopping);
+  const minerals = adviceMinerals(result.composition, advice.ras, advice.pup, result.dailyGrams);
+  const shoppingMinerals = shoppingMineralReport(shopping, minerals.band);
+  const mineralByKey = new Map(minerals.parts.map((part) => [part.key, part]));
+  const mineralTone =
+    minerals.report.status === "ok"
+      ? "border-moss/30 bg-moss-soft/50"
+      : "border-ochre/30 bg-ochre-soft/60";
 
   return (
     <div className="print-shell mx-auto max-w-3xl">
@@ -146,29 +156,133 @@ export default async function AdvicePage({ params }: PageProps) {
           </div>
 
           <div className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2">
-            {result.composition.map((part) => (
-              <div
-                key={part.key}
-                className="flex items-center justify-between gap-3 border-b border-line/60 py-1.5 text-sm last:border-0"
-              >
-                <span className="flex items-center gap-2">
-                  <span
-                    className="size-2.5 rounded-full"
-                    style={{ backgroundColor: COLORS[part.key] ?? "#8a826f" }}
-                  />
-                  {part.label}
-                </span>
-                <span className="num text-muted">
-                  <span className="font-medium text-ink">{part.percent}%</span> ·{" "}
-                  {formatAdviceGrams(part.grams)}
-                </span>
-              </div>
-            ))}
+            {result.composition.map((part) => {
+              const mineral = mineralByKey.get(part.key);
+              return (
+                <div
+                  key={part.key}
+                  className="flex items-center justify-between gap-3 border-b border-line/60 py-1.5 text-sm last:border-0"
+                >
+                  <span className="flex items-center gap-2">
+                    <span
+                      className="size-2.5 rounded-full"
+                      style={{ backgroundColor: COLORS[part.key] ?? "#8a826f" }}
+                    />
+                    {part.label}
+                  </span>
+                  <span className="num text-muted">
+                    <span className="font-medium text-ink">{part.percent}%</span> ·{" "}
+                    {formatAdviceGrams(part.grams)}
+                    {mineral && mineral.calcium !== null ? (
+                      <span className="text-muted/80">
+                        {" "}
+                        · Ca {formatMineral(mineral.calcium)}%
+                      </span>
+                    ) : null}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
           <p className="mt-4 flex gap-2 rounded-xl bg-bone/70 p-3.5 text-xs leading-relaxed text-muted">
             <Info className="mt-0.5 size-4 shrink-0 text-moss" strokeWidth={1.8} />
             {style.description} {style.bestFor}
+          </p>
+        </section>
+
+        <section className="border-b border-line px-6 py-7 sm:px-9">
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <p className="eyebrow mb-1">Mineralen</p>
+              <h2 className="text-2xl">Calcium en fosfor in dit menu</h2>
+            </div>
+            <p className="text-xs text-muted">
+              {minerals.band.label} · {minerals.band.source}
+            </p>
+          </div>
+
+          <div className="mt-5 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3">
+            <div className="bg-paper px-4 py-3.5">
+              <p className="text-[0.62rem] font-medium uppercase tracking-[0.16em] text-muted">
+                Per 100 g voer
+              </p>
+              <p className="num mt-1 font-display text-2xl">
+                {formatMineral(minerals.report.calciumPer100g)}
+                <span className="ml-1 text-sm font-sans text-muted">g</span>
+              </p>
+              <p className="mt-0.5 num text-[0.68rem] text-muted">
+                norm {minerals.rangeMax === null
+                  ? `≥ ${formatMineral(minerals.rangeMin)} g`
+                  : `${formatMineral(minerals.rangeMin)} – ${formatMineral(minerals.rangeMax)} g`}
+              </p>
+            </div>
+            <div className="bg-paper px-4 py-3.5">
+              <p className="text-[0.62rem] font-medium uppercase tracking-[0.16em] text-muted">
+                Per dag
+              </p>
+              <p className="num mt-1 font-display text-2xl">
+                {formatMineral(minerals.dailyCalciumG)}
+                <span className="ml-1 text-sm font-sans text-muted">g</span>
+              </p>
+              <p className="mt-0.5 text-[0.68rem] text-muted">bij dit dagrantsoen</p>
+            </div>
+            <div className="bg-paper px-4 py-3.5">
+              <p className="text-[0.62rem] font-medium uppercase tracking-[0.16em] text-muted">
+                Calcium : fosfor
+              </p>
+              <p className="num mt-1 font-display text-2xl">
+                {minerals.report.caP === null ? "—" : `${formatMineral(minerals.report.caP)} : 1`}
+              </p>
+              <p className="mt-0.5 num text-[0.68rem] text-muted">
+                norm {formatMineral(minerals.band.caPMin, 1)} : 1
+                {minerals.band.caPMax === null ? "" : ` – ${formatMineral(minerals.band.caPMax, 1)} : 1`}
+              </p>
+            </div>
+          </div>
+
+          <p
+            className={`mt-4 flex gap-2 rounded-xl border p-3.5 text-xs leading-relaxed ${mineralTone}`}
+          >
+            <Info className="mt-0.5 size-4 shrink-0 text-moss" strokeWidth={1.8} />
+            <span>
+              <strong className="font-semibold">
+                {mineralStatusLabel(minerals.report.status)}.
+              </strong>{" "}
+              {minerals.report.message}
+            </span>
+          </p>
+
+          <div className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+            {minerals.parts
+              .filter((part) => part.calcium !== null)
+              .map((part) => (
+                <div
+                  key={part.key}
+                  className="flex items-center justify-between gap-3 border-b border-line/60 py-1.5 text-sm last:border-0"
+                >
+                  <span className="flex items-center gap-2">
+                    <span
+                      className="size-2.5 rounded-full"
+                      style={{ backgroundColor: COLORS[part.key] ?? "#8a826f" }}
+                    />
+                    {part.label}
+                  </span>
+                  <span className="num text-muted">
+                    <span className="font-medium text-ink">
+                      Ca {formatMineral(part.calcium ?? 0)}%
+                    </span>{" "}
+                    · {formatMineral(part.calciumG)} g
+                  </span>
+                </div>
+              ))}
+          </div>
+
+          <p className="mt-4 text-xs leading-relaxed text-muted">
+            Calcium komt uit bot en hele prooien, fosfor vooral uit vlees en orgaan. De waarden per
+            deel komen uit de productanalyses; een hoger botpercentage betekent niet automatisch
+            meer calcium. Kippennek bevat bijvoorbeeld 0,39% calcium en lamsbot 0,13%. Voor honden
+            en katten zijn de grenzen van FEDIAF aangehouden.
           </p>
         </section>
 
@@ -196,6 +310,11 @@ export default async function AdvicePage({ params }: PageProps) {
                 <div>
                   <p className="text-sm font-medium">{line.label}</p>
                   <p className="num text-xs text-muted">{formatAdviceGrams(line.grams)}</p>
+                  {line.minerals.calcium !== null ? (
+                    <p className="num text-[0.68rem] text-muted/80">
+                      Ca {formatMineral(line.minerals.calcium)}% · {formatMineral(line.calciumG)} g
+                    </p>
+                  ) : null}
                 </div>
                 <ul className="flex flex-wrap gap-1.5">
                   {line.products.map((product) => (
@@ -242,6 +361,19 @@ export default async function AdvicePage({ params }: PageProps) {
               </div>
             ))}
           </div>
+
+          <p className="mt-4 flex gap-2 rounded-xl bg-bone/70 p-3.5 text-xs leading-relaxed text-muted">
+            <Info className="mt-0.5 size-4 shrink-0 text-moss" strokeWidth={1.8} />
+            <span>
+              Samen goed voor {formatMineral(shoppingMinerals.calciumG)} g calcium ·{" "}
+              {formatMineral(shoppingMinerals.calciumPer100g)} g per 100 g voer ·{" "}
+              {mineralStatusLabel(shoppingMinerals.status).toLowerCase()}
+              {shoppingMinerals.caP === null
+                ? ""
+                : ` · calcium/fosfor ${formatMineral(shoppingMinerals.caP)} : 1`}
+              .
+            </span>
+          </p>
 
           <p className="mt-4 flex gap-2 text-xs leading-relaxed text-muted">
             <ShoppingBasket className="mt-0.5 size-4 shrink-0 text-moss" strokeWidth={1.8} />

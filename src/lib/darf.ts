@@ -9,6 +9,7 @@
  * mee: die zouden de berekende samenstelling vervangen in plaats van aanvullen.
  */
 import rawProducts from "../../data/darf-products.json";
+import type { MineralValues } from "./minerals";
 
 export interface DarfProduct {
   slug: string;
@@ -50,6 +51,27 @@ function pickPack(candidates: DarfProduct[], grams: number): DarfProduct | undef
   }
   const smallest = Math.min(...candidates.map(byWeight));
   return candidates.find((product) => byWeight(product) === smallest);
+}
+
+/** Leest een analysewaarde ("1,41") uit de DARF-analyse; null als die ontbreekt. */
+export function analysisNumber(product: DarfProduct, key: string): number | null {
+  const raw = product.analysis?.[key];
+  if (raw === undefined || raw === null) return null;
+  const value = Number.parseFloat(String(raw).replace(",", "."));
+  return Number.isFinite(value) ? value : null;
+}
+
+/**
+ * De analyse van een DARF-product als mineralen, in g per 100 g product.
+ * `Calcium` en `Fosfor` staan bij alle producten in de snapshot; `Energie
+ * (kcal 100g)` alleen bij een deel ervan, dus die mag null blijven.
+ */
+export function darfMinerals(product: DarfProduct): MineralValues {
+  return {
+    calcium: analysisNumber(product, "Calcium"),
+    fosfor: analysisNumber(product, "Fosfor"),
+    energie: analysisNumber(product, "Energie (kcal 100g)"),
+  };
 }
 
 /** Heel-dierproduct van dezelfde smaak, passend bij de totale grams. */

@@ -4,7 +4,22 @@
  * DARF-product, met de generieke ingredientenlijst als fallback.
  */
 import { PROTEINS, type CompositionPart } from "./advice";
-import { boneFor, fishFor, organFor, pensFor, wholeAnimalFor, type DarfProduct } from "./darf";
+import {
+  boneFor,
+  darfMinerals,
+  fishFor,
+  organFor,
+  pensFor,
+  wholeAnimalFor,
+  type DarfProduct,
+} from "./darf";
+import {
+  partMinerals,
+  summariseMinerals,
+  type MineralBand,
+  type MineralReport,
+  type MineralValues,
+} from "./minerals";
 import type { AdviceRecord } from "./types";
 
 export type StoreKind = "Supermarkt" | "Slager" | "Visboer" | "Online";
@@ -16,6 +31,8 @@ export interface ShopProduct {
   url?: string;
   priceCents?: number;
   weightG?: number;
+  /** Analyse van het product (g calcium/fosfor per 100 g), als die bekend is. */
+  minerals?: MineralValues;
 }
 
 export interface ShoppingLine {
@@ -24,6 +41,10 @@ export interface ShoppingLine {
   partLabel: string;
   grams: number;
   products: ShopProduct[];
+  /** Calcium en fosfor per 100 g van de voorgestelde producten. */
+  minerals: MineralValues;
+  /** Bijdrage van deze regel aan het calcium in het pakket. */
+  calciumG: number;
 }
 
 type PartKey = "vis" | "pens" | "karkas" | "orgaan" | "spier" | "bot" | "gemalen";
@@ -188,7 +209,29 @@ function fromDarf(product: DarfProduct, note?: string): ShopProduct {
     url: product.url,
     priceCents: product.priceCents ?? undefined,
     weightG: product.weightG ?? undefined,
+    minerals: darfMinerals(product),
   };
+}
+
+/** Mineralen van een regel: die van het voorgestelde product, anders die van het deel. */
+function lineMinerals(products: ShopProduct[], partKey: string): MineralValues {
+  return products.find((product) => product.minerals)?.minerals ?? partMinerals(partKey);
+}
+
+function calciumGrams(grams: number, minerals: MineralValues): number {
+  if (minerals.calcium === null) return 0;
+  return Math.round(((grams * minerals.calcium) / 100) * 100) / 100;
+}
+
+/** Calcium en fosfor van de hele boodschappenlijst, getoetst aan de band. */
+export function shoppingMineralReport(
+  lines: ShoppingLine[],
+  band: MineralBand,
+): MineralReport {
+  return summariseMinerals(
+    lines.map((line) => ({ grams: line.grams, minerals: line.minerals })),
+    band,
+  );
 }
 
 function darfOrFallback(
@@ -255,32 +298,40 @@ export function shoppingListFor(
 
   for (const part of composition) {
     if (part.key === "vis") {
+      const products = darfOrFallback(
+        fishFor(likes, advice.donts.map((dont) => dont.toUpperCase())),
+        visProducts(likes),
+      );
+      const minerals = lineMinerals(products, "vis");
       lines.push({
         key: "vis",
         label: "Vis",
         partLabel: part.label,
         grams: part.grams,
-        products: darfOrFallback(
-          fishFor(likes, advice.donts.map((dont) => dont.toUpperCase())),
-          visProducts(likes),
-        ),
+        products,
+        minerals,
+        calciumG: calciumGrams(part.grams, minerals),
       });
       continue;
     }
 
     if (part.key === "pens") {
+      const products = darfOrFallback(
+        pensFor(meatChoices, advice.donts.map((dont) => dont.toUpperCase())),
+        [
+          { name: "Pens", store: "Slager" },
+          { name: "Pens (diepvries)", store: "Online" },
+        ],
+      );
+      const minerals = lineMinerals(products, "pens");
       lines.push({
         key: "pens",
         label: "Pens",
         partLabel: part.label,
         grams: part.grams,
-        products: darfOrFallback(
-          pensFor(meatChoices, advice.donts.map((dont) => dont.toUpperCase())),
-          [
-            { name: "Pens", store: "Slager" },
-            { name: "Pens (diepvries)", store: "Online" },
-          ],
-        ),
+        products,
+        minerals,
+        calciumG: calciumGrams(part.grams, minerals),
       });
       continue;
     }
@@ -307,12 +358,15 @@ export function shoppingListFor(
         products = darfOrFallback(darf, fallback, "heel dier");
       }
 
+      const minerals = lineMinerals(products, part.key);
       lines.push({
         key: `${part.key}-${protein.toLowerCase()}`,
         label: lineLabel(protein, partKey),
         partLabel: part.label,
         grams: amounts[index],
         products,
+        minerals,
+        calciumG: calciumGrams(amounts[index], minerals),
       });
     });
   }

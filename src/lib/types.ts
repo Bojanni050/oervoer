@@ -18,6 +18,10 @@ export interface Product {
   geschiktMenu: boolean;
   geschiktVoor: string;
   normWeight: number; // weight / verpaktPer
+  /** g calcium per 100 g product; null = onbekend, dan geldt de terugval per vleestype. */
+  calcium?: number | null;
+  /** g fosfor per 100 g product; null = onbekend. */
+  fosfor?: number | null;
 }
 
 export interface OrderRecord {
@@ -51,6 +55,10 @@ export interface PicklistItem {
   weight: number; // kg per stuk
   count: number;
   totalKg: number;
+  /** g calcium per 100 g product; oudere picklijsten hebben dit nog niet. */
+  calcium?: number | null;
+  /** g fosfor per 100 g product; oudere picklijsten hebben dit nog niet. */
+  fosfor?: number | null;
 }
 
 export interface PicklistWarning {
@@ -126,4 +134,8 @@ export interface ProductRow {
   weight: string;
   verpakt_per: string;
   "geschikt voor"?: string;
+  /** Optioneel: g calcium per 100 g product (anders geldt de terugval per vleestype). */
+  calcium?: string;
+  /** Optioneel: g fosfor per 100 g product. */
+  fosfor?: string;
 }

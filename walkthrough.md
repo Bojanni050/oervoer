@@ -1,5 +1,46 @@
 # Walkthrough
 
+## 2026-11-26 (Calcium en fosfor in de berekening)
+
+- Findings: er zat nergens een mineraalwaarde in de app, terwijl calcium de maat is waarop
+  een rauw menu wel of niet klopt. Het botpercentage is daar geen bruikbare vervanging voor:
+  in de DARF-snapshot loopt calcium bij losse botproducten uiteen van 0,13% (lamsbot) tot
+  0,39% (kipnekken) en bij karkassen tot 1,30%. De DARF-analyse bevat wél calcium en fosfor
+  (130 van 130 producten), maar geen energie: 118 producten hebben calcium zonder kcal, dus
+  een omrekening per 1000 kcal kan nog niet voor alle regels. De eigen voorraad (346 SKU's)
+  had geen enkele analyse.
+- Conclusions: calcium en fosfor per product vastleggen in g per 100 g product, met een
+  terugval per vleestype zodat geen enkele regel stil op nul valt, en de uitkomst toetsen aan
+  de FEDIAF-band per dier (hond volwassen, pup, kat, kitten). FEDIAF geeft de normen per
+  100 g droge stof en per 1000 kcal; rauw voer is ~30% droge stof, dus de band is omgerekend
+  naar g per 100 g voer. Alleen rapporteren, nog niet sturen in de generator: het menu
+  verandert niet, de cijfers komen erbij.
+- Actions:
+  - `src/lib/minerals.ts` — banden (`MINERAL_BANDS` met de FEDIAF-bron per dier), terugval
+    per vleestype (`FALLBACK_MINERALS`) en per adviesdeel (`PART_MINERALS`), `productMinerals()`,
+    en `summariseMinerals()` dat grammen × gehalte optelt tot g calcium, g fosfor, de
+    Ca:P-verhouding en een oordeel (`laag`/`ok`/`hoog`/`onbekend`).
+  - `src/lib/db.ts` — kolommen `products.calcium` en `products.fosfor` (additief, via
+    `addColumnIfMissing`), seeding van eigen analyses uit `data/product-nutrition.csv`
+    (blijft staan bij een herimport van `test/products.csv`).
+  - `src/lib/types.ts`, `src/lib/picklist.ts`, `src/lib/darf.ts`, `src/lib/advice.ts`,
+    `src/lib/shopping.ts` — mineralen per product, per picklijstregel en per adviesdeel.
+  - `src/app/(public)/advies/[id]/page.tsx` — sectie "Mineralen" met calcium per 100 g voer,
+    per dag en de Ca:P-verhouding, calcium per samenstellingsdeel, en per boodschappenregel.
+  - `src/app/(beheer)/beheer/orders/[id]/page.tsx` — kolom `Ca` per regel en een tegel met
+    calcium per 100 g plus het oordeel; `export/route.ts` — kolommen `calcium_pct`,
+    `fosfor_pct` en samenvattingsregels in de CSV.
+  - `src/components/advice-wizard.tsx` — calcium per dag en het oordeel in het adviespaneel.
+  - Gecontroleerd met de echte DARF-snapshot en de eigen voorraad: hond 20 kg (100%-menu)
+    komt op 0,47 g calcium per 100 g voer (binnen de norm), puppy 8 kg op 0,46 g maar de
+    boodschappenlijst uit op 0,49 g (boven de puppennorm van 0,30 – 0,48), kat 4 kg op
+    0,64 g (minimaal 0,16). `tsc --noEmit` en `next build` slagen; adviespagina's en de
+    CSV-export zijn via de draaiende app opgehaald en gecontroleerd.
+- Open: energiewaarden ontbreken bij 118 DARF-producten, dus `calcium_g_per_1000_kcal` staat
+  in de CSV op "onbekend". De DARF-detailpagina's publiceren de analyse (vocht, ruw eiwit,
+  ruw vet, vezels, ruwe as) maar geen kcal; die zijn opnieuw te scrapen en dan met de
+  Atwater-factoren te schatten, te ijken op de 12 producten die al een energiewaarde hebben.
+
 ## 2026-11-25 (Repo omgezet naar webapp)
 
 - Findings: de repo bevatte een Python 2 / GTK-desktopwizard (`oervoer/`, `gtk/`) plus een
