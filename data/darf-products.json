@@ -20,15 +20,16 @@
     ],
     "description": "Alroda Puur Duif 245 g is rauw versvoer met duif als dierlijke bron. Aanvullende voeding voor hond en kat, diepgevroren en puur",
     "analysis": {
-      "Vocht": "65",
-      "Eiwit": "20",
-      "Vet": "9",
-      "Celstof": "0,3",
-      "As": "5",
-      "Calcium": "1,41",
-      "Fosfor": "0,97",
-      "Energie (kcal 100g)": "153"
-    }
+      "vocht": 65,
+      "eiwit": 20,
+      "vet": 9,
+      "celstof": 0.3,
+      "as": 5,
+      "calcium": 1.41,
+      "fosfor": 0.97,
+      "energieKcalPer100g": 153
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-eland-245-g",
@@ -55,14 +56,15 @@
     ],
     "description": "alroda puur eland, eland hond, eland kat, vers vlees hond, rauw voer kat, monoproteine versvoer, DARF",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruwe as": "9",
-      "Ruwe celstof": "1",
-      "Ruw vet": "3",
-      "Calcium": "0,65",
-      "Fosfor": "0,45",
-      "Energie": "132"
-    }
+      "eiwit": 16,
+      "as": 9,
+      "celstof": 1,
+      "vet": 3,
+      "calcium": 0.65,
+      "fosfor": 0.45,
+      "energieKcalPer100g": 132
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-fazant-245-g",
@@ -85,15 +87,16 @@
     ],
     "description": "Alroda Puur Fazant 245 g is rauw versvoer met fazant als dierlijke bron. Aanvullende voeding voor hond en kat, diepgevroren en puur",
     "analysis": {
-      "Vocht": "58",
-      "Eiwit": "19",
-      "Ruw vet": "11",
-      "Ruwe Celstof": "0,7",
-      "Ruwe As": "4,8",
-      "Calcium": "1,20",
-      "Fosfor": "0,56",
-      "energie (Kcal)": "152"
-    }
+      "vocht": 58,
+      "eiwit": 19,
+      "vet": 11,
+      "celstof": 0.7,
+      "as": 4.8,
+      "calcium": 1.2,
+      "fosfor": 0.56,
+      "energieKcalPer100g": 152
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-gans-245-g",
@@ -116,15 +119,16 @@
     ],
     "description": "Alroda Puur Gans 245 g is rauw versvoer met gans als dierlijke bron. Aanvullende voeding voor hond en kat, diepgevroren en puur",
     "analysis": {
-      "Vocht": "65",
-      "Ruw Eiwit": "18",
-      "Ruw Vet": "20,3",
-      "Ruw As": "1,8",
-      "Celstof": "2,6",
-      "Calcium": "1,11",
-      "Fosfor": "0,68",
-      "Energie (Kcal)": "234"
-    }
+      "vocht": 65,
+      "eiwit": 18,
+      "vet": 20.3,
+      "as": 1.8,
+      "celstof": 2.6,
+      "calcium": 1.11,
+      "fosfor": 0.68,
+      "energieKcalPer100g": 234
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-geit-245-g",
@@ -155,15 +159,16 @@
     ],
     "description": "Alroda Puur Geit 245 g is rauw versvoer met geit als dierlijke bron. Aanvullende voeding voor hond en kat, diepgevroren en puur",
     "analysis": {
-      "Vocht": "70",
-      "Ruw eiwit": "14",
-      "Ruw vet": "16",
-      "Ruwe celstof": "1",
-      "Ruwe as": "2",
-      "Calcium": "0,61",
-      "Fosfor": "0,41",
-      "Energie": "173"
-    }
+      "vocht": 70,
+      "eiwit": 14,
+      "vet": 16,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 0.61,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 173
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-geit-vleesworst-1-kg",
@@ -194,14 +199,15 @@
     ],
     "description": "Geit Vleesworst: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "14",
-      "Ruw vet": "16",
-      "Ruwe celstof": "1",
-      "Ruw As": "2",
-      "Calcium": "0,61",
-      "Fosfor": "0,41",
-      "Energie": "189"
-    }
+      "eiwit": 14,
+      "vet": 16,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 0.61,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 189
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-geitenhart-245-g",
@@ -224,14 +230,15 @@
     ],
     "description": "Geitenhart: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarhei. Geitenhart: enkelvoudig vers vlees van...",
     "analysis": {
-      "Ruw Eiwit": "17",
-      "Ruw Vet": "16",
-      "Ruw As": "1,5",
-      "Ruwe celstof": "1",
-      "Calcium": "0,34",
-      "Fosfor": "0,19",
-      "energie": "208"
-    }
+      "eiwit": 17,
+      "vet": 16,
+      "as": 1.5,
+      "celstof": 1,
+      "calcium": 0.34,
+      "fosfor": 0.19,
+      "energieKcalPer100g": 208
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-geitenpens-245-g",
@@ -254,14 +261,15 @@
     ],
     "description": "Geitenpens: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "15",
-      "Ruw Vet": "10",
-      "Ruwe Celstof": "0,5",
-      "Ruwe As": "1",
-      "Calcium": "0,14",
-      "Fosfor": "0,14",
-      "Energie": "202"
-    }
+      "eiwit": 15,
+      "vet": 10,
+      "celstof": 0.5,
+      "as": 1,
+      "calcium": 0.14,
+      "fosfor": 0.14,
+      "energieKcalPer100g": 202
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-haring-245-g",
@@ -284,15 +292,16 @@
     ],
     "description": "Haring: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "14",
-      "Ruw As": "6",
-      "Ruw vet": "7",
-      "Celstof": "0,1",
-      "Calcium": "0,63",
-      "Fosfor": "0,55",
-      "Energie": "155",
-      "Vocht": "71"
-    }
+      "eiwit": 14,
+      "as": 6,
+      "vet": 7,
+      "celstof": 0.1,
+      "calcium": 0.63,
+      "fosfor": 0.55,
+      "energieKcalPer100g": 155,
+      "vocht": 71
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-heek-245-g",
@@ -315,14 +324,15 @@
     ],
     "description": "Heek: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "15",
-      "Ruw As": "6",
-      "Ruwe Celstof": "0,1",
-      "Ruw Vet": "7",
-      "Calcium": "0,60",
-      "Fosfor": "0,50",
-      "Energie": "155"
-    }
+      "eiwit": 15,
+      "as": 6,
+      "celstof": 0.1,
+      "vet": 7,
+      "calcium": 0.6,
+      "fosfor": 0.5,
+      "energieKcalPer100g": 155
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-hert-245-g",
@@ -349,14 +359,15 @@
     ],
     "description": "Hert: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eitwit": "15,8",
-      "Ruw vet": "11,6",
-      "Ruwe Celstof": "2",
-      "Ruwe As": "3,1",
-      "Calcium": "0,88",
-      "Fosfor": "0,42",
-      "Energie": "169"
-    }
+      "eiwit": 15.8,
+      "vet": 11.6,
+      "celstof": 2,
+      "as": 3.1,
+      "calcium": 0.88,
+      "fosfor": 0.42,
+      "energieKcalPer100g": 169
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-hert-vleesworst-1-kg",
@@ -383,14 +394,15 @@
     ],
     "description": "Hert Vleesworst: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "15,8",
-      "Ruw vet": "11,6",
-      "Ruwe celstof": "2",
-      "Ruw as": "3,1",
-      "Calcium": "0,88",
-      "Fosfor": "0,42",
-      "Energie": "169"
-    }
+      "eiwit": 15.8,
+      "vet": 11.6,
+      "celstof": 2,
+      "as": 3.1,
+      "calcium": 0.88,
+      "fosfor": 0.42,
+      "energieKcalPer100g": 169
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-kabeljauw-245-g",
@@ -413,15 +425,16 @@
     ],
     "description": "Kabeljauw: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "68",
-      "Ruw eiwit": "16",
-      "Ruw vet": "17",
-      "Ruwe celstof": "1",
-      "Ruwe as": "4",
-      "Calcium": "0,72",
-      "Fosfor": "0,53",
-      "Energie": "217"
-    }
+      "vocht": 68,
+      "eiwit": 16,
+      "vet": 17,
+      "celstof": 1,
+      "as": 4,
+      "calcium": 0.72,
+      "fosfor": 0.53,
+      "energieKcalPer100g": 217
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-kalf-245-g",
@@ -444,14 +457,15 @@
     ],
     "description": "Kalf: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "9",
-      "Ruwe celstof": "1",
-      "Ruwe as": "3",
-      "Calcium": "0,63",
-      "Fosfor": "0,45",
-      "Energie": "166"
-    }
+      "eiwit": 16,
+      "vet": 9,
+      "celstof": 1,
+      "as": 3,
+      "calcium": 0.63,
+      "fosfor": 0.45,
+      "energieKcalPer100g": 166
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-kalkoen-245-g",
@@ -474,14 +488,15 @@
     ],
     "description": "Kalkoen: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "9",
-      "Ruwe celstof": "1",
-      "Ruwe as": "3",
-      "Calcium": "0,65",
-      "Fosfor": "0,48",
-      "Energie": "132"
-    }
+      "eiwit": 16,
+      "vet": 9,
+      "celstof": 1,
+      "as": 3,
+      "calcium": 0.65,
+      "fosfor": 0.48,
+      "energieKcalPer100g": 132
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-kalkoen-vleesworst-1-kg",
@@ -504,14 +519,15 @@
     ],
     "description": "Kalkoen Vleesworst: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "9",
-      "Ruwe celstof": "1",
-      "Ruw as": "3",
-      "Calcium": "0,65",
-      "Fosfor": "0,48",
-      "Energie": "132"
-    }
+      "eiwit": 16,
+      "vet": 9,
+      "celstof": 1,
+      "as": 3,
+      "calcium": 0.65,
+      "fosfor": 0.48,
+      "energieKcalPer100g": 132
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-kip-245-g",
@@ -534,15 +550,16 @@
     ],
     "description": "Kip: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "9",
-      "Ruwe celstof": "1",
-      "Ruwe as": "3",
-      "Calcium": "0,65",
-      "Fosfor": "0,48",
-      "Energie": "132",
-      "Vocht": "74"
-    }
+      "eiwit": 16,
+      "vet": 9,
+      "celstof": 1,
+      "as": 3,
+      "calcium": 0.65,
+      "fosfor": 0.48,
+      "energieKcalPer100g": 132,
+      "vocht": 74
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-konijn-245-g",
@@ -565,15 +582,16 @@
     ],
     "description": "Konijn: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "18",
-      "Ruwe celstof": "3",
-      "Ruwe as": "3",
-      "Calcium": "0,75",
-      "Fosfor": "0,50",
-      "Energie": "246",
-      "Vocht": "60"
-    }
+      "eiwit": 16,
+      "vet": 18,
+      "celstof": 3,
+      "as": 3,
+      "calcium": 0.75,
+      "fosfor": 0.5,
+      "energieKcalPer100g": 246,
+      "vocht": 60
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-konijn-vleesworst-1-kg",
@@ -596,14 +614,15 @@
     ],
     "description": "Konijn Vleesworst: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "18",
-      "Ruwe celstof": "3",
-      "Ruwe as": "3",
-      "Calcium": "0,75",
-      "Fosfor": "0,50",
-      "Energie": "246"
-    }
+      "eiwit": 16,
+      "vet": 18,
+      "celstof": 3,
+      "as": 3,
+      "calcium": 0.75,
+      "fosfor": 0.5,
+      "energieKcalPer100g": 246
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-koolvis-245-g",
@@ -626,14 +645,15 @@
     ],
     "description": "Koolvis: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "15",
-      "Ruw vet": "7",
-      "Ruwe celstof": "1",
-      "Ruwe as": "6",
-      "Calcium": "0,60",
-      "Fosfor": "0,50",
-      "Energie": "155"
-    }
+      "eiwit": 15,
+      "vet": 7,
+      "celstof": 1,
+      "as": 6,
+      "calcium": 0.6,
+      "fosfor": 0.5,
+      "energieKcalPer100g": 155
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-kwartel-245-g",
@@ -656,14 +676,15 @@
     ],
     "description": "Kwartel: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "24",
-      "Ruwe celstof": "0,1",
-      "Ruw As": "4,7",
-      "Calcium": "1,30",
-      "Fosfor": "0,64",
-      "Energie": "221"
-    }
+      "eiwit": 16,
+      "vet": 24,
+      "celstof": 0.1,
+      "as": 4.7,
+      "calcium": 1.3,
+      "fosfor": 0.64,
+      "energieKcalPer100g": 221
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-lam-245-g",
@@ -694,14 +715,15 @@
     ],
     "description": "Lam: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "14",
-      "Ruw vet": "17",
-      "Ruwe celstof": "1",
-      "Ruwe as": "2",
-      "Calcium": "0,33",
-      "Fosfor": "0,31",
-      "Energie": "211"
-    }
+      "eiwit": 14,
+      "vet": 17,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 0.33,
+      "fosfor": 0.31,
+      "energieKcalPer100g": 211
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-lam-vleesworst-1-kg",
@@ -732,14 +754,15 @@
     ],
     "description": "Lam Vleesworst: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "14",
-      "Ruw vet": "17",
-      "Ruwe celstof": "1",
-      "Ruw as": "2",
-      "Calcium": "0,33",
-      "Fosfor": "0,31",
-      "Energie": "211"
-    }
+      "eiwit": 14,
+      "vet": 17,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 0.33,
+      "fosfor": 0.31,
+      "energieKcalPer100g": 211
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-lamshart-245-g",
@@ -762,14 +785,15 @@
     ],
     "description": "Lamshart: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "17",
-      "Ruw vet": "16",
-      "Ruwe celstof": "1",
-      "Ruwe as": "1",
-      "Calcium": "0,22",
-      "Fosfor": "0,19",
-      "Energie": "208"
-    }
+      "eiwit": 17,
+      "vet": 16,
+      "celstof": 1,
+      "as": 1,
+      "calcium": 0.22,
+      "fosfor": 0.19,
+      "energieKcalPer100g": 208
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-lamspens-245-g",
@@ -792,14 +816,15 @@
     ],
     "description": "Lamspens: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "15",
-      "Ruw vet": "10",
-      "Ruwe celstof": "3",
-      "Ruwe as": "5",
-      "Calcium": "0,14",
-      "Fosfor": "0,14",
-      "Energie": "202"
-    }
+      "eiwit": 15,
+      "vet": 10,
+      "celstof": 3,
+      "as": 5,
+      "calcium": 0.14,
+      "fosfor": 0.14,
+      "energieKcalPer100g": 202
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-paard-245-g",
@@ -826,15 +851,16 @@
     ],
     "description": "Paard: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "9",
-      "Ruwe celstof": "1",
-      "Ruwe as": "3",
-      "Calcium": "0,65",
-      "Fosfor": "0,48",
-      "Energie": "132",
-      "Vocht": "74"
-    }
+      "eiwit": 16,
+      "vet": 9,
+      "celstof": 1,
+      "as": 3,
+      "calcium": 0.65,
+      "fosfor": 0.48,
+      "energieKcalPer100g": 132,
+      "vocht": 74
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-paard-vleesworst-1-kg",
@@ -861,15 +887,16 @@
     ],
     "description": "Paard Vleesworst: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "74",
-      "Ruw eiwit": "16",
-      "Ruwe celstof": "1",
-      "Ruwe as": "3",
-      "Ruw vet": "9",
-      "Calcium": "0,65",
-      "Fosfor": "0,48",
-      "Energie": "132"
-    }
+      "vocht": 74,
+      "eiwit": 16,
+      "celstof": 1,
+      "as": 3,
+      "vet": 9,
+      "calcium": 0.65,
+      "fosfor": 0.48,
+      "energieKcalPer100g": 132
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-rode-poon-245-g",
@@ -892,14 +919,15 @@
     ],
     "description": "Rode Poon: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "17",
-      "Ruwe celstof": "1",
-      "Ruwe as": "4",
-      "Calcium": "0,72",
-      "Fosfor": "0,53",
-      "Energie": "217"
-    }
+      "eiwit": 16,
+      "vet": 17,
+      "celstof": 1,
+      "as": 4,
+      "calcium": 0.72,
+      "fosfor": 0.53,
+      "energieKcalPer100g": 217
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-rund-245-g",
@@ -922,15 +950,16 @@
     ],
     "description": "Rund: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "64",
-      "Ruw eiwit": "14",
-      "Ruw vet": "14",
-      "Ruwe Celstof": "1",
-      "Ruwe as": "2",
-      "Calcium": "0,32",
-      "Fosfor": "0,30",
-      "Energie": "183"
-    }
+      "vocht": 64,
+      "eiwit": 14,
+      "vet": 14,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 0.32,
+      "fosfor": 0.3,
+      "energieKcalPer100g": 183
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-rund-compleet-1-kg",
@@ -953,15 +982,16 @@
     ],
     "description": "Alroda Puur Rund Compleet 1 kg is compleet rauw hondenvoer op basis van rund, aangevuld met vitaminen en mineralen. Praktische diepvriesworst",
     "analysis": {
-      "Vocht": "64",
-      "Ruw vet": "14",
-      "Ruw eiwit": "14",
-      "Calcium": "0,32",
-      "Fosfor": "0,30",
-      "Energie": "183",
-      "Ruwe as": "2",
-      "Ruwe celstof": "1"
-    }
+      "vocht": 64,
+      "vet": 14,
+      "eiwit": 14,
+      "calcium": 0.32,
+      "fosfor": 0.3,
+      "energieKcalPer100g": 183,
+      "as": 2,
+      "celstof": 1
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-runderboekmaag-245-g",
@@ -984,15 +1014,16 @@
     ],
     "description": "Runderboekmaag: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "75",
-      "Eiwit": "15",
-      "Ruw As": "1",
-      "Vet": "10",
-      "Vezel": "1",
-      "Calcium": "0,02",
-      "Fosfor": "0,09",
-      "Energie": "212"
-    }
+      "vocht": 75,
+      "eiwit": 15,
+      "as": 1,
+      "vet": 10,
+      "celstof": 1,
+      "calcium": 0.02,
+      "fosfor": 0.09,
+      "energieKcalPer100g": 212
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-runderhart-245-g",
@@ -1015,14 +1046,15 @@
     ],
     "description": "Alroda Puur Runderhart 245 g is rauw hart als aanvullende voeding voor hond en kat. Eén dierlijke grondstof, diepgevroren en praktisch te voeren",
     "analysis": {
-      "Ruw eiwit": "17",
-      "Ruw vet": "16",
-      "Ruwe celstof": "1",
-      "Ruwe as": "1",
-      "Calcium": "0,24",
-      "Fosfor": "0,19",
-      "Energie": "208"
-    }
+      "eiwit": 17,
+      "vet": 16,
+      "celstof": 1,
+      "as": 1,
+      "calcium": 0.24,
+      "fosfor": 0.19,
+      "energieKcalPer100g": 208
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-runderpens-245-g",
@@ -1045,14 +1077,15 @@
     ],
     "description": "Runderpens: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "15",
-      "Ruw vet": "18",
-      "Ruwe celstof": "3",
-      "Ruwe as": "5",
-      "Calcium": "0,14",
-      "Fosfor": "0,14",
-      "Energie": "202"
-    }
+      "eiwit": 15,
+      "vet": 18,
+      "celstof": 3,
+      "as": 5,
+      "calcium": 0.14,
+      "fosfor": 0.14,
+      "energieKcalPer100g": 202
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-schelvis-245-g",
@@ -1075,14 +1108,15 @@
     ],
     "description": "Schelvis: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "15",
-      "Ruw vet": "7",
-      "Ruwe celstof": "1",
-      "Ruwe as": "6",
-      "Calcium": "0,60",
-      "Fosfor": "0,50",
-      "Energie": "155"
-    }
+      "eiwit": 15,
+      "vet": 7,
+      "celstof": 1,
+      "as": 6,
+      "calcium": 0.6,
+      "fosfor": 0.5,
+      "energieKcalPer100g": 155
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-tamme-eend-245-g",
@@ -1105,15 +1139,16 @@
     ],
     "description": "Tamme Eend: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "15",
-      "Ruw vet": "14",
-      "Ruwe celstof": "1",
-      "Ruwe as": "2",
-      "Calcium": "1,40",
-      "Fosfor": "0,80",
-      "Energie": "289",
-      "Vocht": "69"
-    }
+      "eiwit": 15,
+      "vet": 14,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 1.4,
+      "fosfor": 0.8,
+      "energieKcalPer100g": 289,
+      "vocht": 69
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-tamme-eend-vleesworst-1-kg",
@@ -1136,15 +1171,16 @@
     ],
     "description": "Tamme Eend Vleesworst: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "15",
-      "Ruw vet": "14",
-      "Ruwe celstof": "1",
-      "Ruwe as": "2",
-      "Calcium": "1,40",
-      "Fosfor": "0,80",
-      "Energie": "289",
-      "Vocht": "69"
-    }
+      "eiwit": 15,
+      "vet": 14,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 1.4,
+      "fosfor": 0.8,
+      "energieKcalPer100g": 289,
+      "vocht": 69
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-wilde-eend-245-g",
@@ -1167,15 +1203,16 @@
     ],
     "description": "Wilde Eend: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "9",
-      "Ruwe celstof": "2",
-      "Ruwe as": "2",
-      "Calcium": "0,90",
-      "Fosfor": "0,80",
-      "Energie": "169",
-      "Vocht": "69"
-    }
+      "eiwit": 16,
+      "vet": 9,
+      "celstof": 2,
+      "as": 2,
+      "calcium": 0.9,
+      "fosfor": 0.8,
+      "energieKcalPer100g": 169,
+      "vocht": 69
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "alroda-puur-zalm-245-g",
@@ -1198,14 +1235,15 @@
     ],
     "description": "Zalm: enkelvoudig vers vlees van ALRODA Puur. Bekijk samenstelling, analyse, gebruik en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16",
-      "Ruw vet": "18",
-      "Ruwe celstof": "3",
-      "Ruwe as": "3",
-      "Calcium": "0,75",
-      "Fosfor": "0,50",
-      "Energie": "246"
-    }
+      "eiwit": 16,
+      "vet": 18,
+      "celstof": 3,
+      "as": 3,
+      "calcium": 0.75,
+      "fosfor": 0.5,
+      "energieKcalPer100g": 246
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-eendenfilet-500-g",
@@ -1228,12 +1266,12 @@
     ],
     "description": "BARF Puur Eendenfilet: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "52,9",
-      "Ruw eiwit": "18,1",
-      "Ruw vet": "29,0",
-      "Ruwe celstof": "2",
-      "Calcium": "1,2",
-      "Fosfor": "1,9"
+      "vocht": 52.9,
+      "eiwit": 18.1,
+      "vet": 29,
+      "celstof": 2,
+      "calcium": 1.2,
+      "fosfor": 1.9
     }
   },
   {
@@ -1257,15 +1295,16 @@
     ],
     "description": "BARF Puur Eendenkarkassen: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "75",
-      "Ruw eiwit": "23",
-      "Ruw vet": "2",
-      "Vezels": "0",
-      "Ruwe as": "12",
-      "Calcium": "0,49",
-      "Fosfor": "0,19",
-      "Energie": "110"
-    }
+      "vocht": 75,
+      "eiwit": 23,
+      "vet": 2,
+      "celstof": 0,
+      "as": 12,
+      "calcium": 0.49,
+      "fosfor": 0.19,
+      "energieKcalPer100g": 110
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-eendennekken-500-g",
@@ -1288,12 +1327,12 @@
     ],
     "description": "BARF Puur Eendennekken: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "vocht": "71",
-      "eiwit": "18",
-      "vet": "5",
-      "ruwe celstof": "1",
-      "calcium": "2,02",
-      "fosfor": "0,97"
+      "vocht": 71,
+      "eiwit": 18,
+      "vet": 5,
+      "celstof": 1,
+      "calcium": 2.02,
+      "fosfor": 0.97
     }
   },
   {
@@ -1317,15 +1356,16 @@
     ],
     "description": "BARF Puur Ganzenkarkassen: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "70",
-      "Ruw vet": "15,2",
-      "Ruw eiwit": "13",
-      "Ruwe as": "4,1",
-      "Ruwe celstof": "0,3",
-      "Calcium": "1,3",
-      "Fosfor": "0,75",
-      "Energie": "175"
-    }
+      "vocht": 70,
+      "vet": 15.2,
+      "eiwit": 13,
+      "as": 4.1,
+      "celstof": 0.3,
+      "calcium": 1.3,
+      "fosfor": 0.75,
+      "energieKcalPer100g": 175
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-geiten-spareribs-500-g",
@@ -1348,14 +1388,15 @@
     ],
     "description": "BARF Puur Geiten Spareribs: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "59,5",
-      "Ruw eiwit": "19,5",
-      "Ruw vet": "18,0",
-      "Ruwe as": "5",
-      "Ruwe celstof": "0",
-      "Calcium": "0,35",
-      "Energie": "221"
-    }
+      "vocht": 59.5,
+      "eiwit": 19.5,
+      "vet": 18,
+      "as": 5,
+      "celstof": 0,
+      "calcium": 0.35,
+      "energieKcalPer100g": 221
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-geitenlong-500-g",
@@ -1378,15 +1419,16 @@
     ],
     "description": "BARF Puur Geitenlong: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "79",
-      "Ruw eiwit": "16",
-      "Ruw vet": "3",
-      "Ruwe celstof": "1,2",
-      "Ruwe as": "1",
-      "Calcium": "0,32",
-      "Fosfor": "0,22",
-      "Energie": "92"
-    }
+      "vocht": 79,
+      "eiwit": 16,
+      "vet": 3,
+      "celstof": 1.2,
+      "as": 1,
+      "calcium": 0.32,
+      "fosfor": 0.22,
+      "energieKcalPer100g": 92
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-geitspiervlees-500-g",
@@ -1409,15 +1451,16 @@
     ],
     "description": "BARF Puur Geitspiervlees: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "68",
-      "Ruw eiwit": "19",
-      "Ruw vet": "16",
-      "Ruwe celstof": "0,9",
-      "Ruwe as": "1,1",
-      "Calcium": "0,48",
-      "Fosfor": "0,69",
-      "Energie": "224"
-    }
+      "vocht": 68,
+      "eiwit": 19,
+      "vet": 16,
+      "celstof": 0.9,
+      "as": 1.1,
+      "calcium": 0.48,
+      "fosfor": 0.69,
+      "energieKcalPer100g": 224
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-kabeljauwkoppen",
@@ -1440,15 +1483,16 @@
     ],
     "description": "BARF Puur Kabeljauwkoppen: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "81",
-      "Ruwe eiwit": "18",
-      "Ruw vet": "1",
-      "Ruwe celstof": "0,15",
-      "Ruwe as": "1",
-      "Calcium": "1,06",
-      "Fosfor": "0,42",
-      "Energie": "82"
-    }
+      "vocht": 81,
+      "eiwit": 18,
+      "vet": 1,
+      "celstof": 0.15,
+      "as": 1,
+      "calcium": 1.06,
+      "fosfor": 0.42,
+      "energieKcalPer100g": 82
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-kabeljauwlijven-500-g",
@@ -1471,15 +1515,16 @@
     ],
     "description": "BARF Puur Kabeljauwlijven: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "81",
-      "Ruw eiwit": "18",
-      "Ruw vet": "3",
-      "Ruwe celstof": "0,12",
-      "Ruwe as": "1,1",
-      "Calcium": "0,22",
-      "Fosfor": "0,20",
-      "Energie": "102"
-    }
+      "vocht": 81,
+      "eiwit": 18,
+      "vet": 3,
+      "celstof": 0.12,
+      "as": 1.1,
+      "calcium": 0.22,
+      "fosfor": 0.2,
+      "energieKcalPer100g": 102
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-kipkarkas-500-g",
@@ -1497,15 +1542,16 @@
     "composition": [],
     "description": "BARF Puur Kipkarkas: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "75",
-      "Ruw eiwit": "23",
-      "Ruw vet": "2",
-      "Vezels": "0",
-      "Ruwe as": "12",
-      "Calcium": "0,49",
-      "Fosfor": "0,19",
-      "Energie": "110"
-    }
+      "vocht": 75,
+      "eiwit": 23,
+      "vet": 2,
+      "celstof": 0,
+      "as": 12,
+      "calcium": 0.49,
+      "fosfor": 0.19,
+      "energieKcalPer100g": 110
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-kipmaagjes-500-g",
@@ -1528,15 +1574,16 @@
     ],
     "description": "BARF Puur Kipmaagjes: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "79,33",
-      "Ruw eiwit": "17,66",
-      "Ruw vet": "2,06",
-      "Ruwe as": "0,95",
-      "Ruwe celstof": "0,1",
-      "Calcium": "0,011",
-      "Fosfor": "0,148",
-      "Energie": "94"
-    }
+      "vocht": 79.33,
+      "eiwit": 17.66,
+      "vet": 2.06,
+      "as": 0.95,
+      "celstof": 0.1,
+      "calcium": 0.011,
+      "fosfor": 0.148,
+      "energieKcalPer100g": 94
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-kipnekken-500-g",
@@ -1559,14 +1606,16 @@
     ],
     "description": "BARF Puur Kipnekken: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "62",
-      "Ruw eiwit": "15",
-      "Ruwe as": "15",
-      "Vezels": "0",
-      "Ruw vet": "3",
-      "Calcium": "0,39",
-      "Fosfor": "0,19"
-    }
+      "vocht": 62,
+      "eiwit": 15,
+      "as": 15,
+      "celstof": 0,
+      "vet": 3,
+      "calcium": 0.39,
+      "fosfor": 0.19,
+      "energieKcalPer100g": 107
+    },
+    "energieBron": "schatting"
   },
   {
     "slug": "barf-puur-kippenhartjes-500-g",
@@ -1589,14 +1638,15 @@
     ],
     "description": "BARF Puur Kippenhartjes: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "74",
-      "Ruw eiwit": "16",
-      "Ruw vet": "9",
-      "Vezels": "1",
-      "Ruwe as": "1",
-      "Fosfor": "0,17",
-      "Energie": "153"
-    }
+      "vocht": 74,
+      "eiwit": 16,
+      "vet": 9,
+      "celstof": 1,
+      "as": 1,
+      "fosfor": 0.17,
+      "energieKcalPer100g": 153
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-kippenlever-500-g",
@@ -1619,15 +1669,16 @@
     ],
     "description": "BARF Puur Kippenlever: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "77",
-      "Ruw eiwit": "17",
-      "Ruw vet": "5",
-      "Vezels": "1",
-      "Ruwe as": "1",
-      "Calcium": "0,01",
-      "Fosfor": "0,30",
-      "Energie": "119"
-    }
+      "vocht": 77,
+      "eiwit": 17,
+      "vet": 5,
+      "celstof": 1,
+      "as": 1,
+      "calcium": 0.01,
+      "fosfor": 0.3,
+      "energieKcalPer100g": 119
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-kippenvleugelpuntjes-500g",
@@ -1650,15 +1701,16 @@
     ],
     "description": "BARF Puur Kippenvleugelpuntjes: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "53",
-      "Ruw eiwit": "19",
-      "Ruw vet": "21",
-      "Vezels": "0,3",
-      "Ruwe as": "2",
-      "Calcium": "0,22",
-      "Fosfor": "0,12",
-      "Energie": "294"
-    }
+      "vocht": 53,
+      "eiwit": 19,
+      "vet": 21,
+      "celstof": 0.3,
+      "as": 2,
+      "calcium": 0.22,
+      "fosfor": 0.12,
+      "energieKcalPer100g": 294
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-kwartelkarkassen-500-g",
@@ -1681,15 +1733,16 @@
     ],
     "description": "BARF Puur Kwartelkarkassen: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "53,0",
-      "Ruw eiwit": "16",
-      "Ruw vet": "24",
-      "Ruwe as": "4,7",
-      "Ruwe celstof": "0,1",
-      "Calcium": "1,08",
-      "Fosfor": "0,64",
-      "Energie": "277"
-    }
+      "vocht": 53,
+      "eiwit": 16,
+      "vet": 24,
+      "as": 4.7,
+      "celstof": 0.1,
+      "calcium": 1.08,
+      "fosfor": 0.64,
+      "energieKcalPer100g": 277
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-lamsbot-500-g",
@@ -1712,13 +1765,13 @@
     ],
     "description": "BARF Puur Lamsbot: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw eiwit": "19",
-      "Ruwe as": "16",
-      "Vezels": "0",
-      "Ruw vet": "3",
-      "Calcium": "0,13",
-      "Fosfor": "0,10"
+      "vocht": 65,
+      "eiwit": 19,
+      "as": 16,
+      "celstof": 0,
+      "vet": 3,
+      "calcium": 0.13,
+      "fosfor": 0.1
     }
   },
   {
@@ -1742,15 +1795,16 @@
     ],
     "description": "BARF Puur Lamslong: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "80",
-      "Ruw eiwit": "17",
-      "Ruw vet": "3",
-      "Ruwe celstof": "0,1",
-      "Ruwe as": "1",
-      "Calcium": "0,18",
-      "Fosfor": "0,22",
-      "Energie": "95"
-    }
+      "vocht": 80,
+      "eiwit": 17,
+      "vet": 3,
+      "celstof": 0.1,
+      "as": 1,
+      "calcium": 0.18,
+      "fosfor": 0.22,
+      "energieKcalPer100g": 95
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-lamspens-500-g",
@@ -1773,15 +1827,16 @@
     ],
     "description": "BARF Puur Lamspens: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "84",
-      "Ruw eiwit": "12",
-      "Ruw vet": "4",
-      "Ruwe celstof": "1,0",
-      "Ruwe as": "1",
-      "Calcium": "0,07",
-      "Fosfor": "0,06",
-      "Energie": "85"
-    }
+      "vocht": 84,
+      "eiwit": 12,
+      "vet": 4,
+      "celstof": 1,
+      "as": 1,
+      "calcium": 0.07,
+      "fosfor": 0.06,
+      "energieKcalPer100g": 85
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-lamsvet-500-g",
@@ -1804,13 +1859,14 @@
     ],
     "description": "BARF Puur Lamsvet: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "vocht": "31",
-      "Eiwit": "5",
-      "Vet": "70",
-      "Calcium": "0,02",
-      "Fosfor": "0,06",
-      "Energie/ kcal 100g": "654"
-    }
+      "vocht": 31,
+      "eiwit": 5,
+      "vet": 70,
+      "calcium": 0.02,
+      "fosfor": 0.06,
+      "energieKcalPer100g": 654
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-paardenorganen-gemalen-500-g",
@@ -1853,14 +1909,16 @@
     ],
     "description": "BARF Puur Paardenorganen gemalen: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "74",
-      "Ruw eiwit": "19",
-      "Ruwe as": "3",
-      "Vezels": "0,01",
-      "Ruw vet": "1",
-      "Calcium": "0,025",
-      "Fosfor": "0,03"
-    }
+      "vocht": 74,
+      "eiwit": 19,
+      "as": 3,
+      "celstof": 0.01,
+      "vet": 1,
+      "calcium": 0.025,
+      "fosfor": 0.03,
+      "energieKcalPer100g": 97
+    },
+    "energieBron": "schatting"
   },
   {
     "slug": "barf-puur-paardenvlees-blokjes-500-g",
@@ -1883,15 +1941,16 @@
     ],
     "description": "BARF Puur Paardenvlees Blokjes: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "73",
-      "Ruw eiwit": "21",
-      "Ruw vet": "5",
-      "Vezels": "0",
-      "Ruwe as": "1",
-      "Calcium": "0,06",
-      "Fosfor": "0,21",
-      "Energie": "133"
-    }
+      "vocht": 73,
+      "eiwit": 21,
+      "vet": 5,
+      "celstof": 0,
+      "as": 1,
+      "calcium": 0.06,
+      "fosfor": 0.21,
+      "energieKcalPer100g": 133
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-runderhart-500-g",
@@ -1914,15 +1973,16 @@
     ],
     "description": "BARF Puur Runderhart: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "78,7",
-      "Ruw eiwit": "17,5",
-      "Ruw vet": "3,2",
-      "Ruwe as": "1,2",
-      "Ruwe celstof": "0,01",
-      "Calcium": "0,07",
-      "Fosfor": "0,212",
-      "Energie": "112"
-    }
+      "vocht": 78.7,
+      "eiwit": 17.5,
+      "vet": 3.2,
+      "as": 1.2,
+      "celstof": 0.01,
+      "calcium": 0.07,
+      "fosfor": 0.212,
+      "energieKcalPer100g": 112
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-runderlong-500-g",
@@ -1945,15 +2005,16 @@
     ],
     "description": "BARF Puur Runderlong: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "78,5",
-      "Ruw eiwit": "17",
-      "Ruw vet": "2,7",
-      "Ruwe as": "1,0",
-      "Ruwe celstof": "0,01",
-      "Calcium": "0,01",
-      "Fosfor": "0,224",
-      "Energie": "95"
-    }
+      "vocht": 78.5,
+      "eiwit": 17,
+      "vet": 2.7,
+      "as": 1,
+      "celstof": 0.01,
+      "calcium": 0.01,
+      "fosfor": 0.224,
+      "energieKcalPer100g": 95
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-rundernekspier-500-g",
@@ -1976,15 +2037,16 @@
     ],
     "description": "BARF Puur Rundernekspier: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "68,7",
-      "Ruw eiwit": "19,3",
-      "Ruw vet": "11,5",
-      "Ruwe as": "0,9",
-      "Ruwe celstof": "0,01",
-      "Calcium": "0,006",
-      "Fosfor": "0,16",
-      "Energie": "181"
-    }
+      "vocht": 68.7,
+      "eiwit": 19.3,
+      "vet": 11.5,
+      "as": 0.9,
+      "celstof": 0.01,
+      "calcium": 0.006,
+      "fosfor": 0.16,
+      "energieKcalPer100g": 181
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-runderpens-500-g",
@@ -2007,15 +2069,16 @@
     ],
     "description": "BARF Puur Runderpens: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "84,2",
-      "Ruw eiwit": "12,1",
-      "Ruw vet": "3,7",
-      "ruwe as": "0,55",
-      "Ruwe celsof": "0,02",
-      "Calcium": "0,068",
-      "Fosfor": "0,064",
-      "Energie": "85"
-    }
+      "vocht": 84.2,
+      "eiwit": 12.1,
+      "vet": 3.7,
+      "as": 0.55,
+      "celstof": 0.02,
+      "calcium": 0.068,
+      "fosfor": 0.064,
+      "energieKcalPer100g": 85
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-rundspiervlees-500-g",
@@ -2055,15 +2118,16 @@
     ],
     "description": "BARF Puur Wilde Gansvlees: BARF-product voor het samenstellen van een rauw menu. Bekijk herkomst, samenstelling, analyse en bewaaradvies bij DARF.",
     "analysis": {
-      "Vocht": "70,8",
-      "Ruw eiwit": "25,5",
-      "Ruw vet": "2,8",
-      "Ruwe as": "1,1",
-      "Ruwe celstof": "0,0",
-      "Calcium": "0,004",
-      "Fosfor": "0,256",
-      "Energie": "128"
-    }
+      "vocht": 70.8,
+      "eiwit": 25.5,
+      "vet": 2.8,
+      "as": 1.1,
+      "celstof": 0,
+      "calcium": 0.004,
+      "fosfor": 0.256,
+      "energieKcalPer100g": 128
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "barf-puur-zalm-lijven-500-g",
@@ -2103,15 +2167,16 @@
     ],
     "description": "BARF Pur Zalmkoppen zijn rauwe zalmkoppen voor honden. Een natuurlijke vis- en botcomponent voor ervaren rauwvoerders binnen een gevarieerd BARF-menu",
     "analysis": {
-      "Vocht": "68,2",
-      "Ruw eiwit": "16,8",
-      "Ruw vet": "22,9",
-      "Ruwe celstof": "0,0",
-      "Ruwe as": "2,2",
-      "Calcium": "0,83",
-      "Fosfor": "0,31",
-      "Energie": "275"
-    }
+      "vocht": 68.2,
+      "eiwit": 16.8,
+      "vet": 22.9,
+      "celstof": 0,
+      "as": 2.2,
+      "calcium": 0.83,
+      "fosfor": 0.31,
+      "energieKcalPer100g": 275
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-actief-10-x-1-kg",
@@ -2150,15 +2215,16 @@
     ],
     "description": "DARF Actief (10 x 1 kilo): natuurlijk rauw versvoer van DARF in 10 x 1 kg. Voor honden, diepgevroren en zonder onnodige kunstmatige toevoegingen",
     "analysis": {
-      "Ruw eiwit": "17,4",
-      "Ruw vet": "16,6",
-      "Ruwe celstof": "3,8",
-      "Ruw As": "1,2",
-      "Vocht": "61,0",
-      "Calcium": "0,90",
-      "Fosfor": "0,48",
-      "Energie kcal / 100g": "219"
-    }
+      "eiwit": 17.4,
+      "vet": 16.6,
+      "celstof": 3.8,
+      "as": 1.2,
+      "vocht": 61,
+      "calcium": 0.9,
+      "fosfor": 0.48,
+      "energieKcalPer100g": 219
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-actief-classic",
@@ -2193,15 +2259,16 @@
     ],
     "description": "DARF Actief Classic: natuurlijk rauw versvoer van DARF in 4,65 kg. Voor honden, diepgevroren en zonder onnodige kunstmatige toevoegingen.",
     "analysis": {
-      "Vocht": "61",
-      "Ruw eiwit": "17,4",
-      "Ruw vet": "16,6",
-      "Ruwe celstof": "3,8",
-      "Ruwe as": "1,2",
-      "Calcium": "0,90",
-      "Fosfor": "0,48",
-      "Energie": "219"
-    }
+      "vocht": 61,
+      "eiwit": 17.4,
+      "vet": 16.6,
+      "celstof": 3.8,
+      "as": 1.2,
+      "calcium": 0.9,
+      "fosfor": 0.48,
+      "energieKcalPer100g": 219
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-caspar-classic",
@@ -2240,15 +2307,16 @@
     ],
     "description": "DARF Caspar Classic: natuurlijk rauw versvoer van DARF in 4,65 kg. Voor honden, diepgevroren en zonder onnodige kunstmatige toevoegingen.",
     "analysis": {
-      "Vocht": "66",
-      "Ruw Eiwit": "18",
-      "Ruw Vet": "12,3",
-      "Ruwe Vezels": "3,2",
-      "Ruwe As": "1,0",
-      "Calcium": "0,6",
-      "Fosfor": "0,46",
-      "Energie": "189"
-    }
+      "vocht": 66,
+      "eiwit": 18,
+      "vet": 12.3,
+      "celstof": 3.2,
+      "as": 1,
+      "calcium": 0.6,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 189
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-caspar-kvv-10-x-1-kg",
@@ -2299,15 +2367,16 @@
     ],
     "description": "DARF Caspar KVV (10 x 1 kilo): natuurlijk rauw versvoer van DARF in 10 x 1 kg. Voor honden, diepgevroren en zonder onnodige kunstmatige toevoegingen.",
     "analysis": {
-      "Vocht": "66",
-      "Ruw Eiwit": "18",
-      "Ruw vet": "12,3",
-      "Ruw as": "1,0",
-      "Ruwe celstof": "3,2",
-      "Calcium": "0,60",
-      "Fosfor": "0,46",
-      "Energie": "189"
-    }
+      "vocht": 66,
+      "eiwit": 18,
+      "vet": 12.3,
+      "as": 1,
+      "celstof": 3.2,
+      "calcium": 0.6,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 189
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-classic-kat-eend-kvv",
@@ -2350,15 +2419,16 @@
     ],
     "description": "DARF Classic Kat Eend KVV: natuurlijk rauw versvoer van DARF in ca. 1,4 kg. Voor katten, diepgevroren en zonder onnodige kunstmatige toevoegingen.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw eiwit": "15",
-      "Ruw vet": "12",
-      "Ruwe celstof": "4",
-      "Ruwe as": "4",
-      "Calcium": "0,50",
-      "Fosfor": "0,41",
-      "Energie": "170"
-    }
+      "vocht": 65,
+      "eiwit": 15,
+      "vet": 12,
+      "celstof": 4,
+      "as": 4,
+      "calcium": 0.5,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 170
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-classic-kat-kvv",
@@ -2397,15 +2467,16 @@
     ],
     "description": "DARF Classic Kat KVV: natuurlijk rauw versvoer van DARF in ca. 1,4 kg. Voor katten, diepgevroren en zonder onnodige kunstmatige toevoegingen.",
     "analysis": {
-      "Vocht": "69",
-      "Ruw eiwit": "14",
-      "Ruw vet": "14",
-      "Ruwe celstof": "3",
-      "Ruwe as": "2",
-      "Calcium": "0,48",
-      "Fosfor": "0,39",
-      "Energie": "179"
-    }
+      "vocht": 69,
+      "eiwit": 14,
+      "vet": 14,
+      "celstof": 3,
+      "as": 2,
+      "calcium": 0.48,
+      "fosfor": 0.39,
+      "energieKcalPer100g": 179
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-classic-kat-lam-kvv",
@@ -2444,15 +2515,16 @@
     ],
     "description": "DARF Classic Kat Lam KVV: natuurlijk rauw versvoer van DARF in ca. 1,4 kg. Voor katten, diepgevroren en zonder onnodige kunstmatige toevoegingen.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw eiwit": "15",
-      "Ruw vet": "12",
-      "Ruwe celstof": "4",
-      "Ruwe as": "4",
-      "Calcium": "0,50",
-      "Fosfor": "0,41",
-      "Energie": "170"
-    }
+      "vocht": 65,
+      "eiwit": 15,
+      "vet": 12,
+      "celstof": 4,
+      "as": 4,
+      "calcium": 0.5,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 170
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-classic-kat-zalm-kvv",
@@ -2491,15 +2563,16 @@
     ],
     "description": "DARF Classic Kat Zalm: natuurlijk rauw versvoer van DARF in ca. 1,4 kg. Voor katten, diepgevroren en zonder onnodige kunstmatige toevoegingen",
     "analysis": {
-      "Vocht": "66",
-      "Ruw eiwit": "16",
-      "Ruw vet": "13",
-      "Ruwe celstof": "4",
-      "Ruwe as": "1",
-      "Calcium": "0,84",
-      "Fosfor": "0,46",
-      "Energie": "183"
-    }
+      "vocht": 66,
+      "eiwit": 16,
+      "vet": 13,
+      "celstof": 4,
+      "as": 1,
+      "calcium": 0.84,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 183
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-compleet-hert-ree-blokjes",
@@ -2534,15 +2607,16 @@
     ],
     "description": "DARF Compleet Hert, Ree Blokjes: rauw versvoer in handige diepvriesblokjes. Eenvoudig te portioneren. Bekijk ingrediënten, analyse en actuele beschikbaarheid",
     "analysis": {
-      "Vocht": "64",
-      "Ruw eiwit": "12,1",
-      "Ruw vet": "14,8",
-      "Ruwe as": "3,8",
-      "Ruwe celstof": "5,2",
-      "Calcium": "0,89",
-      "Fosfor": "0,41",
-      "Energie": "181"
-    }
+      "vocht": 64,
+      "eiwit": 12.1,
+      "vet": 14.8,
+      "as": 3.8,
+      "celstof": 5.2,
+      "calcium": 0.89,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 181
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-compleet-kat-compleet-blokjes",
@@ -2581,15 +2655,16 @@
     ],
     "description": "Compleet Kat Compleet blokjes: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "69",
-      "Ruw eiwit": "14",
-      "Ruw vet": "14",
-      "Ruwe celstof": "3",
-      "Ruwe as": "2",
-      "Calcium": "0,48",
-      "Fosfor": "0,39",
-      "Energie": "179"
-    }
+      "vocht": 69,
+      "eiwit": 14,
+      "vet": 14,
+      "celstof": 3,
+      "as": 2,
+      "calcium": 0.48,
+      "fosfor": 0.39,
+      "energieKcalPer100g": 179
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-compleet-lam-blokjes",
@@ -2612,15 +2687,16 @@
     ],
     "description": "Compleet Lam Blokjes: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "18,0",
-      "Ruw vet": "12,3",
-      "Ruwe celstof": "3,2",
-      "Ruwe as": "1,0",
-      "Calcium": "0,60",
-      "Fosfor": "0,46",
-      "Energie": "189",
-      "Vocht": "66"
-    }
+      "eiwit": 18,
+      "vet": 12.3,
+      "celstof": 3.2,
+      "as": 1,
+      "calcium": 0.6,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 189,
+      "vocht": 66
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-compleet-paard-eend-blokjes",
@@ -2647,15 +2723,16 @@
     ],
     "description": "Compleet Paard Eend blokjes: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "64",
-      "Ruw eiwit": "14,7",
-      "Ruw vet": "15,3",
-      "Ruwe celstof": "2,9",
-      "Ruwe as": "2,8",
-      "Calcium": "0,87",
-      "Fosfor": "0,44",
-      "Energie": "197"
-    }
+      "vocht": 64,
+      "eiwit": 14.7,
+      "vet": 15.3,
+      "celstof": 2.9,
+      "as": 2.8,
+      "calcium": 0.87,
+      "fosfor": 0.44,
+      "energieKcalPer100g": 197
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-compleet-rund-compleet-blokjes",
@@ -2686,15 +2763,16 @@
     ],
     "description": "Compleet Rund Compleet blokjes: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "64",
-      "Ruw eiwit": "14",
-      "Ruw vet": "14",
-      "Ruwe celstof": "1",
-      "Ruwe as": "2",
-      "Clacium": "0,34",
-      "Fosfor": "0,29",
-      "Energie": "183"
-    }
+      "vocht": 64,
+      "eiwit": 14,
+      "vet": 14,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 0.34,
+      "fosfor": 0.29,
+      "energieKcalPer100g": 183
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-compleet-rund-kalkoen-blokjes",
@@ -2721,15 +2799,16 @@
     ],
     "description": "Compleet Rund Kalkoen blokjes: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "58,8",
-      "Ruw eiwit": "16,6",
-      "Ruw vet": "13,6",
-      "Ruwe celstof": "3,8",
-      "Ruwe as": "2,8",
-      "Calcium": "0,63",
-      "Fosfor": "0,43",
-      "Energie": "184"
-    }
+      "vocht": 58.8,
+      "eiwit": 16.6,
+      "vet": 13.6,
+      "celstof": 3.8,
+      "as": 2.8,
+      "calcium": 0.63,
+      "fosfor": 0.43,
+      "energieKcalPer100g": 184
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-compleet-rund-zalm-blokjes",
@@ -2760,15 +2839,16 @@
     ],
     "description": "DARF Compleet Rund Zalm Blokjes is complete diepvriesvoeding voor honden met rund en zalm. Handige portieblokjes, rijk aan dierlijke eiwitten en vetten.",
     "analysis": {
-      "Vocht": "67",
-      "Ruw eiwit": "15,8",
-      "Ruw vet": "11,6",
-      "Ruwe celstof": "3,1",
-      "Ruwe as": "2,4",
-      "Calcium": "0,88",
-      "Fosfor": "0,42",
-      "Energie": "168"
-    }
+      "vocht": 67,
+      "eiwit": 15.8,
+      "vet": 11.6,
+      "celstof": 3.1,
+      "as": 2.4,
+      "calcium": 0.88,
+      "fosfor": 0.42,
+      "energieKcalPer100g": 168
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-eend-classic",
@@ -2791,15 +2871,16 @@
     ],
     "description": "Eend Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw eiwit": "16,2",
-      "Ruw vet": "12,6",
-      "Ruw As": "3,9",
-      "Ruwe celstof": "1,28",
-      "Energie": "178",
-      "Ca/P verhouding": "1,03",
-      "Fosfor": "0,48"
-    }
+      "vocht": 65,
+      "eiwit": 16.2,
+      "vet": 12.6,
+      "as": 3.9,
+      "celstof": 1.28,
+      "energieKcalPer100g": 178,
+      "caP": 1.03,
+      "fosfor": 0.48
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-eend-kvv-10-x-1-kg",
@@ -2830,14 +2911,15 @@
     ],
     "description": "Eend KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw Eiwit": "16,2",
-      "Ruw Vet": "12,6",
-      "Ruw As": "3,9",
-      "Ruwe celstof": "3,7",
-      "Energie": "178",
-      "Ca/P": "1,03"
-    }
+      "vocht": 65,
+      "eiwit": 16.2,
+      "vet": 12.6,
+      "as": 3.9,
+      "celstof": 3.7,
+      "energieKcalPer100g": 178,
+      "caP": 1.03
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-emi-classic",
@@ -2864,15 +2946,16 @@
     ],
     "description": "Emi Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "68",
-      "Eiwit": "16,3",
-      "Vet": "9,2",
-      "Ruw As": "2,6",
-      "Vezels": "<0,5%",
-      "Calcium": "0,70",
-      "Fosfor": "0,45",
-      "Energie / 100g": "169"
-    }
+      "vocht": 68,
+      "eiwit": 16.3,
+      "vet": 9.2,
+      "as": 2.6,
+      "celstof": 0.5,
+      "calcium": 0.7,
+      "fosfor": 0.45,
+      "energieKcalPer100g": 169
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-emi-kvv-10-x-1-kg",
@@ -2899,13 +2982,15 @@
     ],
     "description": "Emi KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "68",
-      "Ruw eiwit": "16,3",
-      "Ruw vet": "9,2",
-      "Ruwe As": "2,6",
-      "Ruwe celstof": "<0,5%",
-      "Ca/P": "1,37"
-    }
+      "vocht": 68,
+      "eiwit": 16.3,
+      "vet": 9.2,
+      "as": 2.6,
+      "celstof": 0.5,
+      "caP": 1.37,
+      "energieKcalPer100g": 162
+    },
+    "energieBron": "schatting"
   },
   {
     "slug": "darf-geit-kip-10-x-1-kg",
@@ -2936,15 +3021,16 @@
     ],
     "description": "Geit Kip 10 x: bekijk productinformatie, samenstelling, analyse en actuele beschikbaarheid bij DARF.",
     "analysis": {
-      "Vocht": "62",
-      "Ruw Eiwit": "16,80",
-      "Ruw Vet": "13,60",
-      "Ruwe celstof": "3,60",
-      "Ruwe As": "3,90",
-      "Calcium": "0,91",
-      "Fosfor": "0,46",
-      "Energie": "189"
-    }
+      "vocht": 62,
+      "eiwit": 16.8,
+      "vet": 13.6,
+      "celstof": 3.6,
+      "as": 3.9,
+      "calcium": 0.91,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 189
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-geit-kip-classic",
@@ -2975,15 +3061,16 @@
     ],
     "description": "Geit Kip Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "62",
-      "Ruw Eiwit": "16,8",
-      "Ruw Vet": "13,6",
-      "Ruwe celstof": "3,6",
-      "Ruwe As": "3,9",
-      "Calcium": "0,91",
-      "Fosfor": "0,46",
-      "Energie Kcal/ 100g": "189"
-    }
+      "vocht": 62,
+      "eiwit": 16.8,
+      "vet": 13.6,
+      "celstof": 3.6,
+      "as": 3.9,
+      "calcium": 0.91,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 189
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-groente-mix-500-g",
@@ -3022,12 +3109,11 @@
     ],
     "description": "Groente Mix: bekijk productinformatie, samenstelling, analyse en actuele beschikbaarheid bij DARF.",
     "analysis": {
-      "Vocht": "81",
-      "Eiwit": "13",
-      "Vet": "0,8",
-      "Ruw vet": "4,8",
-      "Calcium": "0,3",
-      "Fosfor": "0,3"
+      "vocht": 81,
+      "eiwit": 13,
+      "vet": 0.8,
+      "calcium": 0.3,
+      "fosfor": 0.3
     }
   },
   {
@@ -3055,14 +3141,15 @@
     ],
     "description": "Hert 10 x: bekijk productinformatie, samenstelling, analyse en actuele beschikbaarheid bij DARF.",
     "analysis": {
-      "Vocht": "67",
-      "Eiwit": "15,8",
-      "Vet": "11,6",
-      "Ruw As": "2,4",
-      "Vezels": "1,53",
-      "Energie": "168",
-      "Ca/P verhouding": "1,15"
-    }
+      "vocht": 67,
+      "eiwit": 15.8,
+      "vet": 11.6,
+      "as": 2.4,
+      "celstof": 1.53,
+      "energieKcalPer100g": 168,
+      "caP": 1.15
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-hert-classic-mix",
@@ -3089,14 +3176,15 @@
     ],
     "description": "Hert Classic Mix: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "70,77",
-      "Eiwit": "17,85",
-      "Vet": "8,77",
-      "Ruw As": "1,08",
-      "Vezels": "1,53",
-      "Energie": "137",
-      "Ca/P verhouding": "1,15"
-    }
+      "vocht": 70.77,
+      "eiwit": 17.85,
+      "vet": 8.77,
+      "as": 1.08,
+      "celstof": 1.53,
+      "energieKcalPer100g": 137,
+      "caP": 1.15
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-kalf-gevogelte-compleet-blokjes-500g",
@@ -3123,15 +3211,16 @@
     ],
     "description": "Kalf Gevogelte compleet blokjes: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "66",
-      "Ruw eiwit": "15,4",
-      "Ruw vet": "14,3",
-      "Ruwe celstof": "3,4",
-      "Ruwe as": "1,2",
-      "Calcium": "0,90",
-      "Fosfor": "0,46",
-      "Energie": "190"
-    }
+      "vocht": 66,
+      "eiwit": 15.4,
+      "vet": 14.3,
+      "celstof": 3.4,
+      "as": 1.2,
+      "calcium": 0.9,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-kalkoen-classic",
@@ -3170,15 +3259,16 @@
     ],
     "description": "Kalkoen Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw Eiwit": "15,7",
-      "Ruw Vet": "14,6",
-      "Ruwe As": "1,5",
-      "Ruwe Vezels": "2,9",
-      "Calcium": "0,89",
-      "Fosfor": "0,44",
-      "Energie": "194"
-    }
+      "vocht": 65,
+      "eiwit": 15.7,
+      "vet": 14.6,
+      "as": 1.5,
+      "celstof": 2.9,
+      "calcium": 0.89,
+      "fosfor": 0.44,
+      "energieKcalPer100g": 194
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-kalkoen-kvv-10-x-1-kg",
@@ -3205,15 +3295,16 @@
     ],
     "description": "Kalkoen KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Eiwit": "15,7",
-      "Ruw vet": "14,6",
-      "Vocht": "65",
-      "Ruw As": "1,5",
-      "Calcium": "0,89",
-      "Fosfor": "0,44",
-      "Energie Kcal per 100g": "194",
-      "CA±P verhouding": "1,60"
-    }
+      "eiwit": 15.7,
+      "vet": 14.6,
+      "vocht": 65,
+      "as": 1.5,
+      "calcium": 0.89,
+      "fosfor": 0.44,
+      "energieKcalPer100g": 194,
+      "caP": 1.6
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-kat-worstjes",
@@ -3252,15 +3343,16 @@
     ],
     "description": "Kat Worstjes: bekijk productinformatie, samenstelling, analyse en actuele beschikbaarheid bij DARF.",
     "analysis": {
-      "Vocht": "69",
-      "Ruw eiwit": "14",
-      "Ruw vet": "14",
-      "Ruwe celstof": "3",
-      "Ruwe as": "2",
-      "Calcium": "0,48",
-      "Fosfor": "0,39",
-      "Energie": "179"
-    }
+      "vocht": 69,
+      "eiwit": 14,
+      "vet": 14,
+      "celstof": 3,
+      "as": 2,
+      "calcium": 0.48,
+      "fosfor": 0.39,
+      "energieKcalPer100g": 179
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-konijn-classic",
@@ -3299,15 +3391,16 @@
     ],
     "description": "Konijn Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "66",
-      "Ruw eiwit": "15,4",
-      "Ruw vet": "14,3",
-      "Ruwe celstof": "3,4",
-      "Ruwe as": "1,2",
-      "Calcium": "0,90",
-      "Fosfor": "0,46",
-      "Energie": "190"
-    }
+      "vocht": 66,
+      "eiwit": 15.4,
+      "vet": 14.3,
+      "celstof": 3.4,
+      "as": 1.2,
+      "calcium": 0.9,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-konijn-kvv-10-x-1-kg",
@@ -3346,15 +3439,16 @@
     ],
     "description": "Konijn KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "66",
-      "Ruw eiwit": "15,4",
-      "Ruw vet": "14,3",
-      "Ruwe celstof": "3,4",
-      "Ruwe as": "1,2",
-      "Calcium": "0,90",
-      "Fosfor": "0,46",
-      "Energie": "190"
-    }
+      "vocht": 66,
+      "eiwit": 15.4,
+      "vet": 14.3,
+      "celstof": 3.4,
+      "as": 1.2,
+      "calcium": 0.9,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-kvv-10-x-1-kg",
@@ -3393,15 +3487,16 @@
     ],
     "description": "KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "58,8",
-      "Ruw Eiwit": "16,6",
-      "Ruw Vet": "13,6",
-      "Ruwe Celstof": "3,8",
-      "Ruwe As": "2,8",
-      "Calcium": "0,63",
-      "Fosfor": "0,43",
-      "Energie KCal / 100g": "184"
-    }
+      "vocht": 58.8,
+      "eiwit": 16.6,
+      "vet": 13.6,
+      "celstof": 3.8,
+      "as": 2.8,
+      "calcium": 0.63,
+      "fosfor": 0.43,
+      "energieKcalPer100g": 184
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-kvv-classic",
@@ -3440,15 +3535,16 @@
     ],
     "description": "KVV Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "58,8",
-      "Ruw Eiwit": "16,6",
-      "Ruw Vet": "13,6",
-      "Ruw As": "2,8",
-      "Calcium": "0,63",
-      "Fosfor": "0,34",
-      "Ruwe celstof": "3,8",
-      "Energie Kcal / 100g": "184"
-    }
+      "vocht": 58.8,
+      "eiwit": 16.6,
+      "vet": 13.6,
+      "as": 2.8,
+      "calcium": 0.63,
+      "fosfor": 0.34,
+      "celstof": 3.8,
+      "energieKcalPer100g": 184
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-lam-kip-10-x-1-kg",
@@ -3479,15 +3575,16 @@
     ],
     "description": "Lam Kip 10 x: bekijk productinformatie, samenstelling, analyse en actuele beschikbaarheid bij DARF.",
     "analysis": {
-      "Vocht": "62",
-      "Ruw eiwit": "15,7",
-      "Ruw vet": "14,6",
-      "Ruw As": "3,7",
-      "Calcium": "0,87",
-      "Fosfor": "0,44",
-      "Ca:P verhouding": "1,59",
-      "Energie Kcal / 100g": "217"
-    }
+      "vocht": 62,
+      "eiwit": 15.7,
+      "vet": 14.6,
+      "as": 3.7,
+      "calcium": 0.87,
+      "fosfor": 0.44,
+      "caP": 1.59,
+      "energieKcalPer100g": 217
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-lam-kip-classic",
@@ -3518,15 +3615,16 @@
     ],
     "description": "Lam Kip Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "62",
-      "Ruw Vet": "14,6",
-      "Ruw Eiwit": "15,8",
-      "Ruw As": "4,5",
-      "Calcium": "0,87",
-      "Fosfor": "0,43",
-      "CA:P verhouding": "2,02",
-      "Energie Kcal / 100g": "217"
-    }
+      "vocht": 62,
+      "vet": 14.6,
+      "eiwit": 15.8,
+      "as": 4.5,
+      "calcium": 0.87,
+      "fosfor": 0.43,
+      "caP": 2.02,
+      "energieKcalPer100g": 217
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-noordzee-classic",
@@ -3565,16 +3663,17 @@
     ],
     "description": "Noordzee Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "64",
-      "Eiwit": "14,7",
-      "Vet": "15,3",
-      "Ruw As": "2,8",
-      "Calcium": "0,87",
-      "Fosfor": "0,44",
-      "Ca:P verhouding": "1,98",
-      "Energie (kcal)": "197",
-      "Ruwe vezels": "2,9"
-    }
+      "vocht": 64,
+      "eiwit": 14.7,
+      "vet": 15.3,
+      "as": 2.8,
+      "calcium": 0.87,
+      "fosfor": 0.44,
+      "caP": 1.98,
+      "energieKcalPer100g": 197,
+      "celstof": 2.9
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-noordzee-kvv-10-x-1-kg",
@@ -3609,15 +3708,16 @@
     ],
     "description": "Noordzee KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "64",
-      "Eiwit": "14,7",
-      "Vet": "15,3",
-      "Ruw As": "2,8",
-      "Calcium": "0,87",
-      "Fosfor": "0,44",
-      "Ca:F": "1,39",
-      "Energie (Kcal)": "197"
-    }
+      "vocht": 64,
+      "eiwit": 14.7,
+      "vet": 15.3,
+      "as": 2.8,
+      "calcium": 0.87,
+      "fosfor": 0.44,
+      "Ca:F": 1.39,
+      "energieKcalPer100g": 197
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-paard-lam-konijn-1000-g",
@@ -3652,15 +3752,16 @@
     ],
     "description": "paard/lam/konijn: bekijk productinformatie, samenstelling, analyse en actuele beschikbaarheid bij DARF.",
     "analysis": {
-      "Vocht": "62",
-      "Ruw eiwit": "16,8",
-      "Ruw vet": "13,6",
-      "Ruwe as": "3,6",
-      "Ruwe vezels": "5",
-      "Calcium": "0,91",
-      "Fosfor": "0,46",
-      "Energie": "190"
-    }
+      "vocht": 62,
+      "eiwit": 16.8,
+      "vet": 13.6,
+      "as": 3.6,
+      "celstof": 5,
+      "calcium": 0.91,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-pens-haring-eend-classic",
@@ -3695,15 +3796,16 @@
     ],
     "description": "Pens Haring Eend Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw eiwit": "12,0",
-      "Ruw vet": "15,8",
-      "Ruwe celstof": "5,2",
-      "Ruwe as": "1,9",
-      "Calcium": "0,87",
-      "Fosfor": "0,41",
-      "Energie": "190"
-    }
+      "vocht": 65,
+      "eiwit": 12,
+      "vet": 15.8,
+      "celstof": 5.2,
+      "as": 1.9,
+      "calcium": 0.87,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-pens-haring-eend-kvv-10-x-1-kg",
@@ -3738,15 +3840,16 @@
     ],
     "description": "Pens Haring Eend KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw eiwit": "12,0",
-      "Ruw vet": "15,8",
-      "Ruwe celstof": "5,2",
-      "Ruwe as": "1,9",
-      "Calcium": "0,87",
-      "Fosfor": "0,41",
-      "Energie": "190"
-    }
+      "vocht": 65,
+      "eiwit": 12,
+      "vet": 15.8,
+      "celstof": 5.2,
+      "as": 1.9,
+      "calcium": 0.87,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-pens-rund-kip-kvv-10-x-1-kg",
@@ -3781,15 +3884,16 @@
     ],
     "description": "Pens Rund Kip KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "16,8",
-      "Ruw vet": "13,6",
-      "Vocht": "62",
-      "Calcium": "0,91",
-      "Fosfor": "0,46",
-      "Ruwe celstof": "3,6",
-      "Ruwe as": "3,9",
-      "Energie": "190"
-    }
+      "eiwit": 16.8,
+      "vet": 13.6,
+      "vocht": 62,
+      "calcium": 0.91,
+      "fosfor": 0.46,
+      "celstof": 3.6,
+      "as": 3.9,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-pens-rund-kip-kvv-classic",
@@ -3824,15 +3928,16 @@
     ],
     "description": "Pens Rund Kip KVV classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "62",
-      "Ruw eiwit": "16,8",
-      "Ruw vet": "13,6",
-      "Ruwe celstof": "3,6",
-      "Ruw as": "3,9",
-      "Calcium": "0,91",
-      "Fosfor": "0,46",
-      "Energie": "190"
-    }
+      "vocht": 62,
+      "eiwit": 16.8,
+      "vet": 13.6,
+      "celstof": 3.6,
+      "as": 3.9,
+      "calcium": 0.91,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-pens-zalm-kalkoen-classic",
@@ -3867,15 +3972,16 @@
     ],
     "description": "Pens Zalm Kalkoen Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "64",
-      "Ruw eiwit": "12,1",
-      "Ruw vet": "14,8",
-      "Ruwe celstof": "5,2",
-      "Ruwe as": "3,8",
-      "Calcium": "0,89",
-      "Fosfor": "0,41",
-      "Energie": "181"
-    }
+      "vocht": 64,
+      "eiwit": 12.1,
+      "vet": 14.8,
+      "celstof": 5.2,
+      "as": 3.8,
+      "calcium": 0.89,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 181
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-pens-zalm-kalkoen-kvv-10-x-1-kg",
@@ -3910,15 +4016,16 @@
     ],
     "description": "Pens Zalm Kalkoen KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "64",
-      "Ruw eiwit": "12,1",
-      "Ruw vet": "14,8",
-      "Ruwe celstof": "5,2",
-      "Ruwe as": "3,8",
-      "Calcium": "0,89",
-      "Fosfor": "0,41",
-      "Energie": "181"
-    }
+      "vocht": 64,
+      "eiwit": 12.1,
+      "vet": 14.8,
+      "celstof": 5.2,
+      "as": 3.8,
+      "calcium": 0.89,
+      "fosfor": 0.41,
+      "energieKcalPer100g": 181
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-puppy-small-classic",
@@ -3961,15 +4068,16 @@
     ],
     "description": "Puppy Small Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "63",
-      "Ruw eiwit": "17,7",
-      "Ruw vet": "14,3",
-      "Ruwe celstof": "3,0",
-      "Ruw as": "1,7",
-      "Calcium": "0,48",
-      "Fosfor": "0,39",
-      "Energie": "199"
-    }
+      "vocht": 63,
+      "eiwit": 17.7,
+      "vet": 14.3,
+      "celstof": 3,
+      "as": 1.7,
+      "calcium": 0.48,
+      "fosfor": 0.39,
+      "energieKcalPer100g": 199
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-rund-kip-10-x-1-kg",
@@ -4000,15 +4108,16 @@
     ],
     "description": "Rund Kip 10 x: bekijk productinformatie, samenstelling, analyse en actuele beschikbaarheid bij DARF.",
     "analysis": {
-      "Vocht": "67,1",
-      "Eiwit": "14,6",
-      "Vet": "12,0",
-      "Ruw As": "4,6",
-      "Calcium": "1,10",
-      "Fosfor": "0,69",
-      "Ca:P verhouding": "1,59",
-      "Energie Kcal / 100g": "152,9"
-    }
+      "vocht": 67.1,
+      "eiwit": 14.6,
+      "vet": 12,
+      "as": 4.6,
+      "calcium": 1.1,
+      "fosfor": 0.69,
+      "caP": 1.59,
+      "energieKcalPer100g": 152.9
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-rund-kip-classic",
@@ -4039,15 +4148,16 @@
     ],
     "description": "Rund Kip Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "62",
-      "Eiwit": "16,8",
-      "Vet": "13,6",
-      "Ruw As": "3,9",
-      "Calcium": "0,91",
-      "Fosfor": "0,46",
-      "CA:P verhouding": "1,98",
-      "Energie": "190"
-    }
+      "vocht": 62,
+      "eiwit": 16.8,
+      "vet": 13.6,
+      "as": 3.9,
+      "calcium": 0.91,
+      "fosfor": 0.46,
+      "caP": 1.98,
+      "energieKcalPer100g": 190
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-small-classic",
@@ -4090,15 +4200,16 @@
     ],
     "description": "Small Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "64",
-      "Ruw eiwit": "14,7",
-      "Ruw vet": "15,3",
-      "Ruwe celstof": "2,9",
-      "Ruw as": "2,8",
-      "Calcium": "0,87",
-      "Fosfor": "0,44",
-      "Energie": "196"
-    }
+      "vocht": 64,
+      "eiwit": 14.7,
+      "vet": 15.3,
+      "celstof": 2.9,
+      "as": 2.8,
+      "calcium": 0.87,
+      "fosfor": 0.44,
+      "energieKcalPer100g": 196
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-voor-de-pup-kvv-classic",
@@ -4141,15 +4252,16 @@
     ],
     "description": "voor de Pup KVV Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "63",
-      "Ruw eiwit": "18",
-      "Ruw vet": "14",
-      "Ruwe celstof": "3",
-      "Ruwe as": "1,7",
-      "Calcium": "0,48",
-      "Fosfor": "0,39",
-      "Energie": "199"
-    }
+      "vocht": 63,
+      "eiwit": 18,
+      "vet": 14,
+      "celstof": 3,
+      "as": 1.7,
+      "calcium": 0.48,
+      "fosfor": 0.39,
+      "energieKcalPer100g": 199
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-voor-de-puppy-kvv-10-x-1-kg",
@@ -4192,15 +4304,16 @@
     ],
     "description": "voor de Puppy KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "63",
-      "Ruw eiwit": "17,7",
-      "Ruw vet": "14,3",
-      "Ruwe celstof": "3",
-      "Ruwe as": "1,7",
-      "Calcium": "0,48",
-      "Fosfor": "0,39",
-      "Energie": "199"
-    }
+      "vocht": 63,
+      "eiwit": 17.7,
+      "vet": 14.3,
+      "celstof": 3,
+      "as": 1.7,
+      "calcium": 0.48,
+      "fosfor": 0.39,
+      "energieKcalPer100g": 199
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-wild-kvv-10-x-1-kg",
@@ -4243,15 +4356,16 @@
     ],
     "description": "Wild KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw eiwit": "16,8",
-      "Ruw vet": "10,6",
-      "Ruwe as": "3,7",
-      "Calcium": "0,87",
-      "Fosfor": "0,46",
-      "Energie Kcal": "168",
-      "Ruwe celstof": "3,8"
-    }
+      "vocht": 65,
+      "eiwit": 16.8,
+      "vet": 10.6,
+      "as": 3.7,
+      "calcium": 0.87,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 168,
+      "celstof": 3.8
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-wild-kvv-classic",
@@ -4294,14 +4408,15 @@
     ],
     "description": "DARF Wild KVV Classic: natuurlijk rauw versvoer van DARF in 4,65 kg. Voor honden, diepgevroren en zonder onnodige kunstmatige toevoegingen.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw Eiwit": "16,8",
-      "Ruw Vet": "10,6",
-      "Ruwe As": "3,7",
-      "Calcium": "0,87",
-      "Fosfor": "0,46",
-      "Energie": "168"
-    }
+      "vocht": 65,
+      "eiwit": 16.8,
+      "vet": 10.6,
+      "as": 3.7,
+      "calcium": 0.87,
+      "fosfor": 0.46,
+      "energieKcalPer100g": 168
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-zalm-classic",
@@ -4348,15 +4463,16 @@
     ],
     "description": "Zalm Classic: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "vocht": "65",
-      "Ruw eiwit": "14,8",
-      "Ruw vet": "12,3",
-      "Ruwe celstof": "3,5",
-      "Ruwe as": "2,8",
-      "Calcium": "0,87",
-      "Fosfor": "0,44",
-      "Energie": "196"
-    }
+      "vocht": 65,
+      "eiwit": 14.8,
+      "vet": 12.3,
+      "celstof": 3.5,
+      "as": 2.8,
+      "calcium": 0.87,
+      "fosfor": 0.44,
+      "energieKcalPer100g": 196
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "darf-zalm-kvv-10-x-1-kg",
@@ -4399,15 +4515,16 @@
     ],
     "description": "Zalm KVV 10 x: vers vlees van DARF. Bekijk samenstelling, analyse, voedingsadvies, bewaarwijze en actuele beschikbaarheid.",
     "analysis": {
-      "Vocht": "65",
-      "Ruw eiwit": "14,8",
-      "Ruw vet": "12,3",
-      "Ruwe celstof": "3,5",
-      "Ruwe as": "2,8",
-      "Calcium": "0,87",
-      "Fosfor": "0,44",
-      "Energie": "196"
-    }
+      "vocht": 65,
+      "eiwit": 14.8,
+      "vet": 12.3,
+      "celstof": 3.5,
+      "as": 2.8,
+      "calcium": 0.87,
+      "fosfor": 0.44,
+      "energieKcalPer100g": 196
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "meat4dogs-all-in-one",
@@ -4442,15 +4559,16 @@
     ],
     "description": "All in One: vers hondenvoer van MEAT4DOGS. Bekijk ingrediënten, analyse, voedingsadvies en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw eiwit": "14",
-      "Ruwe as": "3",
-      "Celstof": "1",
-      "Ruw vet": "14",
-      "Calcium": "0,72",
-      "Fosfor": "0,53",
-      "Energie": "145",
-      "Vocht": "69,0"
-    }
+      "eiwit": 14,
+      "as": 3,
+      "celstof": 1,
+      "vet": 14,
+      "calcium": 0.72,
+      "fosfor": 0.53,
+      "energieKcalPer100g": 145,
+      "vocht": 69
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "meat4dogs-eend",
@@ -4485,15 +4603,16 @@
     ],
     "description": "Eend: vers hondenvoer van MEAT4DOGS. Bekijk ingrediënten, analyse, voedingsadvies en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "12",
-      "Ruw Vet": "16",
-      "Ruwe Celstof": "2",
-      "Ruwe As": "2",
-      "Calcium": "0,72",
-      "Fosfor": "0,53",
-      "Energie": "155",
-      "Vocht": "68,0"
-    }
+      "eiwit": 12,
+      "vet": 16,
+      "celstof": 2,
+      "as": 2,
+      "calcium": 0.72,
+      "fosfor": 0.53,
+      "energieKcalPer100g": 155,
+      "vocht": 68
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "meat4dogs-gans",
@@ -4528,15 +4647,16 @@
     ],
     "description": "Gans: vers hondenvoer van MEAT4DOGS. Bekijk ingrediënten, analyse, voedingsadvies en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "13",
-      "Ruw Vet": "14",
-      "Ruwe Celstof": "1",
-      "Ruwe As": "2",
-      "Calcium": "0,61",
-      "Fosfor": "0,52",
-      "Energie": "165",
-      "Vocht": "70,0"
-    }
+      "eiwit": 13,
+      "vet": 14,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 0.61,
+      "fosfor": 0.52,
+      "energieKcalPer100g": 165,
+      "vocht": 70
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "meat4dogs-kalkoen",
@@ -4571,15 +4691,16 @@
     ],
     "description": "Kalkoen: vers hondenvoer van MEAT4DOGS. Bekijk ingrediënten, analyse, voedingsadvies en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "13",
-      "Ruw Vet": "15",
-      "Ruwe Celstof": "2",
-      "Ruwe As": "2",
-      "Calcium": "0,63",
-      "Fosfor": "0,51",
-      "Energie": "175",
-      "Vocht": "68,0"
-    }
+      "eiwit": 13,
+      "vet": 15,
+      "celstof": 2,
+      "as": 2,
+      "calcium": 0.63,
+      "fosfor": 0.51,
+      "energieKcalPer100g": 175,
+      "vocht": 68
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "meat4dogs-konijn",
@@ -4614,15 +4735,16 @@
     ],
     "description": "Konijn: vers hondenvoer van MEAT4DOGS. Bekijk ingrediënten, analyse, voedingsadvies en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "14",
-      "Ruw Vet": "15",
-      "Ruwe Celstof": "1",
-      "Ruwe As": "2",
-      "Calcium": "0,62",
-      "Fosfor": "0,56",
-      "Energie": "178",
-      "Vocht": "68,0"
-    }
+      "eiwit": 14,
+      "vet": 15,
+      "celstof": 1,
+      "as": 2,
+      "calcium": 0.62,
+      "fosfor": 0.56,
+      "energieKcalPer100g": 178,
+      "vocht": 68
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "meat4dogs-lam",
@@ -4657,15 +4779,16 @@
     ],
     "description": "Lam: vers hondenvoer van MEAT4DOGS. Bekijk ingrediënten, analyse, voedingsadvies en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "11",
-      "Ruw Vet": "14",
-      "Ruwe Celstof": "2",
-      "Ruwe As": "3",
-      "Calcium": "0,59",
-      "Fosfor": "0,48",
-      "Energie": "195",
-      "Vocht": "70,0"
-    }
+      "eiwit": 11,
+      "vet": 14,
+      "celstof": 2,
+      "as": 3,
+      "calcium": 0.59,
+      "fosfor": 0.48,
+      "energieKcalPer100g": 195,
+      "vocht": 70
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "meat4dogs-makreel",
@@ -4704,15 +4827,16 @@
     ],
     "description": "Makreel: vers hondenvoer van MEAT4DOGS. Bekijk ingrediënten, analyse, voedingsadvies en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "12",
-      "Ruw Vet": "15",
-      "Ruwe Celstof": "0",
-      "Ruwe As": "3",
-      "Calcium": "0,59",
-      "Fosfor": "0,49",
-      "Energie": "198",
-      "Vocht": "72,0"
-    }
+      "eiwit": 12,
+      "vet": 15,
+      "celstof": 0,
+      "as": 3,
+      "calcium": 0.59,
+      "fosfor": 0.49,
+      "energieKcalPer100g": 198,
+      "vocht": 72
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "meat4dogs-rund",
@@ -4747,15 +4871,16 @@
     ],
     "description": "Rund: vers hondenvoer van MEAT4DOGS. Bekijk ingrediënten, analyse, voedingsadvies en actuele beschikbaarheid.",
     "analysis": {
-      "Ruw Eiwit": "13",
-      "Ruw Vet": "13",
-      "Ruwe Celstof": "2",
-      "Ruwe As": "2",
-      "Calcium": "0,64",
-      "Fosfor": "0,51",
-      "Energie": "172",
-      "Vocht": "71,0"
-    }
+      "eiwit": 13,
+      "vet": 13,
+      "celstof": 2,
+      "as": 2,
+      "calcium": 0.64,
+      "fosfor": 0.51,
+      "energieKcalPer100g": 172,
+      "vocht": 71
+    },
+    "energieBron": "opgave"
   },
   {
     "slug": "nd14",

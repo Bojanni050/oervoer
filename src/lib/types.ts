@@ -22,6 +22,8 @@ export interface Product {
   calcium?: number | null;
   /** g fosfor per 100 g product; null = onbekend. */
   fosfor?: number | null;
+  /** kcal per 100 g product; null = onbekend (dan kan er niet per 1000 kcal gerekend worden). */
+  energie?: number | null;
 }
 
 export interface OrderRecord {
@@ -59,6 +61,8 @@ export interface PicklistItem {
   calcium?: number | null;
   /** g fosfor per 100 g product; oudere picklijsten hebben dit nog niet. */
   fosfor?: number | null;
+  /** kcal per 100 g product; oudere picklijsten hebben dit nog niet. */
+  energie?: number | null;
 }
 
 export interface PicklistWarning {
@@ -138,4 +142,6 @@ export interface ProductRow {
   calcium?: string;
   /** Optioneel: g fosfor per 100 g product. */
   fosfor?: string;
+  /** Optioneel: kcal per 100 g product, nodig voor de omrekening per 1000 kcal. */
+  energie?: string;
 }
