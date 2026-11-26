@@ -117,6 +117,7 @@ export function productFromRow(row: ProductRow): Product {
     normWeight: weight / verpaktPer,
     calcium: parseRowNumber(row.calcium),
     fosfor: parseRowNumber(row.fosfor),
+    energie: parseRowNumber(row.energie),
   };
 }
 
@@ -471,6 +472,7 @@ export function generatePicklist(
         totalKg: Number(product.weight.toFixed(3)),
         calcium: minerals.calcium,
         fosfor: minerals.fosfor,
+        energie: minerals.energie ?? null,
       });
     }
   }
@@ -511,6 +513,7 @@ export function picklistMineralReport(items: PicklistItem[], band: MineralBand):
         typeVlees: item.typeVlees,
         calcium: item.calcium ?? null,
         fosfor: item.fosfor ?? null,
+        energie: item.energie ?? null,
       }),
     })),
     band,

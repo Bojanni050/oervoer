@@ -61,7 +61,8 @@ function openDb(): DatabaseSync {
       geschikt_menu INTEGER NOT NULL DEFAULT 0,
       geschikt_voor TEXT NOT NULL DEFAULT '',
       calcium REAL,
-      fosfor REAL
+      fosfor REAL,
+      energie REAL
     );
 
     CREATE TABLE IF NOT EXISTS orders (
@@ -170,6 +171,7 @@ function openDb(): DatabaseSync {
   // kolommen erbij en de waarden komen uit data/product-nutrition.csv.
   addColumnIfMissing(db, "products", "calcium", "REAL");
   addColumnIfMissing(db, "products", "fosfor", "REAL");
+  addColumnIfMissing(db, "products", "energie", "REAL");
 
   globalThis.__oervoerDb = db;
   seedIfEmpty(db);
@@ -202,8 +204,8 @@ function seedProducts(db: DatabaseSync): void {
   const rows = parseCsvObjects(fs.readFileSync(csvPath, "utf8")) as unknown as ProductRow[];
   const insert = db.prepare(`
     INSERT OR REPLACE INTO products
-      (sku, name, smaak, type_vlees, shelf, weight, verpakt_per, qty, in_stock, geschikt_menu, geschikt_voor, calcium, fosfor)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (sku, name, smaak, type_vlees, shelf, weight, verpakt_per, qty, in_stock, geschikt_menu, geschikt_voor, calcium, fosfor, energie)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   for (const row of rows) {
     if (!row.sku) continue;
@@ -222,29 +224,33 @@ function seedProducts(db: DatabaseSync): void {
       product.geschiktVoor,
       product.calcium ?? null,
       product.fosfor ?? null,
+      product.energie ?? null,
     );
   }
 }
 
 /**
- * Vult calcium en fosfor per SKU uit `data/product-nutrition.csv`
- * (kolommen `sku,calcium,fosfor`, in g per 100 g product). Deze waarden staan
- * los van de productbron zelf, zodat een herimport van `test/products.csv` ze
- * niet weggooit. Een SKU zonder waarde valt terug op de terugvalwaarde van zijn
+ * Vult calcium, fosfor en energie per SKU uit `data/product-nutrition.csv`
+ * (kolommen `sku,calcium,fosfor,energie`). Deze waarden staan los van de
+ * productbron zelf, zodat een herimport van `test/products.csv` ze niet
+ * weggooit. Een SKU zonder waarde valt terug op de terugvalwaarde van zijn
  * vleestype in `src/lib/minerals.ts`.
  */
 function seedProductNutrition(db: DatabaseSync): void {
   const csvPath = path.join(process.cwd(), "data", "product-nutrition.csv");
   if (!fs.existsSync(csvPath)) return;
   const rows = parseCsvObjects(fs.readFileSync(csvPath, "utf8"));
-  const update = db.prepare("UPDATE products SET calcium = ?, fosfor = ? WHERE sku = ?");
+  const update = db.prepare(
+    "UPDATE products SET calcium = COALESCE(?, calcium), fosfor = COALESCE(?, fosfor), energie = COALESCE(?, energie) WHERE sku = ?",
+  );
   for (const row of rows) {
     const sku = String(row.sku ?? "").trim();
     if (!sku) continue;
     const calcium = parseNutritionValue(row.calcium);
     const fosfor = parseNutritionValue(row.fosfor);
-    if (calcium === null && fosfor === null) continue;
-    update.run(calcium, fosfor, sku);
+    const energie = parseNutritionValue(row.energie);
+    if (calcium === null && fosfor === null && energie === null) continue;
+    update.run(calcium, fosfor, energie, sku);
   }
 }
 
@@ -358,6 +364,7 @@ function mapProduct(row: SqlRow): Product {
     normWeight: weight / verpaktPer,
     calcium: row.calcium === null || row.calcium === undefined ? null : Number(row.calcium),
     fosfor: row.fosfor === null || row.fosfor === undefined ? null : Number(row.fosfor),
+    energie: row.energie === null || row.energie === undefined ? null : Number(row.energie),
   };
 }
 

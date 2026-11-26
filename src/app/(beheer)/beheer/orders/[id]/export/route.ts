@@ -18,13 +18,24 @@ export async function GET(
 
   const minerals = picklistMineralReport(picklist.items, bandFor(order.ras, order.pup));
   const rows: (string | number)[][] = [
-    ["vleestype", "sku", "naam", "vak", "aantal", "gram_per_stuk", "calcium_pct", "fosfor_pct"],
+    [
+      "vleestype",
+      "sku",
+      "naam",
+      "vak",
+      "aantal",
+      "gram_per_stuk",
+      "calcium_pct",
+      "fosfor_pct",
+      "energie_kcal_per_100g",
+    ],
   ];
   for (const item of picklist.items) {
     const values = productMinerals({
       typeVlees: item.typeVlees,
       calcium: item.calcium ?? null,
       fosfor: item.fosfor ?? null,
+      energie: item.energie ?? null,
     });
     rows.push([
       item.typeVlees,
@@ -35,6 +46,7 @@ export async function GET(
       Math.round(item.weight * 1000),
       values.calcium ?? "",
       values.fosfor ?? "",
+      values.energie ?? "",
     ]);
   }
   rows.push([]);
@@ -43,6 +55,8 @@ export async function GET(
   rows.push(["dagen", picklist.days]);
   rows.push(["calcium_g_per_100g", minerals.calciumPer100g]);
   rows.push(["calcium_g_totaal", minerals.calciumG]);
+  rows.push(["energie_kcal_per_100g", minerals.energiePer100g ?? "onbekend"]);
+  rows.push(["energie_bron", minerals.energieBron ?? "onbekend"]);
   rows.push(["calcium_g_per_1000_kcal", minerals.calciumPer1000Kcal ?? "onbekend"]);
   rows.push(["calcium_fosfor_verhouding", minerals.caP ?? "onbekend"]);
   rows.push(["calcium_status", mineralStatusLabel(minerals.status)]);

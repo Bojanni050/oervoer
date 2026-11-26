@@ -9,7 +9,7 @@
  * mee: die zouden de berekende samenstelling vervangen in plaats van aanvullen.
  */
 import rawProducts from "../../data/darf-products.json";
-import type { MineralValues } from "./minerals";
+import type { AnalysisKey, MineralValues } from "./minerals";
 
 export interface DarfProduct {
   slug: string;
@@ -26,7 +26,10 @@ export interface DarfProduct {
   ingredients: string;
   composition: Array<{ name: string; percent: number }>;
   description: string;
-  analysis: Record<string, string>;
+  /** Analyse per 100 g product; de labels zijn gelijkgetrokken (zie import-darf.mjs). */
+  analysis: Partial<Record<AnalysisKey, number>>;
+  /** Herkomst van de energiewaarde: opgave van de fabrikant of teruggerekend. */
+  energieBron?: "opgave" | "schatting";
 }
 
 const PRODUCTS = rawProducts as unknown as DarfProduct[];
@@ -53,24 +56,26 @@ function pickPack(candidates: DarfProduct[], grams: number): DarfProduct | undef
   return candidates.find((product) => byWeight(product) === smallest);
 }
 
-/** Leest een analysewaarde ("1,41") uit de DARF-analyse; null als die ontbreekt. */
-export function analysisNumber(product: DarfProduct, key: string): number | null {
+/** Leest een analysewaarde uit de DARF-analyse; null als die ontbreekt. */
+export function analysisNumber(product: DarfProduct, key: AnalysisKey): number | null {
   const raw = product.analysis?.[key];
-  if (raw === undefined || raw === null) return null;
-  const value = Number.parseFloat(String(raw).replace(",", "."));
-  return Number.isFinite(value) ? value : null;
+  return typeof raw === "number" && Number.isFinite(raw) ? raw : null;
 }
 
 /**
- * De analyse van een DARF-product als mineralen, in g per 100 g product.
- * `Calcium` en `Fosfor` staan bij alle producten in de snapshot; `Energie
- * (kcal 100g)` alleen bij een deel ervan, dus die mag null blijven.
+ * De analyse van een DARF-product als mineralen, in g (en kcal) per 100 g
+ * product. `energieBron` vertelt of de energiewaarde van de fabrikant komt of
+ * uit de analyse is teruggerekend.
  */
 export function darfMinerals(product: DarfProduct): MineralValues {
+  const energie = analysisNumber(product, "energieKcalPer100g");
+  const calcium = analysisNumber(product, "calcium");
   return {
-    calcium: analysisNumber(product, "Calcium"),
-    fosfor: analysisNumber(product, "Fosfor"),
-    energie: analysisNumber(product, "Energie (kcal 100g)"),
+    calcium,
+    fosfor: analysisNumber(product, "fosfor"),
+    energie,
+    energieBron:
+      energie === null ? undefined : product.energieBron === "schatting" ? "schatting" : "opgave",
   };
 }
 

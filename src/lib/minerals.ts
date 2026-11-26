@@ -114,9 +114,23 @@ export interface MineralValues {
   calcium: number | null;
   /** g fosfor per 100 g product, null als het onbekend is. */
   fosfor: number | null;
-  /** kcal per 100 g product, alleen gebruikt voor de omrekening per 1000 kcal. */
+  /** kcal per 100 g product, gebruikt voor de omrekening per 1000 kcal. */
   energie?: number | null;
+  /** Herkomst van de energiewaarde: opgave van de fabrikant of teruggerekend. */
+  energieBron?: "opgave" | "schatting";
 }
+
+/** Wat de DARF-analyse per product vastlegt, na het gelijktrekken van de labels. */
+export type AnalysisKey =
+  | "vocht"
+  | "eiwit"
+  | "vet"
+  | "celstof"
+  | "as"
+  | "calcium"
+  | "fosfor"
+  | "energieKcalPer100g"
+  | "caP";
 
 /**
  * Terugvalwaarden per vleestype, in g per 100 g product. Het zijn de
@@ -126,19 +140,19 @@ export interface MineralValues {
  * `data/product-nutrition.csv` in om ze per product te vervangen.
  */
 export const FALLBACK_MINERALS: Record<string, MineralValues> = {
-  VIS: { calcium: 0.6, fosfor: 0.5 }, // 0,22 (filet) – 1,06 (kop)
-  "GEMALEN VIS": { calcium: 0.6, fosfor: 0.5 },
-  PENS: { calcium: 0.11, fosfor: 0.1 }, // 0,068 – 0,14
-  SPIERVLEES: { calcium: 0.02, fosfor: 0.19 }, // spier zonder bot
-  ORGAAN: { calcium: 0.13, fosfor: 0.15 }, // 0,01 (lever) – 0,34 (hart/maag)
-  "ZACHT BOT": { calcium: 0.45, fosfor: 0.19 }, // gevogeltekarkas/nek, 0,39 – 0,49
-  "MIDDEL BOT": { calcium: 0.85, fosfor: 0.45 }, // konijn, kwartel, gans: 0,49 – 1,30
-  "HARD BOT": { calcium: 0.25, fosfor: 0.15 }, // lam/rund/geit: 0,13 – 0,35
-  "COMPLEET KARKAS": { calcium: 0.84, fosfor: 0.4 },
-  "COMPLEET KARKAS.ZACHT BOT": { calcium: 0.85, fosfor: 0.45 },
-  "COMPLEET KARKAS.MIDDEL BOT": { calcium: 0.85, fosfor: 0.45 },
-  "COMPLEET KARKAS.HARD BOT": { calcium: 0.5, fosfor: 0.25 },
-  "COMPLEET GEMALEN": { calcium: 0.79, fosfor: 0.55 }, // heel dier met bot: 0,32 – 1,41
+  VIS: { calcium: 0.6, fosfor: 0.5, energie: 176 }, // 0,22 (filet) – 1,06 (kop)
+  "GEMALEN VIS": { calcium: 0.6, fosfor: 0.5, energie: 176 },
+  PENS: { calcium: 0.11, fosfor: 0.1, energie: 155 }, // 0,068 – 0,14
+  SPIERVLEES: { calcium: 0.02, fosfor: 0.19, energie: 167 }, // spier zonder bot
+  ORGAAN: { calcium: 0.13, fosfor: 0.15, energie: 140 }, // 0,01 (lever) – 0,34 (hart/maag)
+  "ZACHT BOT": { calcium: 0.45, fosfor: 0.19, energie: 207 }, // gevogeltekarkas/nek, 0,39 – 0,49
+  "MIDDEL BOT": { calcium: 0.85, fosfor: 0.45, energie: 180 }, // konijn, kwartel, gans: 0,49 – 1,30
+  "HARD BOT": { calcium: 0.25, fosfor: 0.15, energie: 190 }, // lam/rund/geit: 0,13 – 0,35
+  "COMPLEET KARKAS": { calcium: 0.84, fosfor: 0.4, energie: 168 },
+  "COMPLEET KARKAS.ZACHT BOT": { calcium: 0.85, fosfor: 0.45, energie: 180 },
+  "COMPLEET KARKAS.MIDDEL BOT": { calcium: 0.85, fosfor: 0.45, energie: 180 },
+  "COMPLEET KARKAS.HARD BOT": { calcium: 0.5, fosfor: 0.25, energie: 190 },
+  "COMPLEET GEMALEN": { calcium: 0.79, fosfor: 0.55, energie: 185 }, // heel dier met bot: 0,32 – 1,41
 };
 
 function normalizeType(typeVlees: string): string {
@@ -154,13 +168,13 @@ export function fallbackMinerals(typeVlees: string): MineralValues | null {
  * hierboven, maar gegroepeerd zoals `compositionFor()` de delen kent.
  */
 export const PART_MINERALS: Record<string, MineralValues> = {
-  vis: { calcium: 0.6, fosfor: 0.5 },
-  pens: { calcium: 0.11, fosfor: 0.1 },
-  karkas: { calcium: 0.84, fosfor: 0.4 },
-  orgaan: { calcium: 0.13, fosfor: 0.15 },
-  spier: { calcium: 0.02, fosfor: 0.19 },
-  bot: { calcium: 0.27, fosfor: 0.16 }, // gemiddelde van de losse botproducten
-  gemalen: { calcium: 0.79, fosfor: 0.55 },
+  vis: { calcium: 0.6, fosfor: 0.5, energie: 176 },
+  pens: { calcium: 0.11, fosfor: 0.1, energie: 155 },
+  karkas: { calcium: 0.84, fosfor: 0.4, energie: 168 },
+  orgaan: { calcium: 0.13, fosfor: 0.15, energie: 140 },
+  spier: { calcium: 0.02, fosfor: 0.19, energie: 167 },
+  bot: { calcium: 0.27, fosfor: 0.16, energie: 207 }, // gemiddelde van de losse botproducten
+  gemalen: { calcium: 0.79, fosfor: 0.55, energie: 185 },
 };
 
 export function partMinerals(partKey: string): MineralValues {
@@ -175,12 +189,14 @@ export function productMinerals(product: {
   typeVlees: string;
   calcium?: number | null;
   fosfor?: number | null;
+  energie?: number | null;
 }): MineralValues {
   const fallback = fallbackMinerals(product.typeVlees);
   return {
     calcium: product.calcium ?? fallback?.calcium ?? null,
     fosfor: product.fosfor ?? fallback?.fosfor ?? null,
-    energie: null,
+    energie: product.energie ?? fallback?.energie ?? null,
+    energieBron: "opgave",
   };
 }
 
@@ -200,6 +216,10 @@ export interface MineralReport {
   fosforG: number;
   calciumPer100g: number;
   calciumPer1000Kcal: number | null;
+  /** kcal per 100 g voer, als die voor alle regels bekend is. */
+  energiePer100g: number | null;
+  /** "schatting" zodra één van de meegewogen energiewaarden is teruggerekend. */
+  energieBron: "opgave" | "schatting" | null;
   caP: number | null;
   status: MineralStatus;
   message: string;
@@ -245,6 +265,7 @@ export function summariseMinerals(items: MineralInput[], band: MineralBand): Min
   let fosforKnownGrams = 0;
   let energieKcal = 0;
   let energieKnownGrams = 0;
+  let energieEstimated = false;
 
   for (const item of items) {
     const itemGrams = Math.max(0, item.grams);
@@ -260,12 +281,19 @@ export function summariseMinerals(items: MineralInput[], band: MineralBand): Min
     if (item.minerals.energie !== undefined && item.minerals.energie !== null) {
       energieKcal += (itemGrams * item.minerals.energie) / 100;
       energieKnownGrams += itemGrams;
+      if (item.minerals.energieBron === "schatting") energieEstimated = true;
     }
   }
 
   const calciumPer100g = grams > 0 ? (calciumG / grams) * 100 : 0;
   const completeEnergie = grams > 0 && energieKnownGrams === grams;
   const calciumPer1000Kcal = completeEnergie && energieKcal > 0 ? (calciumG / energieKcal) * 1000 : null;
+  const energiePer100g = completeEnergie && energieKcal > 0 ? (energieKcal / grams) * 100 : null;
+  const energieBron: MineralReport["energieBron"] = !completeEnergie
+    ? null
+    : energieEstimated
+      ? "schatting"
+      : "opgave";
   const completeFosfor = grams > 0 && fosforKnownGrams === grams && fosforG > 0;
   const caP = completeFosfor ? calciumG / fosforG : null;
   const range = calciumRangePer100g(band);
@@ -309,6 +337,8 @@ export function summariseMinerals(items: MineralInput[], band: MineralBand): Min
     fosforG: round(fosforG, 2),
     calciumPer100g: round(calciumPer100g, 3),
     calciumPer1000Kcal: calciumPer1000Kcal === null ? null : round(calciumPer1000Kcal, 2),
+    energiePer100g: energiePer100g === null ? null : round(energiePer100g, 1),
+    energieBron,
     caP: caP === null ? null : round(caP, 2),
     status,
     message,

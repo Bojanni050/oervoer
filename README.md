@@ -119,9 +119,22 @@ per 1000 kcal, omgerekend naar g per 100 g voer bij ~30% droge stof.
 De calcium/fosfor-verhouding hoort tussen 1:1 en 2:1 te liggen (bij groei tot 1,8:1). Het
 advies toont de cijfers naast de samenstelling, de boodschappenlijst toont ze per regel en de
 picklijst krijgt een `Ca`-kolom plus een tegel met het oordeel; de CSV-export bevat
-`calcium_pct`, `fosfor_pct` en een samenvatting onderaan. Een omrekening per 1000 kcal kan
-alleen als de energiewaarde van alle regels bekend is; de losse DARF-botproducten hebben die
-niet, dus die regel staat dan op "onbekend".
+`calcium_pct`, `fosfor_pct`, `energie_kcal_per_100g` en een samenvatting onderaan.
+
+De DARF-detailpagina's gebruiken per product andere labels voor dezelfde analyse ("Ruw eiwit",
+"Ruw Eiwit", "Ruwe as", "Vezels", "Ruwe celstof", "Energie Kcal / 100g", "Clacium"). Het
+importscript trekt die labels gelijk naar één canonieke set met getallen, waardoor de energie
+bij 120 van de 130 producten uit de opgave komt. Waar de fabrikant geen energie publiceert
+vult het script die aan met de gemodificeerde Atwater-factoren (4/9/4 uit vocht, eiwit, vet,
+celstof en as) en markeert dat als `schatting`; op de 97 producten waar beide bekend zijn wijkt
+die schatting gemiddeld 7,4% af van de opgave (de EU-factoren 3,5/8,5/3,5 komen op 11,4% uit).
+Het advies en de picklijst melden de herkomst erbij. Een bestaande snapshot bijwerken kan
+zonder netwerk met `node scripts/import-darf.mjs --normalise-only`.
+
+De omrekening per 1000 kcal lukt alleen als elke regel een energiewaarde heeft. Ontbreekt die
+(bij 7 DARF-producten, waaronder lamsbot waarvan de analyse zelf niet sluitend is), dan staat
+die regel op "onbekend". Voor eigen SKU's komt de energie uit de optionele kolom `energie` in
+`data/product-nutrition.csv`; zonder eigen waarde geldt de terugval per vleestype.
 
 ## DARF-producten
 
