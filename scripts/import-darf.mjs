@@ -26,6 +26,9 @@ const PAGES = 15;
 const DETAIL_CONCURRENCY = 4;
 const REFRESH = process.argv.includes("--refresh");
 const NO_DETAILS = process.argv.includes("--no-details");
+// Alleen de bestaande snapshot normaliseren (labels gelijktrekken, energie
+// aanvullen) zonder het net op te gaan.
+const NORMALISE_ONLY = process.argv.includes("--normalise-only");
 const CACHE_DIR = path.join(process.cwd(), ".data", "darf-cache");
 
 const HEADERS = {
@@ -203,6 +206,67 @@ function detailCacheFile(slug) {
   return path.join(CACHE_DIR, `${slug}.json`);
 }
 
+/**
+ * De analyse op de DARF-detailpagina's gebruikt per product andere labels
+ * ("Ruw eiwit", "Ruw Eiwit", "Ruwe eiwit", "Ruw eitwit", "Vezels", "Ruwe
+ * celstof", "Energie", "Energie Kcal / 100g", "Clacium", "Ca:P verhouding").
+ * Zonder gelijktrekken verdwijnt meer dan de helft van de waarden in losse
+ * sleutels, dus alles gaat naar één canonieke set met getallen.
+ */
+const ANALYSIS_ALIASES = [
+  [/^vocht/, "vocht"],
+  [/eiwit|eitwit/, "eiwit"],
+  [/^ruwe?\s*vet$|^vet$/, "vet"],
+  [/celstof|celsof|vezel/, "celstof"],
+  [/^ruwe?\s*as$|^as$/, "as"],
+  [/calcium|clacium/, "calcium"],
+  [/fosfor/, "fosfor"],
+  [/^ca\s*[\/:±]\s*p/, "caP"],
+  [/energie/, "energieKcalPer100g"],
+];
+
+export function canonicalAnalysisKey(label) {
+  const key = String(label).toLowerCase().replace(/\s+/g, " ").trim();
+  for (const [pattern, canonical] of ANALYSIS_ALIASES) {
+    if (pattern.test(key)) return canonical;
+  }
+  return null;
+}
+
+/** "0,13" → 0.13, "152.9 kcal" → 152.9, "1,4:1" → 1.4; anders null. */
+export function analysisValue(raw) {
+  if (raw === undefined || raw === null) return null;
+  const match = String(raw).replace(",", ".").match(/-?\d+(?:\.\d+)?/);
+  return match ? Number.parseFloat(match[0]) : null;
+}
+
+/** Zet de ruwe analyse om naar canonieke sleutels met getallen. */
+export function normaliseAnalysis(analysis) {
+  const out = {};
+  for (const [label, value] of Object.entries(analysis ?? {})) {
+    const key = canonicalAnalysisKey(label) ?? label;
+    const parsed = analysisValue(value);
+    if (out[key] === undefined && parsed !== null) out[key] = parsed;
+  }
+  return out;
+}
+
+/**
+ * Energie schatten met de gemodificeerde Atwater-factoren (4/9/4) uit vocht,
+ * eiwit, vet, celstof en as. Alleen gebruikt als de fabrikant zelf geen
+ * energiewaarde publiceert; de uitkomst wordt als schatting gemarkeerd. Op de
+ * 97 producten waar beide bekend zijn wijkt dit gemiddeld 7,4% af van de
+ * opgave (de EU-factoren 3,5/8,5/3,5 komen op 11,4% uit).
+ */
+export function estimateEnergy(analysis) {
+  const { vocht, eiwit, vet, as } = analysis ?? {};
+  const celstof = analysis?.celstof ?? 0;
+  if ([vocht, eiwit, vet, as].some((value) => typeof value !== "number")) return null;
+  const nfe = 100 - (vocht + eiwit + vet + celstof + as);
+  if (nfe < 0) return null;
+  return Math.round(4 * eiwit + 9 * vet + 4 * nfe);
+}
+
 function parseDetail(html) {
   const rendered = html
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
@@ -248,8 +312,28 @@ function parseDetail(html) {
     priceCents: price ? parsePrice(textOf(price[1])) : null,
     ingredients: ingredientsBlock ? textOf(ingredientsBlock[1]) : "",
     composition: [...heroes, ...tiles],
-    analysis,
+    analysis: normaliseAnalysis(analysis),
   };
+}
+
+/**
+ * Vult de energie aan waar de fabrikant er geen publiceert en zet de herkomst
+ * erbij: `opgave` als de pagina zelf een energiewaarde noemt, `schatting` als
+ * die uit de analyse is teruggerekend. Een opgave wordt nooit overschreven.
+ */
+function applyEnergy(product) {
+  product.analysis = normaliseAnalysis(product.analysis);
+  if (typeof product.analysis.energieKcalPer100g === "number") {
+    product.energieBron = "opgave";
+    return;
+  }
+  const estimate = estimateEnergy(product.analysis);
+  if (estimate !== null) {
+    product.analysis.energieKcalPer100g = estimate;
+    product.energieBron = "schatting";
+  } else {
+    delete product.energieBron;
+  }
 }
 
 async function loadDetail(product) {
@@ -278,7 +362,7 @@ function applyDetail(product, detail) {
   }
 
   product.description = detail.description;
-  product.analysis = detail.analysis;
+  product.analysis = normaliseAnalysis(detail.analysis);
   product.ingredients = detail.ingredients;
   product.composition = detail.composition;
 
@@ -418,6 +502,25 @@ function upsert(products) {
   }
 }
 
+if (NORMALISE_ONLY) {
+  // Migratiepad: de bestaande snapshot gelijktrekken en van energie voorzien,
+  // zonder netwerk.
+  const snapshotPath = path.join(process.cwd(), "data", "darf-products.json");
+  const snapshot = JSON.parse(fs.readFileSync(snapshotPath, "utf8"));
+  for (const product of snapshot) {
+    applyEnergy(product);
+    if (!product.part) product.part = "onbekend";
+  }
+  fs.writeFileSync(snapshotPath, `${JSON.stringify(snapshot, null, 2)}\n`);
+  const metOpgave = snapshot.filter((product) => product.energieBron === "opgave").length;
+  const metSchatting = snapshot.filter((product) => product.energieBron === "schatting").length;
+  const zonder = snapshot.length - metOpgave - metSchatting;
+  console.log(
+    `snapshot genormaliseerd: ${snapshot.length} producten, energie uit opgave ${metOpgave}, geschat ${metSchatting}, onbekend ${zonder}`,
+  );
+  process.exit(0);
+}
+
 const products = await scrapeCards();
 
 if (!NO_DETAILS) {
@@ -457,6 +560,7 @@ if (!NO_DETAILS) {
 products.sort((a, b) => a.name.localeCompare(b.name, "nl"));
 for (const product of products) {
   if (!product.part) product.part = "onbekend";
+  applyEnergy(product);
 }
 
 const dataDir = path.join(process.cwd(), "data");

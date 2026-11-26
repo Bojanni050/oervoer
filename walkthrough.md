@@ -41,6 +41,37 @@
   ruw vet, vezels, ruwe as) maar geen kcal; die zijn opnieuw te scrapen en dan met de
   Atwater-factoren te schatten, te ijken op de 12 producten die al een energiewaarde hebben.
 
+## 2026-11-26 (Energiewaarden en de analyse gelijktrekken)
+
+- Findings: de aanname dat de DARF-pagina's geen energie publiceren was fout — het zijn de
+  labels die verschillen. De analyse-rijen komen binnen onder ~20 spellingen ("Energie",
+  "Energie (kcal 100g)", "Energie Kcal / 100g", "Energie KCal / 100g", "Energie/ kcal 100g",
+  "Energie Kcal", "Energie Kcal per 100g", "energie (Kcal)", …) en idem voor eiwit, vet,
+  vezels/celstof en as, met typefouten als "Clacium", "Ruwe celsof" en "Ruwe eitwit". Daardoor
+  stond in de snapshot 1 product met een leesbare energiewaarde terwijl er in werkelijkheid
+  120 zijn.
+- Conclusions: labels gelijktrekken naar één canonieke set met getallen, en alleen waar de
+  fabrikant niets publiceert de energie teruggerekend invullen met de gemodificeerde
+  Atwater-factoren (4/9/4) — gemarkeerd als `schatting`, nooit als opgave. Geijkt op de 97
+  producten waar beide bekend zijn: gemiddeld 7,4% afwijking (EU-factoren 3,5/8,5/3,5: 11,4%).
+  Lamsbot blijft zonder energie: de analyse op de pagina telt op tot 103%, dus een schatting
+  zou daar verzonnen zijn.
+- Actions:
+  - `scripts/import-darf.mjs` — `normaliseAnalysis()`, `analysisValue()`,
+    `canonicalAnalysisKey()`, `estimateEnergy()` en `applyEnergy()`; `--normalise-only` werkt
+    de bestaande snapshot bij zonder netwerk.
+  - `data/darf-products.json` — 130 producten genormaliseerd: energie uit opgave 120, geschat
+    3, onbekend 7; `energieBron` per product.
+  - `src/lib/darf.ts` — analyse getypeerd op canonieke sleutels, `energieBron` doorgegeven.
+  - `src/lib/minerals.ts` — energie per deel en per vleestype, `energiePer100g` en
+    `energieBron` in het rapport; `data/product-nutrition.csv` kreeg een optionele
+    `energie`-kolom, `products.energie` volgt dezelfde additieve migratie.
+  - Advies, beheertegel en CSV tonen nu ook `g calcium per 1000 kcal` met de herkomst van de
+    energie erbij.
+  - Gecontroleerd: hond 20 kg → 2,65 g Ca/1000 kcal (172,6 kcal/100 g, opgave); picklijst →
+    2,62 g/1000 kcal; boodschappenlijst → 3,48 g/1000 kcal, gemarkeerd als schatting omdat
+    kipnekken (107 kcal) teruggerekend is. `tsc --noEmit` en `next build` slagen.
+
 ## 2026-11-25 (Repo omgezet naar webapp)
 
 - Findings: de repo bevatte een Python 2 / GTK-desktopwizard (`oervoer/`, `gtk/`) plus een

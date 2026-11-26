@@ -340,6 +340,9 @@ export default async function OrderDetailPage({
                     {calciumPerDay === null
                       ? ""
                       : ` · ${formatMineral(calciumPerDay)} g per dag`}
+                    {minerals?.calciumPer1000Kcal === null || !minerals
+                      ? ""
+                      : ` · ${formatMineral(minerals.calciumPer1000Kcal)} g per 1000 kcal`}
                   </p>
                 </div>
               </div>

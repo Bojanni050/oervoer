@@ -283,6 +283,13 @@ export default async function AdvicePage({ params }: PageProps) {
             deel komen uit de productanalyses; een hoger botpercentage betekent niet automatisch
             meer calcium. Kippennek bevat bijvoorbeeld 0,39% calcium en lamsbot 0,13%. Voor honden
             en katten zijn de grenzen van FEDIAF aangehouden.
+            {minerals.report.calciumPer1000Kcal === null
+              ? ""
+              : ` Dit menu levert ongeveer ${formatMineral(minerals.report.calciumPer1000Kcal)} g calcium per 1000 kcal${
+                  minerals.report.energieBron === "schatting"
+                    ? " (de energiewaarde is deels uit de analyse teruggerekend)"
+                    : ""
+                }.`}
           </p>
         </section>
 
