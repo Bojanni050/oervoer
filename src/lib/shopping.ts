@@ -248,6 +248,11 @@ function darfOrFallback(
  */
 const DEFAULT_MEATS = ["KIP", "RUND", "LAM", "EEND"];
 
+/** Vier smaken per advies: genoeg variatie zonder de lijst te laten uitdijen. */
+const MAX_MEAT_CHOICES = 4;
+/** De gekozen smaak weegt twee keer zo zwaar: 40% van een deel bij vier smaken. */
+const PREFERENCE_WEIGHT = 2;
+
 function defaultMeatChoices(donts: string[]): string[] {
   const blocked = new Set(donts.map((value) => value.toUpperCase()));
   const common = DEFAULT_MEATS.filter((meat) => !blocked.has(meat));
@@ -257,6 +262,32 @@ function defaultMeatChoices(donts: string[]): string[] {
     (meat) => !blocked.has(meat) && !common.includes(meat) && meatLikes([meat]).length > 0,
   );
   return [...common, ...extra].slice(0, 4);
+}
+
+/**
+ * De aangevinkte smaken zijn een voorkeur, geen vervanging: zonder deze aanvulling
+ * werd een advies met alleen "kip" ook echt alleen kip (karkas, orgaan, spier en
+ * bot allemaal kip). De voorkeur komt vooraan en de standaardmix vult aan tot vier.
+ */
+function meatChoicesFor(
+  likes: string[],
+  donts: string[],
+): { choices: string[]; preferred: string[] } {
+  const preferred = meatLikes(likes);
+  if (preferred.length === 0) return { choices: defaultMeatChoices(donts), preferred };
+  const fillers = defaultMeatChoices(donts).filter((meat) => !preferred.includes(meat));
+  const choices = [...preferred, ...fillers].slice(0, Math.max(MAX_MEAT_CHOICES, preferred.length));
+  return { choices, preferred };
+}
+
+/** Verdeelt grammen naar gewicht in plaats van eerlijk: de voorkeur krijgt meer. */
+function splitGramsWeighted(total: number, choices: string[], preferred: string[]): number[] {
+  if (choices.length === 0) return [];
+  const weights = choices.map((meat) => (preferred.includes(meat) ? PREFERENCE_WEIGHT : 1));
+  const sum = weights.reduce((a, b) => a + b, 0);
+  const values = weights.map((weight) => Math.floor((total * weight) / sum));
+  values[values.length - 1] += total - values.reduce((a, b) => a + b, 0);
+  return values;
 }
 
 function flavorsForPart(part: PartKey, meatChoices: string[]): string[] {
@@ -269,14 +300,18 @@ function flavorsForPart(part: PartKey, meatChoices: string[]): string[] {
  * gedekt (gemalen, karkas en spier). Zo kiezen we één verpakking per smaak in
  * plaats van per regel een andere maat.
  */
-function wholeAnimalTotals(composition: CompositionPart[], meatChoices: string[]): Map<string, number> {
+function wholeAnimalTotals(
+  composition: CompositionPart[],
+  meatChoices: string[],
+  preferred: string[],
+): Map<string, number> {
   const totals = new Map<string, number>();
   const wholeParts: PartKey[] = ["gemalen", "karkas", "spier"];
   for (const part of composition) {
     const partKey = part.key as PartKey;
     if (!wholeParts.includes(partKey)) continue;
     const flavors = flavorsForPart(partKey, meatChoices);
-    const amounts = splitGrams(part.grams, flavors.length);
+    const amounts = splitGramsWeighted(part.grams, flavors, preferred);
     flavors.forEach((flavor, index) => {
       totals.set(flavor, (totals.get(flavor) ?? 0) + amounts[index]);
     });
@@ -291,9 +326,8 @@ export function shoppingListFor(
   const likes = advice.likes.filter(
     (like) => !advice.donts.some((dont) => dont.toUpperCase() === like.toUpperCase()),
   );
-  const preferred = meatLikes(likes);
-  const meatChoices = preferred.length > 0 ? preferred : defaultMeatChoices(advice.donts);
-  const wholeTotals = wholeAnimalTotals(composition, meatChoices);
+  const { choices: meatChoices, preferred } = meatChoicesFor(likes, advice.donts);
+  const wholeTotals = wholeAnimalTotals(composition, meatChoices, preferred);
   const lines: ShoppingLine[] = [];
 
   for (const part of composition) {
@@ -338,7 +372,7 @@ export function shoppingListFor(
 
     const partKey = part.key as PartKey;
     const choices = flavorsForPart(partKey, meatChoices);
-    const amounts = splitGrams(part.grams, choices.length);
+    const amounts = splitGramsWeighted(part.grams, choices, preferred);
 
     choices.forEach((protein, index) => {
       let products: ShopProduct[];

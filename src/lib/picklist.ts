@@ -32,6 +32,7 @@ import {
   VIS_GEMALEN,
   ZACHT_BOT,
   LIKE_FACTOR,
+  PREFERENCE_SHARE,
 } from "./globals";
 import {
   bandFor,
@@ -231,6 +232,14 @@ export function generatePicklist(
     return true;
   };
 
+  /**
+   * Een voorkeur geldt voor de smaak, niet voor het deel: "KIP" hoort ook bij
+   * KIP.HART en KIP.LEVER. Zonder dit telt een voorkeur alleen voor producten
+   * waarvan de smaak exact gelijk is, en dus voor bijna niets.
+   */
+  const isPreferredTaste = (product: Product): boolean =>
+    prefers.includes(product.smaak.split(".")[0]) || prefers.includes(product.smaak);
+
   const makeList = (
     vlees: string,
     calciumNeeded?: number,
@@ -272,7 +281,7 @@ export function generatePicklist(
 
     const weights = candidates.map((product) => {
       const base = product.qty;
-      const liked = prefers.includes(product.smaak) ? base * LIKE_FACTOR : base;
+      const liked = isPreferredTaste(product) ? base * LIKE_FACTOR : base;
       if (!steer || calciumNeeded === undefined) return liked;
       // Het restdeel bepaalt het calcium van het hele menu. Kandidaten die
       // dichter bij wat daar nodig is zitten wegen zwaarder; de voorraad blijft
@@ -316,14 +325,33 @@ export function generatePicklist(
       return { weight: totalWeight, selection };
     }
 
+    // De voorkeurssmaak mag dit deel niet helemaal vullen. Tot de grens kiezen we
+    // gewoon (met de voorkeur zwaarder); daarna alleen nog uit de andere smaken.
+    const otherCandidates = candidates.filter((candidate) => !isPreferredTaste(candidate));
+    const capped = otherCandidates.length > 0 && candidates.some((candidate) => isPreferredTaste(candidate));
+    const preferenceCap = targetWeight * PREFERENCE_SHARE;
+    const otherWeighted = capped
+      ? new WeightedRandom(otherCandidates.map((candidate) => candidate.qty))
+      : null;
+    let preferredWeight = 0;
+
     let attempts = 0;
     while (totalWeight < targetWeight && attempts <= MAX_TRIES) {
       attempts++;
-      const product = candidates[weighted.rand(rng)];
+      const atCap = capped && preferredWeight >= preferenceCap;
+      let product = atCap
+        ? otherCandidates[otherWeighted!.rand(rng)]
+        : candidates[weighted.rand(rng)];
       if (!product) break;
+      // Eén product mag de grens niet overschrijden: dan liever een andere smaak.
+      if (capped && !atCap && isPreferredTaste(product) && preferredWeight + product.weight > preferenceCap) {
+        const alternative = otherCandidates[otherWeighted!.rand(rng)];
+        if (alternative) product = alternative;
+      }
       const head = isFishHead(product);
       if (head && fishHeadUsed) continue;
       totalWeight += product.weight;
+      if (capped && isPreferredTaste(product)) preferredWeight += product.weight;
       selection.push(product);
       if (head) fishHeadUsed = true;
     }
