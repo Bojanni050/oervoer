@@ -245,8 +245,15 @@ er geen dubbele producten ontstaan.
 de herkomst (`opgave`, of leeg als de bron niets noemt). Elk woord uit de zoekterm moet in de
 naam of een alias voorkomen, dus "kip nek" en "alroda geit" werken ook.
 
-Een periodieke run hoort op de server te staan (systemd-timer of Plesk-cron, als de gebruiker
-van de app) — nog niet ingericht; tot die tijd draait de scanner handmatig.
+De scanner draait op de server als systemd-timer `oervoer-catalog.timer` (wekelijks, zondag
+03:30 met spreiding, als gebruiker `espenvdh`). Handmatig dezelfde run starten:
+
+```bash
+sudo systemctl start oervoer-catalog.service
+journalctl -u oervoer-catalog.service -n 20
+```
+
+De units hieronder staan ook echt zo op de server:
 
 ```ini
 # /etc/systemd/system/oervoer-catalog.service
