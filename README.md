@@ -206,6 +206,73 @@ Prijzen en gewichten zijn een momentopname van darf.nl. De app toont ze als voor
 grammen uit het advies blijven de norm. De detailpagina's worden lokaal gecachet in
 `.data/darf-cache` (git-ignored) zodat opnieuw importeren snel gaat.
 
+## Catalogus
+
+De catalogus is de productdatabase waar de app voedingswaarden uit haalt: welke producten
+bestaan er, wat zit erin, en wat is de analyse. Hij staat los van de voorraad (`products` is
+wat OerVoer zelf verkoopt, `catalog_products` is wat een baasje zou kunnen voeren) en wordt
+gevuld door een scanner die de bron bijhoudt.
+
+**Bronnen.** Nu `darf.nl` — dat levert 340 productpagina's op, vier keer zoveel als de 130 die
+de oude import via vijftien categoriepagina's ophaalde. Dezelfde scanner kan later NEVO (RIVM)
+en USDA FoodData Central als dataset inlezen en Bo's eigen producten als handmatige bron; die
+bronnen staan al in `catalog_sources`.
+
+**Bijhouden.**
+
+```bash
+npm run catalog:scan                     # hele darf-sitemap langs (≈10 min, 1,5 s per pagina)
+npm run catalog:scan -- --limit 20       # eerste 20 (proefrun)
+npm run catalog:scan -- --only=<slug>    # één product opnieuw
+npm run catalog:scan -- --import-snapshot  # bestaande data/darf-products.json inlezen
+npm run catalog:scan -- --dry-run        # laten zien wat er zou gebeuren
+npm run catalog:stats                    # stand: aantallen en laatste run
+npm run catalog:pending                  # wijzigingen die op goedkeuring wachten
+npm run catalog:scan -- --approve 12     # goedkeuren (of --reject 12)
+```
+
+**Wat de scanner wel en niet doet.** Hij leest `robots.txt` (darf.nl staat alles toe), wacht
+1,5 s tussen verzoeken, gebruikt een herkenbare user-agent en probeert een mislukte pagina
+drie keer opnieuw. Elke wijziging wordt per veld in `catalog_changes` vastgelegd. Een nieuwe
+waarde voor calcium, fosfor of energie wordt overgenomen als de afwijking ≤ 10% is; is die
+groter, dan blijft de oude waarde staan en wacht de nieuwe op goedkeuring. Een getal wordt
+nooit met leeg overschreven, en een product dat uit de sitemap verdwijnt gaat pas na drie
+gemiste runs op inactief. Doorverwijzingen (darf.nl stuurt korte slugs door naar de volledige
+productpagina) worden op de canonieke slug geschreven en de korte slug wordt een alias, zodat
+er geen dubbele producten ontstaan.
+
+**Zoeken.** `GET /api/catalog/search?q=kipnek` geeft producten met calcium, fosfor, energie en
+de herkomst (`opgave`, of leeg als de bron niets noemt). Elk woord uit de zoekterm moet in de
+naam of een alias voorkomen, dus "kip nek" en "alroda geit" werken ook.
+
+Een periodieke run hoort op de server te staan (systemd-timer of Plesk-cron, als de gebruiker
+van de app) — nog niet ingericht; tot die tijd draait de scanner handmatig.
+
+```ini
+# /etc/systemd/system/oervoer-catalog.service
+[Unit]
+Description=OerVoer catalogus bijwerken
+
+[Service]
+Type=oneshot
+User=espenvdh
+WorkingDirectory=/var/www/vhosts/studiovanderheide.nl/oer.studiovanderheide.nl/app
+Environment=PATH=/opt/plesk/node/22/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/opt/plesk/node/22/bin/node scripts/catalog-scan.mjs --quiet
+
+# /etc/systemd/system/oervoer-catalog.timer
+[Unit]
+Description=Wekelijks de OerVoer-catalogus bijwerken
+
+[Timer]
+OnCalendar=Sun 03:30
+Persistent=true
+RandomizedDelaySec=1800
+
+[Install]
+WantedBy=timers.target
+```
+
 ## Projectstructuur
 
 ```
@@ -233,6 +300,7 @@ src/
     advice.ts                dagrantsoen en menu-opbouw voor het advies
     shopping.ts              boodschappenlijst per smaak, met DARF en fallback
     darf.ts                  DARF-producten kiezen per samenstellingsdeel
+    catalog.ts               catalogus: schema, zoeken, statistieken, wachtende wijzigingen
     auth.ts                  wachtwoorden, sessies en cookie
     photo.ts                 uploadvalidatie en opslag als BLOB
     picklist.ts              port van de originele generator
@@ -241,7 +309,10 @@ src/
     minerals.ts              calciumbanden, terugvalwaarden en de mineralenberekening
     csv.ts                   CSV-parser/exporter
 scripts/import-darf.mjs      DARF-catalogus scrapen naar JSON en shop_products
+scripts/catalog-scan.mjs     catalogus bijhouden (sitemap, wijzigingen, goedkeuring)
+scripts/lib/darf-parse.mjs   DARF-pagina's lezen (cheerio) en producten afleiden
 scripts/set-admin.mjs        account promoveren tot beheerder
+db/catalog.sql               opbouw van de catalogustabellen (app én scanner)
 data/darf-products.json      snapshot van de DARF-producten voor de app
 data/product-nutrition.csv   eigen calcium- en fosforanalyses per SKU (g per 100 g)
 test/products.csv            productbron voor de initiële voorraad
@@ -256,7 +327,8 @@ De SQLite-database staat in `.data/oervoer.db` en is git-ignored. Verwijder het 
 opnieuw te beginnen; de volgende start zaait opnieuw.
 
 De tabellen zijn `products`, `orders`, `picklists`, `advices`, `users`, `pets`, `sessions`,
-`photos` en `shop_products`. In `advices.likes` staan de gekozen smaken; `users.role` bepaalt
+`photos`, `shop_products` en de catalogustabellen `catalog_sources`, `catalog_products`,
+`catalog_runs`, `catalog_changes` en `catalog_aliases`. In `advices.likes` staan de gekozen smaken; `users.role` bepaalt
 wie beheer mag openen. `products.calcium` en `products.fosfor` (g per 100 g product) worden bij
 het starten gevuld uit `data/product-nutrition.csv` en blijven staan bij een herseed; ontbreekt
 een waarde, dan geldt de terugval per vleestype uit `src/lib/minerals.ts`. Een picklijst bewaart een snapshot van de regels en een advies bewaart

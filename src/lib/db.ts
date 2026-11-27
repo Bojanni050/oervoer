@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { buildAdvice, type AdviceInput, type AdviceResult } from "./advice";
+import { ensureCatalogSchema } from "./catalog";
 import { parseCsvObjects } from "./csv";
 import {
   daysFor,
@@ -174,9 +175,15 @@ function openDb(): DatabaseSync {
   addColumnIfMissing(db, "products", "energie", "REAL");
 
   globalThis.__oervoerDb = db;
+  ensureCatalogSchema(db);
   seedIfEmpty(db);
   seedProductNutrition(db);
   return db;
+}
+
+/** Toegang tot dezelfde verbinding voor modules die zelf geen db openen. */
+export function database(): DatabaseSync {
+  return openDb();
 }
 
 function addColumnIfMissing(
