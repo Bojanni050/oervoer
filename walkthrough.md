@@ -1,5 +1,32 @@
 # Walkthrough
 
+## 2026-11-26 (Calcium stuurt de picklijst)
+
+- Findings: de generator koos bot volledig op voorraad en smaakvariatie. Omdat bot (of gemalen
+  vlees bij een PLUS-pakket) de restpost van het menu is, hing het calciumgehalte daarmee
+  af van de vraag of er toevallig gevogeltekarkas in de lijst zat. Over 30 seeds per order
+  kwam een pup van 8 kg in 18 van de 30 gevallen boven de puppennorm van 0,48 g per 100 g uit;
+  bij de volwassen honden en de kat viel geen enkel menu buiten de band.
+- Conclusions: sturen op het midden van de band (of 1,5× de ondergrens waar de norm geen
+  bovengrens noemt, zoals bij katten) via drie lagen — wegingsfactor op het restdeel, een
+  calciumterm in `chooseBest` en een reparatiestap die botregels verwisselt met ander bot uit
+  de voorraad. Wat niet te repareren valt wordt gemeld, niet verzwegen. De sturing staat
+  standaard aan en is met `{ steerCalcium: false }` uit te zetten.
+- Actions:
+  - `src/lib/picklist.ts` — `targetCalciumPer100g()`, `calciumFit()`,
+    `selectionCalciumDeviation()`, `calciumPer100gFor()`, `requiredCalciumForRemainder()`,
+    `repairCalcium()`; `collect()`, `selectType()`, `makeList()` en `chooseBest()` kennen nu
+    een calciumdoel voor het restdeel; `OrderInput.pup` bepaalt de band.
+  - `src/lib/db.ts` geeft `pup` mee aan de generator.
+  - Valkuil die hier boven kwam: `calciumPer100gFor()` gebruikte eerst alleen de terugval per
+    vleestype, waardoor een menu met eigen analyses alsnog op de terugval werd beoordeeld en de
+    reparatie niets deed. Nu telt het calcium van het product zelf mee.
+- Gecontroleerd (30 seeds per order, echte voorraad): pup 8 kg 18/30 buiten de band zonder
+  sturing → **0/30 met sturing** (0,43–0,48 g/100 g); hond 20 kg 0,45–0,47; kat 0/30. Met
+  synthetische analyses van 0,05% calcium slaat de melding aan met "Calcium te laag: 0,07 g per
+  100 g voer (norm 0,17 – 0,75 g voor volwassen hond)" en bij 2,5% met "te hoog"; de reparatie
+  bracht 2,5%-gevallen van 1,366 naar 1,251 g/100 g. `tsc --noEmit` en `next build` slagen.
+
 ## 2026-11-26 (Calcium en fosfor in de berekening)
 
 - Findings: er zat nergens een mineraalwaarde in de app, terwijl calcium de maat is waarop
