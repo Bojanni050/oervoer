@@ -1,5 +1,30 @@
 # Walkthrough
 
+## 2026-11-26 (Smaakvoorkeur vult aan, vervangt niet)
+
+- Findings: in `shoppingListFor()` stond `const meatChoices = preferred.length > 0 ? preferred :
+  defaultMeatChoices(...)`. Eén aangevinkte smaak verving dus de standaardmix: een advies met
+  "kip" leverde 6 regels in plaats van 18, met karkas, orgaan, spier én bot allemaal kip. Dat is
+  niet alleen saai, het legt het hele menu ook op kippebot — met de bijbehorende calcium- en
+  fosforlast. Zonder likes waren het vier smaken (kip, rund, lam, eend) en 18 regels.
+- Conclusions: voorkeur = basis + aanvulling tot vier smaken, met 40% van elk deel voor de
+  voorkeurssmaak. In de picklijst matchte een voorkeur alleen de exacte smaakwaarde (`KIP` viel
+  niet op `KIP.HART`), dus daar ook op het smaakdeel matchen en het aandeel aftoppen.
+- Actions:
+  - `src/lib/shopping.ts` — `meatChoicesFor()` (voorkeur vooraan, aanvullen tot `MAX_MEAT_CHOICES`
+    = 4), `splitGramsWeighted()` (gewicht 2 voor de voorkeur, 1 voor de rest),
+    `wholeAnimalTotals()` gebruikt dezelfde verdeling zodat de heel-dierverpakkingen kloppen.
+  - `src/lib/picklist.ts` — `isPreferredTaste()` matcht het smaakdeel; in `fill()` een tweede
+    gewogen lijst met alleen niet-voorkeurssmaken, waaruit gekozen wordt zodra het aandeel de
+    grens (`PREFERENCE_SHARE` = 0,4) raakt. Eén product mag de grens niet overschrijden: dan
+    wordt het een andere smaak.
+  - `src/lib/globals.ts` — `PREFERENCE_SHARE`.
+- Gecontroleerd: boodschappenlijst hond 20 kg 100% — geen likes 18 regels/4×25%; likes KIP 18
+  regels met kip 40% en rund/lam/eend 20%; likes KIP+RUND 33/33/17/17. Picklijst: KIP-voorkeur
+  geeft 37% kip in het botdeel (was 100% kip bij een kip-only menu) met 5 smaken in dat deel;
+  zes orders × tien seeds: gewicht 10/10 binnen tolerantie, geen waarschuwingen, 10–26 smaken per
+  menu. `tsc --noEmit` en `next build` slagen.
+
 ## 2026-11-26 (Calcium stuurt de picklijst)
 
 - Findings: de generator koos bot volledig op voorraad en smaakvariatie. Omdat bot (of gemalen

@@ -11,6 +11,11 @@ export const MEAL_FACTOR_SMALL = 0.19; // deelbare producten: min 0.19x maaltijd
 export const MEAL_FACTOR_FIXED = 1.5; // ondeelbare producten: max 1.5x maaltijd
 export const TRIES = 20; // aantal gegenereerde menu's per vleessoort
 export const LIKE_FACTOR = 4; // smaakvoorkeur weegt 4x zwaarder
+/**
+ * Een smaakvoorkeur mag niet het hele menu worden: maximaal dit deel van elk
+ * menuonderdeel (en van de boodschappenlijst) mag uit de voorkeurssmaak komen.
+ */
+export const PREFERENCE_SHARE = 0.4;
 export const SMALL_MEAL = 0.251; // kg, bovengrens kleine portie
 export const BIG_MEAL = 0.499; // kg, ondergrens grote portie
 export const MAX_TRIES = 150; // vullingspogingen voordat we opgeven

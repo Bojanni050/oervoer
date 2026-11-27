@@ -155,6 +155,25 @@ met het gemeten gehalte, de norm en een concrete suggestie. De sturing is uit te
 `generatePicklist(order, products, seed, { steerCalcium: false })`, bijvoorbeeld om te
 vergelijken.
 
+### Smaakvoorkeur vult aan, vervangt niet
+
+Een voorkeur is een voorkeur, geen filter. In de boodschappenlijst van het advies gebeurde dat
+wel: met alleen "kip" aangevinkt bestond het hele menu uit kip — karkas, orgaan, spier én bot —
+en viel de standaardmix van vier smaken weg. Nu geldt:
+
+- de aangevinkte smaak komt **vooraan** en de standaardmix vult aan tot vier smaken
+  (`meatChoicesFor` in `src/lib/shopping.ts`);
+- die smaak krijgt **40% van elk deel**, de andere drie verdelen de rest
+  (`splitGramsWeighted`, gewicht 2 tegen 1);
+- bij twee voorkeuren krijgt elk 33% en de rest 17%.
+
+In de picklijst (`src/lib/picklist.ts`) geldt hetzelfde idee: een voorkeur matcht nu op het
+smaakdeel, dus "KIP" telt ook voor `KIP.HART` en `KIP.LEVER` (eerst matchte alleen de exacte
+waarde, waardoor een voorkeur bijna nergens op sloeg). De weging blijft 4×, maar het aandeel
+van de voorkeurssmaak in een menuonderdeel is afgetopt op `PREFERENCE_SHARE` (40%, in
+`src/lib/globals.ts`): boven die grens wordt de rest van dat deel uit andere smaken gevuld.
+Zijn er geen andere smaken in de voorraad, dan vervalt de grens en vult het menu gewoon.
+
 ## DARF-producten
 
 De boodschappenlijst verwijst naar echte producten uit de DARF Versvoer-catalogus. Die
