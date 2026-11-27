@@ -585,6 +585,7 @@ export function generateForOrder(orderId: number): PicklistRecord {
     prefers: order.prefers,
     portie: order.portie,
     factor: order.factor,
+    pup: order.pup,
   };
 
   db.exec("BEGIN");

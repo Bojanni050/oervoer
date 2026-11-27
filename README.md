@@ -136,6 +136,44 @@ De omrekening per 1000 kcal lukt alleen als elke regel een energiewaarde heeft. 
 die regel op "onbekend". Voor eigen SKU's komt de energie uit de optionele kolom `energie` in
 `data/product-nutrition.csv`; zonder eigen waarde geldt de terugval per vleestype.
 
+### Calcium stuurt de picklijst
+
+Het restdeel van een menu (bot bij `100%` en `Combinatie`, gemalen vlees bij `Gemalen Plus`)
+bepaalt vrijwel het hele calciumgehalte. De generator rekent daarom eerst uit wat dat deel per
+100 g moet bevatten om het menu op het midden van de band te krijgen (of 1,5× de ondergrens als
+de norm geen bovengrens noemt, zoals bij katten) en stuurt daar op drie manieren op:
+
+1. **Weging** — kandidaten voor het restdeel die dichter bij het benodigde calcium zitten wegen
+   zwaarder. De voorraad blijft meewegen, dus dit is een voorkeur en geen eis.
+2. **Keuze** — onder de 20 gegenereerde menu's per vleessoort wint degene die het dichtst bij het
+   benodigde calcium zit, en pas daarna die met de meeste smaakvariatie.
+3. **Reparatie** — valt het eindmenu buiten de band, dan worden de botregels verwisseld met
+   andere botten uit de voorraad zolang dat het menu dichter bij de band brengt.
+
+Wat niet te repareren valt, blijft staan en komt als waarschuwing bij de picklijst te staan,
+met het gemeten gehalte, de norm en een concrete suggestie. De sturing is uit te zetten met
+`generatePicklist(order, products, seed, { steerCalcium: false })`, bijvoorbeeld om te
+vergelijken.
+
+### Smaakvoorkeur vult aan, vervangt niet
+
+Een voorkeur is een voorkeur, geen filter. In de boodschappenlijst van het advies gebeurde dat
+wel: met alleen "kip" aangevinkt bestond het hele menu uit kip — karkas, orgaan, spier én bot —
+en viel de standaardmix van vier smaken weg. Nu geldt:
+
+- de aangevinkte smaak komt **vooraan** en de standaardmix vult aan tot vier smaken
+  (`meatChoicesFor` in `src/lib/shopping.ts`);
+- die smaak krijgt **40% van elk deel**, de andere drie verdelen de rest
+  (`splitGramsWeighted`, gewicht 2 tegen 1);
+- bij twee voorkeuren krijgt elk 33% en de rest 17%.
+
+In de picklijst (`src/lib/picklist.ts`) geldt hetzelfde idee: een voorkeur matcht nu op het
+smaakdeel, dus "KIP" telt ook voor `KIP.HART` en `KIP.LEVER` (eerst matchte alleen de exacte
+waarde, waardoor een voorkeur bijna nergens op sloeg). De weging blijft 4×, maar het aandeel
+van de voorkeurssmaak in een menuonderdeel is afgetopt op `PREFERENCE_SHARE` (40%, in
+`src/lib/globals.ts`): boven die grens wordt de rest van dat deel uit andere smaken gevuld.
+Zijn er geen andere smaken in de voorraad, dan vervalt de grens en vult het menu gewoon.
+
 ## DARF-producten
 
 De boodschappenlijst verwijst naar echte producten uit de DARF Versvoer-catalogus. Die
