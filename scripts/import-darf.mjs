@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 /**
- * Importeert de DARF Versvoer-catalogus (kof=107).
+ * Importeert de DARF Versvoer-catalogus (kof=107) naar data/darf-products.json
+ * en de tabel shop_products.
+ *
+ * LET OP: de pagina-parsing staat sinds de catalogus ook in
+ * scripts/lib/darf-parse.mjs (cheerio, gebruikt door scripts/catalog-scan.mjs).
+ * Dit script heeft nog een eigen kopie voor de categoriekaarten (merk, prijs,
+ * gewicht) omdat de catalogus met de sitemap werkt. Wijzigt darf.nl de opbouw,
+ * pas dan beide aan — of laat dit script op de gedeelde module overstappen.
  *
  * De categoriepagina's zijn Angular-SSR: elke productkaart heeft eigen velden
  * voor merk, naam, gewicht en prijs. De detailpagina's zijn ook server-rendered

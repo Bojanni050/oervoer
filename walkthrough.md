@@ -1,5 +1,38 @@
 # Walkthrough
 
+## 2026-11-26 (Productcatalogus en scanner)
+
+- Findings: de DARF-sitemap noemt **340 productpagina's**, terwijl de import via vijftien
+  categoriepagina's maar 130 producten ophaalde; de rest (ALRODA Bio, MEAT4DOGS, PETT,
+  Felichef, snacks) kwam nooit in de app. `robots.txt` van darf.nl staat alles toe.
+  De sitemap bevat ook verouderde slugs (2 van de eerste 50 geven 404) en korte slugs die
+  met een 301 doorverwijzen naar de volledige productpagina (`alroda-geit` →
+  `alroda-puur-bio-geit`) — zonder afhandeling levert dat dubbele producten op.
+- Conclusions: een catalogus met historie in plaats van een snapshot-bestand. Dezelfde
+  scanner kan later NEVO/USDA als dataset inlezen; die bronnen staan al in `catalog_sources`.
+  Wijzigingen in calcium/fosfor/energie worden automatisch overgenomen tot 10% afwijking en
+  daarboven ter goedkeuring gezet (`--list-pending`, `--approve`, `--reject`).
+- Actions:
+  - `db/catalog.sql` — catalogusschema, gedeeld door app en scanner (één bron van waarheid;
+    de scanner is een los Node-proces en kan de TypeScript niet importeren).
+  - `scripts/lib/darf-parse.mjs` — DARF-pagina's lezen met **cheerio** in plaats van regex,
+    plus de afleidingen (deel, heel dier, merk, gewicht, energieraming).
+  - `scripts/catalog-scan.mjs` — sitemap-ontdekking, robots-controle, 1,5 s tussen verzoeken,
+    retries, hash-diff per product, veldwijzigingen in `catalog_changes`, runs in
+    `catalog_runs`, aliassen voor het zoekveld, en `--import-snapshot` voor de bestaande 130.
+  - `src/lib/catalog.ts` + `GET /api/catalog/search?q=` — zoeken op naam, merk en alias.
+  - `src/lib/db.ts` — `ensureCatalogSchema()` bij het openen van de database en `database()`
+    als toegang voor modules die zelf geen verbinding openen.
+- Gecontroleerd: parser herschreven en vergeleken met de bestaande snapshot op twaalf
+  producten over alle merken en delen — 9 identiek, 3 verklaarbaar beter (volledige
+  ingrediëntentekst waar de oude regex bij de eerste `</div>` afkapte; twee gewichten die
+  alleen op de categoriekaart staan en niet op de detailpagina). Snapshot-import: 130
+  producten, tweede run 130× "gelijk" (idempotent). Proefrun van 5 pagina's: 3 nieuwe
+  ALRODA Bio-producten, 2 verouderde sitemap-slugs netjes als "niet gevonden". Wijzigingen
+  getest: 42% afwijking → blijft staan als `wacht` en verschijnt in `--list-pending`;
+  goedkeuren schrijft de waarde én houdt `analysis_json` gelijk; 4,3% afwijking wordt
+  automatisch overgenomen.
+
 ## 2026-11-26 (Calcium en fosfor in de berekening)
 
 - Findings: er zat nergens een mineraalwaarde in de app, terwijl calcium de maat is waarop

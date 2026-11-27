@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "admin": "node scripts/set-admin.mjs"
+    "admin": "node scripts/set-admin.mjs",
+    "catalog:scan": "node scripts/catalog-scan.mjs",
+    "catalog:stats": "node scripts/catalog-scan.mjs --stats",
+    "catalog:pending": "node scripts/catalog-scan.mjs --list-pending"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
@@ -21,6 +24,7 @@
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "cheerio": "^1.2.0",
     "tailwindcss": "4.3.5",
     "typescript": "^5.7.0"
   }
