@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowDown, Check, Heart, Scale, UtensilsCrossed } from "lucide-react";
 import { AdviceWizard, type PetOption } from "@/components/advice-wizard";
+import { VoercheckPanel, type VoercheckPet } from "@/components/voercheck-panel";
+import { deleteDietItemAction } from "@/app/voercheck-actions";
 import { ADVICE_STYLES, STYLE_ORDER } from "@/lib/advice";
 import { getCurrentUser } from "@/lib/auth";
-import { listPets } from "@/lib/db";
+import { listDietDays, listDietItems, listPets } from "@/lib/db";
+import { formatMineral } from "@/lib/minerals";
 import type { PackageKind } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -30,10 +34,13 @@ const STEPS = [
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ dier?: string }>;
+  searchParams: Promise<{ dier?: string; tab?: string; opgeslagen?: string; fout?: string }>;
 }) {
   const user = await getCurrentUser();
-  const { dier } = await searchParams;
+  const { dier, tab, opgeslagen, fout } = await searchParams;
+  const voercheck = tab === "voercheck";
+  const vandaag = new Date().toISOString().slice(0, 10);
+  const petRecords = user ? listPets(user.id) : [];
   const pets: PetOption[] = user
     ? listPets(user.id).map((pet) => ({
         publicId: pet.publicId,
@@ -47,6 +54,16 @@ export default async function HomePage({
       }))
     : [];
   const defaultPetId = pets.some((pet) => pet.publicId === dier) ? dier : undefined;
+  const gekozenDier = petRecords.find((pet) => pet.publicId === (dier ?? defaultPetId)) ?? petRecords[0];
+  const voercheckPets: VoercheckPet[] = petRecords.map((pet) => ({
+    publicId: pet.publicId,
+    name: pet.name,
+    ras: pet.ras,
+    pup: pet.pup,
+  }));
+  const dagboek = voercheck && gekozenDier
+    ? { dagen: listDietDays(gekozenDier.id, 14), vandaag: listDietItems(gekozenDier.id, vandaag) }
+    : null;
 
   return (
     <div className="space-y-14 sm:space-y-20">
@@ -82,7 +99,124 @@ export default async function HomePage({
       </section>
 
       <section id="advies" className="scroll-mt-24">
-        <AdviceWizard pets={pets} defaultPetId={defaultPetId} loggedIn={Boolean(user)} />
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <Link href="#advies" className={voercheck ? "btn btn-ghost" : "btn btn-primary"}>
+            Advies op maat
+          </Link>
+          <Link href="/?tab=voercheck#advies" className={voercheck ? "btn btn-primary" : "btn btn-ghost"}>
+            Voercheck
+          </Link>
+          <span className="ml-1 text-xs text-muted">
+            {voercheck ? "Tel op wat je nu voert" : "Bereken wat je dier nodig heeft"}
+          </span>
+        </div>
+
+        {opgeslagen ? (
+          <p className="mb-4 rounded-xl border border-line bg-moss-soft/60 px-4 py-3 text-sm">
+            {opgeslagen} regel(s) bewaard in het dieetdagboek.
+          </p>
+        ) : null}
+        {fout === "leeg" ? (
+          <p className="mb-4 rounded-xl border border-line bg-paper px-4 py-3 text-sm">
+            Voeg eerst een product met grammen toe.
+          </p>
+        ) : null}
+        {fout === "dier" ? (
+          <p className="mb-4 rounded-xl border border-line bg-paper px-4 py-3 text-sm">
+            Kies eerst een dier van je account.
+          </p>
+        ) : null}
+
+        {voercheck ? (
+          <div className="space-y-8">
+            <VoercheckPanel
+              pets={voercheckPets}
+              defaultPetId={gekozenDier?.publicId}
+              loggedIn={Boolean(user)}
+              vandaag={vandaag}
+            />
+            {dagboek && gekozenDier ? (
+              <div className="surface p-5 sm:p-7">
+                <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <p className="eyebrow mb-1">Dieetdagboek</p>
+                    <h2 className="text-xl">{gekozenDier.name}</h2>
+                  </div>
+                  <p className="text-xs text-muted">
+                    {gekozenDier.ras === "KAT" ? "kat" : "hond"} · {gekozenDier.weight} kg
+                    {gekozenDier.pup ? " · pup" : ""}
+                  </p>
+                </div>
+
+                {dagboek.dagen.length === 0 ? (
+                  <p className="text-sm text-muted">
+                    Nog geen dagen bewaard. Vul hierboven in wat je voert en kies &quot;Bewaar in
+                    dagboek&quot;.
+                  </p>
+                ) : (
+                  <table className="table w-full text-sm">
+                    <thead>
+                      <tr>
+                        <th className="text-left">Dag</th>
+                        <th className="text-right">Regels</th>
+                        <th className="text-right">Gram</th>
+                        <th className="text-right">Ca (g)</th>
+                        <th className="text-right">P (g)</th>
+                        <th className="text-right">kcal</th>
+                        <th className="text-right">Ca per 100 g</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dagboek.dagen.map((dag) => (
+                        <tr key={dag.day}>
+                          <td className="font-medium">{dag.day}</td>
+                          <td className="num text-right">{dag.items}</td>
+                          <td className="num text-right">{Math.round(dag.grams)}</td>
+                          <td className="num text-right">{dag.calcium.toFixed(2)}</td>
+                          <td className="num text-right">{dag.fosfor.toFixed(2)}</td>
+                          <td className="num text-right">{Math.round(dag.energie)}</td>
+                          <td className="num text-right">
+                            {dag.grams > 0
+                              ? `${formatMineral((dag.calcium / dag.grams) * 100)} g`
+                              : "—"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+
+                {dagboek.vandaag.length > 0 ? (
+                  <div className="mt-6">
+                    <p className="eyebrow mb-2">Vandaag</p>
+                    <ul className="divide-y divide-line text-sm">
+                      {dagboek.vandaag.map((regel) => (
+                        <li key={regel.id} className="flex items-center justify-between gap-3 py-2">
+                          <span>
+                            {regel.name}
+                            <span className="ml-2 text-xs text-muted">
+                              {regel.grams} g
+                              {regel.bron ? ` · ${regel.bron}` : ""}
+                            </span>
+                          </span>
+                          <form action={deleteDietItemAction}>
+                            <input type="hidden" name="id" value={regel.id} />
+                            <input type="hidden" name="petId" value={gekozenDier.publicId} />
+                            <button type="submit" className="btn btn-ghost px-2 py-1 text-xs">
+                              Verwijderen
+                            </button>
+                          </form>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <AdviceWizard pets={pets} defaultPetId={defaultPetId} loggedIn={Boolean(user)} />
+        )}
       </section>
 
       <section id="hoe-het-werkt" className="scroll-mt-24">

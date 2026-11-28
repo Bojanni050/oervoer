@@ -16,6 +16,9 @@ import {
 } from "./picklist";
 import type {
   AdviceRecord,
+  DietDayRecord,
+  DietItemRecord,
+  DietReportRecord,
   Dier,
   OrderRecord,
   OrderStatus,
@@ -158,6 +161,36 @@ function openDb(): DatabaseSync {
     CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
     CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
     CREATE INDEX IF NOT EXISTS idx_pets_user ON pets(user_id);
+
+    -- Dieetdagboek: wat een baasje per dag voert, met de waarden van dat moment
+    -- (een latere cataloguswijziging mag het verleden niet veranderen).
+    CREATE TABLE IF NOT EXISTS diet_items (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      pet_id INTEGER REFERENCES pets(id) ON DELETE CASCADE,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      day TEXT NOT NULL,
+      name TEXT NOT NULL,
+      grams REAL NOT NULL,
+      calcium REAL,
+      fosfor REAL,
+      energie REAL,
+      eiwit REAL,
+      vet REAL,
+      bron TEXT NOT NULL DEFAULT '',
+      catalog_id INTEGER,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS diet_reports (
+      id TEXT PRIMARY KEY,
+      pet_name TEXT NOT NULL DEFAULT '',
+      ras TEXT NOT NULL DEFAULT 'HOND',
+      pup INTEGER NOT NULL DEFAULT 0,
+      day TEXT NOT NULL,
+      items_json TEXT NOT NULL,
+      totals_json TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
   `);
 
   // Migratie voor bestaande databases van vóór de accountfunctionaliteit.
@@ -166,6 +199,7 @@ function openDb(): DatabaseSync {
   addColumnIfMissing(db, "users", "role", "TEXT NOT NULL DEFAULT 'user'");
   addColumnIfMissing(db, "advices", "likes", "TEXT NOT NULL DEFAULT '[]'");
   db.exec("CREATE INDEX IF NOT EXISTS idx_advices_user ON advices(user_id)");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_diet_items_pet_day ON diet_items(pet_id, day)");
 
   // Mineralen per product (calcium en fosfor in g per 100 g product) voor de
   // calciumberekening. Toevoegen is genoeg: bestaande databases krijgen de
@@ -1011,5 +1045,169 @@ export function orderSummary(order: OrderRecord) {
     ...order,
     mealSize: Number(mealSizeFor(order).toFixed(1)),
     days: daysFor(order),
+  };
+}
+
+
+/* ---------------------------------------------------------------------------
+ * Dieetdagboek
+ * ------------------------------------------------------------------------- */
+
+function mapDietItem(row: SqlRow): DietItemRecord {
+  const num = (value: unknown): number | null =>
+    value === null || value === undefined ? null : Number(value);
+  return {
+    id: Number(row.id),
+    petId: row.pet_id === null || row.pet_id === undefined ? null : Number(row.pet_id),
+    userId: row.user_id === null || row.user_id === undefined ? null : Number(row.user_id),
+    day: String(row.day),
+    name: String(row.name),
+    grams: Number(row.grams),
+    calcium: num(row.calcium),
+    fosfor: num(row.fosfor),
+    energie: num(row.energie),
+    eiwit: num(row.eiwit),
+    vet: num(row.vet),
+    bron: String(row.bron ?? ""),
+    catalogId:
+      row.catalog_id === null || row.catalog_id === undefined ? null : Number(row.catalog_id),
+    createdAt: String(row.created_at),
+  };
+}
+
+export interface NewDietItem {
+  petId: number | null;
+  userId: number | null;
+  day: string;
+  name: string;
+  grams: number;
+  calcium: number | null;
+  fosfor: number | null;
+  energie: number | null;
+  eiwit?: number | null;
+  vet?: number | null;
+  bron?: string;
+  catalogId?: number | null;
+}
+
+export function addDietItem(input: NewDietItem): number {
+  const db = openDb();
+  const result = db
+    .prepare(
+      `INSERT INTO diet_items
+        (pet_id, user_id, day, name, grams, calcium, fosfor, energie, eiwit, vet, bron, catalog_id, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+    .run(
+      input.petId,
+      input.userId,
+      input.day,
+      input.name.trim(),
+      input.grams,
+      input.calcium,
+      input.fosfor,
+      input.energie,
+      input.eiwit ?? null,
+      input.vet ?? null,
+      (input.bron ?? "").trim(),
+      input.catalogId ?? null,
+      new Date().toISOString(),
+    );
+  return Number(result.lastInsertRowid);
+}
+
+export function listDietItems(petId: number, day?: string): DietItemRecord[] {
+  const db = openDb();
+  const rows = day
+    ? (db
+        .prepare("SELECT * FROM diet_items WHERE pet_id = ? AND day = ? ORDER BY id")
+        .all(petId, day) as SqlRow[])
+    : (db
+        .prepare("SELECT * FROM diet_items WHERE pet_id = ? ORDER BY day DESC, id")
+        .all(petId) as SqlRow[]);
+  return rows.map(mapDietItem);
+}
+
+/** Eén regel per dag, met de totalen van die dag. */
+export function listDietDays(petId: number, limit = 30): DietDayRecord[] {
+  const db = openDb();
+  const rows = db
+    .prepare(
+      `SELECT day,
+              COUNT(*) AS items,
+              SUM(grams) AS grams,
+              SUM(COALESCE(calcium, 0) * grams / 100.0) AS calcium,
+              SUM(COALESCE(fosfor, 0) * grams / 100.0) AS fosfor,
+              SUM(COALESCE(energie, 0) * grams / 100.0) AS energie,
+              SUM(COALESCE(eiwit, 0) * grams / 100.0) AS eiwit,
+              SUM(COALESCE(vet, 0) * grams / 100.0) AS vet
+         FROM diet_items
+        WHERE pet_id = ?
+        GROUP BY day
+        ORDER BY day DESC
+        LIMIT ?`,
+    )
+    .all(petId, limit) as SqlRow[];
+  return rows.map((row) => ({
+    day: String(row.day),
+    items: Number(row.items),
+    grams: Number(row.grams ?? 0),
+    calcium: Number(row.calcium ?? 0),
+    fosfor: Number(row.fosfor ?? 0),
+    energie: Number(row.energie ?? 0),
+    eiwit: Number(row.eiwit ?? 0),
+    vet: Number(row.vet ?? 0),
+  }));
+}
+
+export function deleteDietItem(id: number, userId: number): boolean {
+  const db = openDb();
+  const result = db
+    .prepare("DELETE FROM diet_items WHERE id = ? AND user_id = ?")
+    .run(id, userId);
+  return Number(result.changes) > 0;
+}
+
+export interface NewDietReport {
+  id: string;
+  petName: string;
+  ras: Dier;
+  pup: boolean;
+  day: string;
+  items: unknown[];
+  totals: unknown;
+}
+
+export function saveDietReport(input: NewDietReport): string {
+  const db = openDb();
+  db.prepare(
+    `INSERT OR REPLACE INTO diet_reports (id, pet_name, ras, pup, day, items_json, totals_json, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    input.id,
+    input.petName,
+    input.ras,
+    input.pup ? 1 : 0,
+    input.day,
+    JSON.stringify(input.items),
+    JSON.stringify(input.totals),
+    new Date().toISOString(),
+  );
+  return input.id;
+}
+
+export function getDietReport(id: string): DietReportRecord | null {
+  const db = openDb();
+  const row = db.prepare("SELECT * FROM diet_reports WHERE id = ?").get(id) as SqlRow | undefined;
+  if (!row) return null;
+  return {
+    id: String(row.id),
+    petName: String(row.pet_name ?? ""),
+    ras: String(row.ras) as Dier,
+    pup: Number(row.pup) === 1,
+    day: String(row.day),
+    items: JSON.parse(String(row.items_json ?? "[]")),
+    totals: JSON.parse(String(row.totals_json ?? "{}")),
+    createdAt: String(row.created_at),
   };
 }

@@ -1,5 +1,32 @@
 # Walkthrough
 
+## 2026-11-28 (Voercheck en dieetdagboek)
+
+- Findings: een baasje dat wil weten wat het dier binnenkrijgt had geen plek om dat in te voeren;
+  de app rekende alleen vóóruit. De catalogus bevatte daarvoor ook de verkeerde producten: 246
+  rauwvoerproducten van leveranciers, en niets van de slager of supermarkt — precies wat de meeste
+  mensen voeren.
+- Conclusions: de check moet op dezelfde rekenkern draaien als het advies (anders krijg je twee
+  waarheden over calcium), per dier en per dag bewaard worden, en de invoer moet zoveel mogelijk
+  voorgevuld zijn. Drie verzonnen testrantsoenen laten meteen zien waarom dit nuttig is: kip met bot
+  komt op 0,18 g calcium per 100 g (net binnen de norm), een supermarktmix zonder bot op 0,02
+  (ver onder de norm) en een complete KVV op 0,87 (bóven de norm).
+- Actions:
+  - `scripts/maak-ingredienten.py` + `data/ingredient-nutrition.csv` — 40 generieke ingrediënten uit
+    USDA SR Legacy, met de gekozen USDA-regel per ingrediënt en de waarden in g per 100 g.
+  - `scripts/catalog-scan.mjs` — `--source=usda` leest die CSV in de catalogus (zelfde
+    wijzigingenlog en aliassen als de webscanner).
+  - `src/lib/voercheck.ts` — totalen, Ca:P, eiwit/vet-aandeel en het oordeel via `summariseMinerals`.
+  - `db.ts` + `types.ts` — `diet_items` (per dier, per dag, met de waarden van dat moment) en
+    `diet_reports` (deelbare momentopname).
+  - `src/app/voercheck-actions.ts` — bewaren in het dagboek, deel-link maken, regel verwijderen.
+  - `src/components/voercheck-panel.tsx` + tab op de homepage + `/voercheck/r/[token]`.
+- Gecontroleerd: drie rantsoenen doorgerekend (0,18 / 0,02 / 0,87 g per 100 g, met de juiste
+  oordelen en Ca:P-opmerkingen), dagboek aggregatie per dag (700 g over twee regels → 1,575 g
+  calcium), deel-link opgeslagen en opgevraagd, en via een draaiende build de pagina's opgevraagd:
+  `/?tab=voercheck` (200, paneel + disclaimers) en `/voercheck/r/testtoken123` (200, regels en
+  totalen). `tsc --noEmit` en `next build` slagen.
+
 ## 2026-11-26 (Productcatalogus en scanner)
 
 - Findings: de DARF-sitemap noemt **340 productpagina's**, terwijl de import via vijftien

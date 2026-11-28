@@ -110,6 +110,45 @@ export interface UserRecord {
   createdAt: string;
 }
 
+export interface DietItemRecord {
+  id: number;
+  petId: number | null;
+  userId: number | null;
+  day: string;
+  name: string;
+  grams: number;
+  calcium: number | null;
+  fosfor: number | null;
+  energie: number | null;
+  eiwit: number | null;
+  vet: number | null;
+  bron: string;
+  catalogId: number | null;
+  createdAt: string;
+}
+
+export interface DietDayRecord {
+  day: string;
+  items: number;
+  grams: number;
+  calcium: number;
+  fosfor: number;
+  energie: number;
+  eiwit: number;
+  vet: number;
+}
+
+export interface DietReportRecord {
+  id: string;
+  petName: string;
+  ras: Dier;
+  pup: boolean;
+  day: string;
+  items: unknown[];
+  totals: unknown;
+  createdAt: string;
+}
+
 export interface PetRecord {
   id: number;
   publicId: string;
