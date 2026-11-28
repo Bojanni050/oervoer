@@ -6,10 +6,7 @@ import {
   createAdvice,
   createOrder,
   deleteOrder,
-  discardPicklist,
-  generateForOrder,
   getPetByPublicId,
-  setProductQty,
   updateOrderStatus,
 } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
@@ -54,41 +51,6 @@ export async function createOrderAction(
   redirect(`/beheer/orders/${orderId}`);
 }
 
-export async function generateAction(formData: FormData): Promise<void> {
-  await requireAdmin();
-  const orderId = Number(formData.get("orderId"));
-  if (!Number.isFinite(orderId)) return;
-
-  let problem = "";
-  try {
-    generateForOrder(orderId);
-  } catch (error) {
-    problem = error instanceof Error ? error.message : "Picklijst genereren mislukt.";
-  }
-
-  revalidatePath("/beheer");
-  revalidatePath("/beheer/orders");
-  revalidatePath(`/beheer/orders/${orderId}`);
-  revalidatePath("/beheer/voorraad");
-
-  if (problem) {
-    redirect(`/beheer/orders/${orderId}?fout=${encodeURIComponent(problem)}`);
-  }
-  redirect(`/beheer/orders/${orderId}`);
-}
-
-export async function discardPicklistAction(formData: FormData): Promise<void> {
-  await requireAdmin();
-  const orderId = Number(formData.get("orderId"));
-  if (!Number.isFinite(orderId)) return;
-  discardPicklist(orderId);
-  revalidatePath("/beheer");
-  revalidatePath("/beheer/orders");
-  revalidatePath(`/beheer/orders/${orderId}`);
-  revalidatePath("/beheer/voorraad");
-  redirect(`/beheer/orders/${orderId}`);
-}
-
 export async function deleteOrderAction(formData: FormData): Promise<void> {
   await requireAdmin();
   const orderId = Number(formData.get("orderId"));
@@ -96,7 +58,6 @@ export async function deleteOrderAction(formData: FormData): Promise<void> {
   deleteOrder(orderId);
   revalidatePath("/beheer");
   revalidatePath("/beheer/orders");
-  revalidatePath("/beheer/voorraad");
   redirect("/beheer/orders");
 }
 
@@ -109,27 +70,6 @@ export async function markDoneAction(formData: FormData): Promise<void> {
   revalidatePath("/beheer/orders");
   revalidatePath(`/beheer/orders/${orderId}`);
   redirect(`/beheer/orders/${orderId}`);
-}
-
-export async function setQtyAction(formData: FormData): Promise<void> {
-  await requireAdmin();
-  const sku = String(formData.get("sku") ?? "");
-  const qty = Number(formData.get("qty"));
-  if (!sku || !Number.isFinite(qty)) return;
-  setProductQty(sku, qty);
-  revalidatePath("/beheer/voorraad");
-  revalidatePath("/beheer");
-}
-
-export async function adjustQtyAction(formData: FormData): Promise<void> {
-  await requireAdmin();
-  const sku = String(formData.get("sku") ?? "");
-  const delta = Number(formData.get("delta"));
-  const current = Number(formData.get("current"));
-  if (!sku || !Number.isFinite(delta)) return;
-  setProductQty(sku, (Number.isFinite(current) ? current : 0) + delta);
-  revalidatePath("/beheer/voorraad");
-  revalidatePath("/beheer");
 }
 
 export async function createAdviceAction(

@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, ClipboardList, LayoutDashboard, Package } from "lucide-react";
+import { ArrowLeft, ClipboardList, LayoutDashboard } from "lucide-react";
 
 const NAV = [
   { href: "/beheer", label: "Dashboard", icon: LayoutDashboard },
   { href: "/beheer/orders", label: "Orders", icon: ClipboardList },
-  { href: "/beheer/voorraad", label: "Voorraad", icon: Package },
 ];
 
 export function PawMark() {
@@ -66,7 +65,7 @@ export function Sidebar() {
             Naar de adviesapp
           </Link>
           <p className="text-xs leading-relaxed text-muted">
-            Rauw voer voor honden en katten. Picklijsten op basis van de echte voorraad.
+            Rauw voer voor honden en katten. Orders, adviezen en de productcatalogus.
           </p>
           <p className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-muted/70">
             OerVoer · sinds 2014

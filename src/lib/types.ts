@@ -5,27 +5,6 @@ export type Portie = "beide" | "kleine porties" | "grote porties";
 export type PackageKind = "100" | "PLUS" | "COMBI";
 export type OrderStatus = "nieuw" | "picklist" | "afgerond";
 
-export interface Product {
-  sku: string;
-  name: string;
-  smaak: string;
-  typeVlees: string;
-  shelf: string;
-  weight: number; // kg per verpakking
-  verpaktPer: number;
-  qty: number;
-  inStock: boolean;
-  geschiktMenu: boolean;
-  geschiktVoor: string;
-  normWeight: number; // weight / verpaktPer
-  /** g calcium per 100 g product; null = onbekend, dan geldt de terugval per vleestype. */
-  calcium?: number | null;
-  /** g fosfor per 100 g product; null = onbekend. */
-  fosfor?: number | null;
-  /** kcal per 100 g product; null = onbekend (dan kan er niet per 1000 kcal gerekend worden). */
-  energie?: number | null;
-}
-
 export interface OrderRecord {
   id: number;
   owner: string;
@@ -45,39 +24,6 @@ export interface OrderRecord {
   factor: number;
   status: OrderStatus;
   notes: string;
-  createdAt: string;
-}
-
-export interface PicklistItem {
-  sku: string;
-  name: string;
-  smaak: string;
-  typeVlees: string;
-  shelf: string;
-  weight: number; // kg per stuk
-  count: number;
-  totalKg: number;
-  /** g calcium per 100 g product; oudere picklijsten hebben dit nog niet. */
-  calcium?: number | null;
-  /** g fosfor per 100 g product; oudere picklijsten hebben dit nog niet. */
-  fosfor?: number | null;
-  /** kcal per 100 g product; oudere picklijsten hebben dit nog niet. */
-  energie?: number | null;
-}
-
-export interface PicklistWarning {
-  type: string;
-  message: string;
-}
-
-export interface PicklistRecord {
-  id: number;
-  orderId: number;
-  items: PicklistItem[];
-  warnings: PicklistWarning[];
-  totalKg: number;
-  mealSize: number;
-  days: number;
   createdAt: string;
 }
 
