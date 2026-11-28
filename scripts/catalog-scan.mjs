@@ -203,6 +203,11 @@ function sameValue(a, b) {
 function aliasesFor(product) {
   const list = new Set();
   if (product.slug) list.add(String(product.slug).replace(/-/g, " "));
+  // Dataset-bronnen leveren eigen zoekvarianten mee (bijv. "kipfilet, kip borst").
+  for (const alias of String(product.aliases ?? "").split(",")) {
+    const trimmed = alias.trim();
+    if (trimmed.length >= 3) list.add(trimmed);
+  }
   const brand = String(product.brand ?? "").trim();
   const name = String(product.name ?? "").trim();
   if (brand && name.toUpperCase().startsWith(brand.toUpperCase())) {
@@ -541,6 +546,97 @@ function decide(db, id, decision) {
   console.log(`#${id} ${change.name} · ${change.field}: ${change.old_value} -> ${change.new_value} ${decision}.`);
 }
 
+/** Kleine RFC4180-parser; de app-CSV is gequote waar nodig. */
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
+  for (let i = 0; i < text.length; i += 1) {
+    const char = text[i];
+    if (quoted) {
+      if (char === '"' && text[i + 1] === '"') {
+        field += '"';
+        i += 1;
+      } else if (char === '"') {
+        quoted = false;
+      } else {
+        field += char;
+      }
+      continue;
+    }
+    if (char === '"') quoted = true;
+    else if (char === ",") {
+      row.push(field);
+      field = "";
+    } else if (char === "\n") {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = "";
+    } else if (char !== "\r") field += char;
+  }
+  if (field.length > 0 || row.length > 0) {
+    row.push(field);
+    rows.push(row);
+  }
+  const [header, ...body] = rows;
+  if (!header) return [];
+  return body
+    .filter((cells) => cells.length === header.length)
+    .map((cells) => Object.fromEntries(header.map((key, index) => [key.trim(), cells[index]])));
+}
+
+/**
+ * Dataset-bron: generieke ingrediënten uit data/ingredient-nutrition.csv
+ * (NU → "USDA SR Legacy 2018"). Zelfde weg als de webscanner: upsert, wijzigingen
+ * loggen, aliassen voor het zoekveld.
+ */
+function importIngredients(db, source, runId, counts) {
+  const file = path.join(process.cwd(), "data", "ingredient-nutrition.csv");
+  if (!fs.existsSync(file)) {
+    console.error(`Ontbreekt: ${file}`);
+    process.exit(1);
+  }
+  const rows = parseCsv(fs.readFileSync(file, "utf8"));
+  console.log(`ingrediënten: ${rows.length} inlezen uit ${path.basename(file)}`);
+  for (const row of rows) {
+    const calcium = Number(row.calcium);
+    const fosfor = Number(row.fosfor);
+    const energie = Number(row.energie);
+    const product = {
+      slug: `usda-${row.fdc_id}`,
+      url: `https://fdc.nal.usda.gov/food-details/${row.fdc_id}/nutrients`,
+      brand: "USDA",
+      name: row.naam,
+      aliases: row.aliassen,
+      animal: "BEIDE",
+      flavor: "",
+      part: "",
+      wholeAnimal: false,
+      weightG: null,
+      priceCents: null,
+      available: true,
+      ingredients: "",
+      description: `${row.bron_detail}: ${row.usda_naam}`,
+      composition: [],
+      analysis: {
+        calcium: Number.isFinite(calcium) ? calcium : null,
+        fosfor: Number.isFinite(fosfor) ? fosfor : null,
+        energieKcalPer100g: Number.isFinite(energie) ? energie : null,
+        eiwit: Number(row.eiwit),
+        vet: Number(row.vet),
+      },
+      energieBron: "opgave",
+    };
+    const result = upsertProduct(db, { sourceId: source.id, runId, product });
+    counts.found += 1;
+    if (result.status === "nieuw") counts.new += 1;
+    else if (result.status === "gelijk") counts.unchanged += 1;
+    else counts.changed += 1;
+  }
+}
+
 async function main() {
   const db = openDb();
 
@@ -593,6 +689,18 @@ async function main() {
       else if (result.status === "gelijk" || result.status === "wacht") counts.unchanged += 1;
       else counts.changed += 1;
     }
+  }
+
+  // 2a. Dataset-bronnen (geen netwerk, wel dezelfde administratie).
+  if (source.source_key === "usda") {
+    importIngredients(db, source, runId, counts);
+    const status = counts.errors > 0 ? "gedeeltelijk" : "ok";
+    if (runId) finishRun(db, runId, { ...counts, sourceId: source.id }, status, "dataset usda");
+    console.log(
+      `\nklaar · gevonden ${counts.found} · nieuw ${counts.new} · gewijzigd ${counts.changed} · gelijk ${counts.unchanged}`,
+    );
+    printStats(db);
+    return;
   }
 
   // 2. De bron zelf langs.

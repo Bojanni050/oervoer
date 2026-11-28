@@ -206,6 +206,41 @@ Prijzen en gewichten zijn een momentopname van darf.nl. De app toont ze als voor
 grammen uit het advies blijven de norm. De detailpagina's worden lokaal gecachet in
 `.data/darf-cache` (git-ignored) zodat opnieuw importeren snel gaat.
 
+## Voercheck en dieetdagboek
+
+Naast het advies ("wat heeft je dier nodig") is er de voercheck: het baasje voert in wat het dier
+op dit moment eet en de app telt op wat daarvan binnenkomt. Te vinden als tab boven de wizard op
+de homepage (`/?tab=voercheck`).
+
+- **Invoer** — zoeken in de catalogus (`/api/catalog/search`), grammen invullen, regels toevoegen.
+  Per regel staat de herkomst: `catalogus`, `USDA` of `eigen opgave`.
+- **Uitkomst** — totaal gram, calcium en fosfor per 100 g voer, Ca:P, energie, eiwit en vet, en het
+  oordeel tegen de band van dat dier. Dezelfde rekenkern als het advies (`src/lib/minerals.ts`),
+  dus geen tweede waarheid over calcium.
+- **Bewaren** — per dier en per dag in `diet_items`, met de waarden van dat moment (een latere
+  cataloguswijziging verandert het verleden niet). Het dagboek staat onder de check.
+- **Delen** — een momentopname met een eigen, niet te raden link (`/voercheck/r/<token>`, tabel
+  `diet_reports`), zodat een klant het met de dierenarts kan delen.
+- **Toon** — feitelijk, met één regel "overleg met je dierenarts"; geen diagnose en geen claim.
+
+### Generieke ingrediënten (USDA)
+
+De catalogus bevat de producten van de rauwvoerleveranciers; wat een baasje bij de slager of
+supermarkt haalt staat daar niet in. Daarvoor is er `data/ingredient-nutrition.csv` met 40
+ingrediënten (kipfilet, rundergehakt, runderlever, zalm, ei, wortel, rijst, olie, …), met per regel
+de gebruikte USDA-regel zodat elk cijfer herleidbaar is.
+
+```bash
+# eenmalig: CSV opnieuw maken uit de USDA SR Legacy bulk-CSV
+python3 scripts/maak-ingredienten.py /pad/naar/FoodData_Central_sr_legacy_food_csv_2018-04.zip
+# en in de catalogus zetten
+npm run catalog:scan -- --source=usda
+```
+
+Bron: USDA FoodData Central, SR Legacy (2018), publiek domein; calcium en fosfor omgerekend van mg
+naar g per 100 g. NEVO (RIVM) is de Nederlandse aanvulling, maar dat bestand komt via een formulier
+vrij — de bron staat al klaar in `catalog_sources`.
+
 ## Catalogus
 
 De catalogus is de productdatabase waar de app voedingswaarden uit haalt: welke producten

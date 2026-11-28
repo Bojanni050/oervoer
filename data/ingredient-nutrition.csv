@@ -1,0 +1,41 @@
+naam,aliassen,bron,bron_detail,fdc_id,usda_naam,calcium,fosfor,energie,eiwit,vet
+Appel,"appel, appels",usda,USDA SR Legacy 2018,171688,"Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",0.0060,0.0110,52,0.3,0.2
+Broccoli,broccoli,usda,USDA SR Legacy 2018,170379,"Broccoli, raw",0.0470,0.0660,34,2.8,0.4
+Courgette,"courgette, zucchini",usda,USDA SR Legacy 2018,169291,"Squash, summer, zucchini, includes skin, raw",0.0160,0.0380,17,1.2,0.3
+Eend,"eend, eendenvlees",usda,USDA SR Legacy 2018,172410,"Duck, domesticated, meat only, raw",0.0110,0.2030,135,18.3,6.0
+Ei,"ei, eieren, kippenei",usda,USDA SR Legacy 2018,171287,"Egg, whole, raw, fresh",0.0560,0.1980,143,12.6,9.5
+Forel,"forel, forelfilet",usda,USDA SR Legacy 2018,173717,"Fish, trout, rainbow, farmed, raw",0.0250,0.2260,141,19.9,6.2
+Gans,"gans, ganzenvlees",usda,USDA SR Legacy 2018,172413,"Goose, domesticated, meat only, raw",0.0130,0.3120,161,22.8,7.1
+Haring,haring,usda,USDA SR Legacy 2018,175116,"Fish, herring, Atlantic, raw",0.0570,0.2360,158,18.0,9.0
+Havermout,"havermout, oats",usda,USDA SR Legacy 2018,173904,"Cereals, oats, regular and quick, not fortified, dry",0.0520,0.4100,379,13.2,6.5
+Kabeljauw,kabeljauw,usda,USDA SR Legacy 2018,171955,"Fish, cod, Atlantic, raw",0.0160,0.2030,82,17.8,0.7
+Kalkoenfilet,"kalkoen, kalkoenfilet, kalkoenborst",usda,USDA SR Legacy 2018,171098,"Turkey, whole, breast, meat only, raw",0.0110,0.2010,114,23.7,1.5
+Kip met vel en bot,"kip met bot, kippenpoot, kippenvleugel",usda,USDA SR Legacy 2018,171447,"Chicken, broilers or fryers, meat and skin, raw",0.0110,0.1470,215,18.6,15.1
+Kipdij,"kipdij, kippendij, kippenbout",usda,USDA SR Legacy 2018,171067,"Chicken, broilers or fryers, dark meat, meat only, raw",0.0120,0.1620,125,20.1,4.3
+Kipfilet,"kipfilet, kip borst, kippenborst",usda,USDA SR Legacy 2018,171077,"Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",0.0050,0.2130,120,22.5,2.6
+Kippenhart,"kip hart, kippenhart",usda,USDA SR Legacy 2018,171458,"Chicken, heart, all classes, raw",0.0120,0.1770,153,15.6,9.3
+Kippenlever,"kip lever, kippenlever",usda,USDA SR Legacy 2018,171060,"Chicken, liver, all classes, raw",0.0080,0.2970,119,16.9,4.8
+Kippenmaag,"kip maag, kippenmaag, gizzard",usda,USDA SR Legacy 2018,171456,"Chicken, gizzard, all classes, raw",0.0110,0.1480,94,17.7,2.1
+Kippennek,"kip nek, kippennek",usda,USDA SR Legacy 2018,173623,"Chicken, broilers or fryers, neck, meat only, raw",0.0270,0.1130,154,17.6,8.8
+Lamshart,"lam hart, lamshart",usda,USDA SR Legacy 2018,172527,"Lamb, variety meats and by-products, heart, raw",0.0060,0.1750,122,16.5,5.7
+Lamslever,"lam lever, lamslever",usda,USDA SR Legacy 2018,172531,"Lamb, variety meats and by-products, liver, raw",0.0070,0.3640,139,20.4,5.0
+Lamsnier,"lam nier, lamsnier",usda,USDA SR Legacy 2018,174354,"Lamb, variety meats and by-products, kidneys, raw",0.0130,0.2460,97,15.7,3.0
+Lamsvlees,"lam, lamsvlees, lamsbout",usda,USDA SR Legacy 2018,172479,"Lamb, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/4"" fat, choice, raw",0.0120,0.1600,267,16.9,21.6
+Lijnzaadolie,"lijnzaadolie, lijnolie",usda,USDA SR Legacy 2018,167702,"Oil, flaxseed, cold pressed",0.0010,0.0010,884,0.1,100.0
+Makreel,makreel,usda,USDA SR Legacy 2018,175119,"Fish, mackerel, Atlantic, raw",0.0120,0.2170,205,18.6,13.9
+Rijst (gekookt),"rijst, gekookte rijst",usda,USDA SR Legacy 2018,168878,"Rice, white, long-grain, regular, enriched, cooked",0.0100,0.0430,130,2.7,0.3
+Rundergehakt,"gehakt, rundergehakt",usda,USDA SR Legacy 2018,174036,"Beef, ground, 80% lean meat / 20% fat, raw",0.0180,0.1580,254,17.2,20.0
+Runderhart,"rund hart, runderhart",usda,USDA SR Legacy 2018,168625,"Beef, variety meats and by-products, heart, raw",0.0070,0.2120,112,17.7,3.9
+Runderlever,"rund lever, runderlever",usda,USDA SR Legacy 2018,169451,"Beef, variety meats and by-products, liver, raw",0.0050,0.3870,135,20.4,3.6
+Runderlong,"rund long, runderlong",usda,USDA SR Legacy 2018,168628,"Beef, variety meats and by-products, lungs, raw",0.0100,0.2240,92,16.2,2.5
+Rundernier,"rund nier, rundernier",usda,USDA SR Legacy 2018,169449,"Beef, variety meats and by-products, kidneys, raw",0.0130,0.2570,99,17.4,3.1
+Runderpens,"pens, runderpens, tripes",usda,USDA SR Legacy 2018,170599,"Beef, variety meats and by-products, tripe, raw",0.0690,0.0640,85,12.1,3.7
+Runderschenkel,"schenkel, runderschenkel, shank",usda,USDA SR Legacy 2018,169441,"Beef, shank crosscuts, separable lean only, trimmed to 1/4"" fat, choice, raw",0.0200,0.2040,128,21.8,3.9
+Rundvlees,"rundvlees, biefstuk, runderlappen",usda,USDA SR Legacy 2018,174757,"Beef, composite of trimmed retail cuts, separable lean and fat, trimmed to 0"" fat, all grades, raw",0.0130,0.1940,167,20.9,9.3
+Sardine,"sardine, sardines",usda,USDA SR Legacy 2018,175139,"Fish, sardine, Atlantic, canned in oil, drained solids with bone",0.3820,0.4900,208,24.6,11.4
+Varkenslever,"varken lever, varkenslever",usda,USDA SR Legacy 2018,167862,"Pork, fresh, variety meats and by-products, liver, raw",0.0090,0.2880,134,21.4,3.6
+Varkensvlees,"varken, varkensvlees, varkensschouder",usda,USDA SR Legacy 2018,167843,"Pork, fresh, shoulder, whole, separable lean and fat, raw",0.0150,0.1820,236,17.2,18.0
+Wortel,"wortel, wortelen, peen",usda,USDA SR Legacy 2018,170393,"Carrots, raw",0.0330,0.0350,41,0.9,0.2
+Yoghurt,"yoghurt, volle yoghurt",usda,USDA SR Legacy 2018,171284,"Yogurt, plain, whole milk",0.1210,0.0950,61,3.5,3.2
+Zalm,"zalm, zalmfilet",usda,USDA SR Legacy 2018,175167,"Fish, salmon, Atlantic, farmed, raw",0.0090,0.2400,208,20.4,13.4
+Zonnebloemolie,"zonnebloemolie, olie",usda,USDA SR Legacy 2018,171017,"Oil, sunflower, linoleic (less than 60%)",0.0000,0.0000,884,0.0,100.0
