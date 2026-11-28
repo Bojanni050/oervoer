@@ -11,7 +11,6 @@ export const dynamic = "force-dynamic";
 const TABS: Array<{ key: OrderStatus | "alle"; label: string }> = [
   { key: "alle", label: "Alles" },
   { key: "nieuw", label: "Nieuw" },
-  { key: "picklist", label: "Picklijst" },
   { key: "afgerond", label: "Afgerond" },
 ];
 

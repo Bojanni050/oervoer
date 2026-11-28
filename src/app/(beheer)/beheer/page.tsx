@@ -2,13 +2,15 @@ import Link from "next/link";
 import { ArrowUpRight, ChevronRight, ClipboardList, Package, Plus } from "lucide-react";
 import { PageHeader } from "@/components/shell";
 import { KindBadge, Stat, StatusBadge } from "@/components/ui";
-import { dashboardStats, listOrders } from "@/lib/db";
+import { dashboardStats, database, listOrders } from "@/lib/db";
+import { catalogStats } from "@/lib/catalog";
 import { formatDate, formatKg, initials } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 export default function DashboardPage() {
   const stats = dashboardStats();
+  const catalog = catalogStats(database());
   const orders = listOrders().slice(0, 6);
   const today = new Date().toLocaleDateString("nl-NL", {
     weekday: "long",
@@ -21,7 +23,7 @@ export default function DashboardPage() {
       <PageHeader
         eyebrow={today.charAt(0).toUpperCase() + today.slice(1)}
         title="De slagerij, vandaag."
-        description="Alle openstaande orders, picklijsten en de actuele voorraad op één plek."
+        description="Openstaande orders, adviezen en de stand van de productcatalogus."
         actions={
           <>
             <Link href="/beheer/orders/nieuw" className="btn btn-primary">
@@ -42,22 +44,22 @@ export default function DashboardPage() {
           accent="moss"
         />
         <Stat
-          label="Picklijsten vandaag"
-          value={stats.picklistsToday}
-          hint="Gegenereerd sinds middernacht"
+          label="Afgerond vandaag"
+          value={stats.doneToday}
+          hint="Orders op afgerond gezet"
           accent="ochre"
         />
         <Stat
-          label="Producten in voorraad"
-          value={stats.productCount}
-          hint={`${stats.totalQty.toLocaleString("nl-NL")} stuks totaal`}
+          label="Adviezen"
+          value={stats.advices}
+          hint="Berekend via de site"
           accent="ink"
         />
         <Stat
-          label="Lage voorraad"
-          value={stats.lowStockCount}
-          hint="Minder dan 5 stuks"
-          accent={stats.lowStockCount > 0 ? "rust" : "moss"}
+          label="Catalogus"
+          value={stats.catalogProducts}
+          hint={`${stats.catalogWithCalcium} met calcium`}
+          accent={stats.catalogWithCalcium < stats.catalogProducts ? "rust" : "moss"}
         />
       </section>
 
@@ -122,46 +124,29 @@ export default function DashboardPage() {
           <section className="surface p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="eyebrow">Voorraad</p>
-                <h2 className="mt-1 text-xl">Bijna op</h2>
+                <p className="eyebrow">Catalogus</p>
+                <h2 className="mt-1 text-xl">Productdata</h2>
               </div>
               <Package className="size-5 text-muted" strokeWidth={1.7} />
             </div>
 
-            {stats.lowStock.length === 0 ? (
-              <p className="mt-5 rounded-xl bg-moss-soft/60 px-4 py-3 text-sm text-moss">
-                Alle menuproducten hebben genoeg voorraad.
-              </p>
-            ) : (
-              <ul className="mt-4 space-y-2.5">
-                {stats.lowStock.map((product) => (
-                  <li key={product.sku} className="flex items-center justify-between gap-3">
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-medium">{product.name}</span>
-                      <span className="font-mono text-[0.65rem] uppercase tracking-wide text-muted">
-                        {product.typeVlees} · {product.sku}
-                      </span>
-                    </span>
-                    <span
-                      className={`num shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${
-                        product.qty === 0
-                          ? "bg-rust-soft text-rust"
-                          : "bg-ochre-soft text-[#7a5722]"
-                      }`}
-                    >
-                      {product.qty}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <ul className="mt-4 space-y-2.5 text-sm">
+              {catalog.perSource.map((bron) => (
+                <li key={bron.sourceKey} className="flex items-center justify-between gap-3">
+                  <span className="truncate">{bron.name}</span>
+                  <span className="num shrink-0 text-xs text-muted">
+                    {bron.count} · {bron.withCalcium} met Ca
+                  </span>
+                </li>
+              ))}
+            </ul>
 
-            <Link
-              href="/beheer/voorraad?filter=laag"
-              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-moss"
-            >
-              Voorraad beheren <ArrowUpRight className="size-4" />
-            </Link>
+            <p className="mt-4 text-xs text-muted">
+              {catalog.lastRun
+                ? `Laatste scan: ${formatDate(catalog.lastRun.startedAt)} · ${catalog.lastRun.status} · ${catalog.lastRun.changed} gewijzigd`
+                : "Nog geen scan gedraaid."}
+              {catalog.pendingChanges > 0 ? ` · ${catalog.pendingChanges} wacht op goedkeuring` : ""}
+            </p>
           </section>
 
           <section className="surface bg-moss p-5 text-white">
@@ -171,8 +156,8 @@ export default function DashboardPage() {
             <ol className="mt-3 space-y-3 text-sm">
               {[
                 ["Order", "Dier, gewicht, pakket en dieetwensen."],
-                ["Picklijst", "De wizard verdeelt vis, pens, karkas, orgaan, spier en bot."],
-                ["Pakken", "Boek af en de voorraad is direct bijgewerkt."],
+                ["Advies", "De site rekent het dagrantsoen en de samenstelling uit."],
+                ["Catalogus", "De scanner houdt voedingswaarden van producten bij."],
               ].map(([title, text], index) => (
                 <li key={title} className="flex gap-3">
                   <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-white/15 font-mono text-[0.7rem]">

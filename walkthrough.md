@@ -1,5 +1,30 @@
 # Walkthrough
 
+## 2026-11-28 (Voorraadbeheer, seed en picklijst eruit)
+
+- Findings: de eigen productcatalogus kwam mee met de fork (`test/products.csv`, 346 SKU's) en was
+  de enige bron van de `products`-tabel. Daar leunden de voorraadpagina, twee voorraadacties en de
+  hele picklist-generator op; het publieke advies leunde er niet op.
+- Conclusions: op verzoek verwijderd — het is demo-data van de oorspronkelijke repo en de
+  productdata komt nu uit de catalogus. Wat blijft: orders (als orderregistratie), adviezen,
+  accounts, het dagboek en de catalogus. De tabellen `products` en `picklists` blijven in
+  bestaande databases staan (leeg, ongebruikt); droppen kan later als de data zeker weg mag.
+- Actions:
+  - weg: `src/lib/picklist.ts`, `src/app/(beheer)/beheer/voorraad/`, de CSV-export per order,
+    `test/products.csv`, `data/product-nutrition.csv`, de acties `generateAction`,
+    `discardPicklistAction`, `setQtyAction` en `adjustQtyAction`, en de types `Product`,
+    `ProductRow`, `PicklistItem`, `PicklistWarning`, `PicklistRecord`.
+  - `db.ts` — product- en picklistqueries, de seeding en de bijbehorende tabellen uit het schema;
+    `deleteOrder` boekt geen voorraad meer terug; `dashboardStats()` telt nu orders, adviezen en
+    catalogusproducten.
+  - dashboard — kaarten "Open orders", "Afgerond vandaag", "Adviezen" en "Catalogus", plus een
+    cataloguskaart met dekking per bron en de laatste scan in plaats van "bijna op".
+  - orderdetail — opnieuw opgebouwd als orderregistratie (dier, gewicht, pakket, dieet, notities)
+    met printen, afronden en verwijderen; de navigatie heeft geen "Voorraad" meer.
+- Gecontroleerd: `tsc --noEmit` en `next build` slagen; via een draaiende build met beheerderssessie
+  geven `/`, `/?tab=voercheck`, `/beheer`, `/beheer/orders` en `/beheer/orders/1` 200,
+  `/beheer/voorraad` 404, en het dashboard toont de nieuwe kaarten zonder resten van voorraad.
+
 ## 2026-11-28 (Voercheck en dieetdagboek)
 
 - Findings: een baasje dat wil weten wat het dier binnenkrijgt had geen plek om dat in te voeren;

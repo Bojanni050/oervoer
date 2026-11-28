@@ -1,15 +1,14 @@
 # OerVoer voedingsadvies
 
-Webapp waarmee bezoekers in drie stappen een voedingsadvies voor hun hond of kat maken, en
-waarmee de slagerij erachter de orders, picklijsten en voorraad beheert. Bezoekers kunnen een
-account maken om hun dieren (met foto) en gemaakte adviezen te bewaren; zonder account werkt
-de wizard ook en houdt elk advies een eigen deelbare link. Gebouwd met Next.js
+Webapp waarmee bezoekers een voedingsadvies voor hun hond of kat maken, en waarmee ze kunnen
+narekenen wat hun dier op dit moment binnenkrijgt (de voercheck met een dieetdagboek per dier).
+Bezoekers kunnen een account maken om hun dieren (met foto), adviezen en het dagboek te bewaren;
+zonder account werkt de wizard ook en houdt elk advies een eigen deelbare link. Gebouwd met Next.js
 16, TypeScript, Tailwind CSS 4 en SQLite (via `node:sqlite`, geen native dependency).
 
-De oorspronkelijke repo was een Python 2 / GTK-desktopwizard met een halfaffe Django-port.
-De rekenregels daarvan zijn naar TypeScript vertaald: `src/lib/picklist.ts` voor de
-picklijsten en `src/lib/advice.ts` voor het publieke advies. De oude mappen blijven staan als
-referentie en zijn niet nodig om de app te draaien.
+De oorspronkelijke repo was een Python 2 / GTK-desktopwizard met een halfaffe Django-port. De
+rekenregels voor het advies zijn naar TypeScript vertaald (`src/lib/advice.ts`). De oude mappen
+blijven staan als referentie en zijn niet nodig om de app te draaien.
 
 ## Snel starten
 
@@ -21,8 +20,7 @@ npm run dev
 ```
 
 Open <http://localhost:3000> voor de adviesapp en <http://localhost:3000/beheer> voor de
-slagerij. Bij de eerste start wordt `.data/oervoer.db` aangemaakt en gevuld met de producten
-uit `test/products.csv` en zes voorbeeldorders.
+beheer. Bij de eerste start wordt `.data/oervoer.db` aangemaakt en gevuld met zes voorbeeldorders.
 
 Productie:
 
@@ -55,15 +53,10 @@ npm start
 
 ### Beheer
 
+- **Dashboard** — openstaande en afgeronde orders, het aantal adviezen en de stand van de
+  catalogus (per bron, met hoeveel producten een gemeten calciumwaarde hebben).
 - **Orders** — order aanmaken met dier, gewicht, pakkettype, portiegrootte, vermijdingen en
-  smaakvoorkeuren. Zoeken en filteren op status.
-- **Picklijst** — per order een menu genereren op basis van de echte voorraad; de gebruikte
-  producten worden direct afgeboekt.
-- **Opnieuw genereren of intrekken** — de voorraad wordt eerst teruggeboekt, daarna opnieuw
-  afgeboekt. Geen dubbele afboekingen.
-- **Printen en CSV** — een compacte printweergave en een CSV-export per picklijst.
-- **Voorraad** — 346 producten, zoeken, filteren op vleessoort, lage voorraad en uitverkocht,
-  en aantallen direct bijwerken.
+  smaakvoorkeuren; zoeken en filteren op status, printen, afronden en verwijderen.
 - **Beveiligd** — beheer valt onder de gewone app-login. Alleen accounts met de rol `admin`
   komen erin; andere bezoekers worden naar hun account gestuurd.
 
@@ -86,24 +79,17 @@ naar de overige onderdelen. Katten krijgen standaard geen pens. De percentages w
 decimaal afgerond en de grammen daarvan afgeleid, zodat de samenstelling altijd optelt tot
 100%.
 
-De picklijsten gebruiken dezelfde verhoudingen, maar selecteren daadwerkelijk producten uit
-de voorraad. Per vleessoort worden 20 menu's gegenereerd met een gewogen willekeurige keuze
-(voorraad weegt mee, voorkeurssmaken vier keer zwaarder). Het menu met de meeste
-smaakvariatie en de kleinste gewichtsafwijking wint. Restricties gelden op smaak, smaakdeel
-(bijv. `KIP.LEVER`), vleessoort en kat/hond-geschiktheid; viskoppen komen maximaal één keer
-per menu voor.
-
 ### Calcium en fosfor
 
-Bij elk advies en elke picklijst wordt het calcium- en fosforgehalte berekend. Dat gebeurt per
+Bij elk advies en elke voercheck wordt het calcium- en fosforgehalte berekend. Dat gebeurt per
 100 g voer, want botpercentage is daar geen maat voor: in de DARF-catalogus bevat kipnek 0,39%
 calcium en lamsbot 0,13%, en karkassen lopen op tot 1,30%. Een menu met veel lam- of rundbot
 kan dus evenveel "bot" hebben als een menu met gevogeltebot en toch te weinig calcium leveren.
 
 | bron | waar |
 | --- | --- |
-| DARF-producten | analyse in `data/darf-products.json` (calcium en fosfor per 100 g) |
-| eigen SKU's | `products.calcium` / `products.fosfor`, gevuld uit `data/product-nutrition.csv` |
+| rauwvoerproducten | analyse per product in de catalogus (`catalog_products.calcium` / `.fosfor`) |
+| generieke ingrediënten | `data/ingredient-nutrition.csv` (USDA), ingelezen als catalogusbron |
 | ontbreekt een waarde | terugval per vleestype in `src/lib/minerals.ts` |
 
 De uitkomst wordt getoetst aan de band van FEDIAF (2025): calcium in g per 100 g droge stof en
@@ -128,32 +114,12 @@ bij 120 van de 130 producten uit de opgave komt. Waar de fabrikant geen energie 
 vult het script die aan met de gemodificeerde Atwater-factoren (4/9/4 uit vocht, eiwit, vet,
 celstof en as) en markeert dat als `schatting`; op de 97 producten waar beide bekend zijn wijkt
 die schatting gemiddeld 7,4% af van de opgave (de EU-factoren 3,5/8,5/3,5 komen op 11,4% uit).
-Het advies en de picklijst melden de herkomst erbij. Een bestaande snapshot bijwerken kan
+Het advies en de voercheck melden de herkomst erbij. Een bestaande snapshot bijwerken kan
 zonder netwerk met `node scripts/import-darf.mjs --normalise-only`.
 
 De omrekening per 1000 kcal lukt alleen als elke regel een energiewaarde heeft. Ontbreekt die
 (bij 7 DARF-producten, waaronder lamsbot waarvan de analyse zelf niet sluitend is), dan staat
-die regel op "onbekend". Voor eigen SKU's komt de energie uit de optionele kolom `energie` in
-`data/product-nutrition.csv`; zonder eigen waarde geldt de terugval per vleestype.
-
-### Calcium stuurt de picklijst
-
-Het restdeel van een menu (bot bij `100%` en `Combinatie`, gemalen vlees bij `Gemalen Plus`)
-bepaalt vrijwel het hele calciumgehalte. De generator rekent daarom eerst uit wat dat deel per
-100 g moet bevatten om het menu op het midden van de band te krijgen (of 1,5× de ondergrens als
-de norm geen bovengrens noemt, zoals bij katten) en stuurt daar op drie manieren op:
-
-1. **Weging** — kandidaten voor het restdeel die dichter bij het benodigde calcium zitten wegen
-   zwaarder. De voorraad blijft meewegen, dus dit is een voorkeur en geen eis.
-2. **Keuze** — onder de 20 gegenereerde menu's per vleessoort wint degene die het dichtst bij het
-   benodigde calcium zit, en pas daarna die met de meeste smaakvariatie.
-3. **Reparatie** — valt het eindmenu buiten de band, dan worden de botregels verwisseld met
-   andere botten uit de voorraad zolang dat het menu dichter bij de band brengt.
-
-Wat niet te repareren valt, blijft staan en komt als waarschuwing bij de picklijst te staan,
-met het gemeten gehalte, de norm en een concrete suggestie. De sturing is uit te zetten met
-`generatePicklist(order, products, seed, { steerCalcium: false })`, bijvoorbeeld om te
-vergelijken.
+die regel op "onbekend". Ontbreekt een energiewaarde, dan geldt de terugval per vleestype.
 
 ### Smaakvoorkeur vult aan, vervangt niet
 
@@ -166,13 +132,6 @@ en viel de standaardmix van vier smaken weg. Nu geldt:
 - die smaak krijgt **40% van elk deel**, de andere drie verdelen de rest
   (`splitGramsWeighted`, gewicht 2 tegen 1);
 - bij twee voorkeuren krijgt elk 33% en de rest 17%.
-
-In de picklijst (`src/lib/picklist.ts`) geldt hetzelfde idee: een voorkeur matcht nu op het
-smaakdeel, dus "KIP" telt ook voor `KIP.HART` en `KIP.LEVER` (eerst matchte alleen de exacte
-waarde, waardoor een voorkeur bijna nergens op sloeg). De weging blijft 4×, maar het aandeel
-van de voorkeurssmaak in een menuonderdeel is afgetopt op `PREFERENCE_SHARE` (40%, in
-`src/lib/globals.ts`): boven die grens wordt de rest van dat deel uit andere smaken gevuld.
-Zijn er geen andere smaken in de voorraad, dan vervalt de grens en vult het menu gewoon.
 
 ## DARF-producten
 
@@ -244,9 +203,8 @@ vrij — de bron staat al klaar in `catalog_sources`.
 ## Catalogus
 
 De catalogus is de productdatabase waar de app voedingswaarden uit haalt: welke producten
-bestaan er, wat zit erin, en wat is de analyse. Hij staat los van de voorraad (`products` is
-wat OerVoer zelf verkoopt, `catalog_products` is wat een baasje zou kunnen voeren) en wordt
-gevuld door een scanner die de bron bijhoudt.
+bestaan er, wat zit erin, en wat is de analyse. Hij wordt gevuld door een scanner die de bron
+bijhoudt en is de bron voor het zoekveld van de voercheck.
 
 **Bronnen.** Nu `darf.nl` — dat levert 340 productpagina's op, vier keer zoveel als de 130 die
 de oude import via vijftien categoriepagina's ophaalde. Dezelfde scanner kan later NEVO (RIVM)
@@ -333,9 +291,9 @@ src/
     (beheer)/beheer/
       page.tsx               dashboard
       orders/                lijst, nieuwe order, detail, CSV-export
-      voorraad/              voorraadbeheer
       layout.tsx             sidebar
-    actions.ts               server actions (advies, order, picklijst, voorraad)
+    actions.ts               server actions (advies, order)
+    voercheck-actions.ts     server actions (dagboek, deel-link)
     account-actions.ts       server actions (registreren, inloggen, dieren, profiel)
   components/                wizard, formulieren, foto-upload, UI
   lib/
@@ -345,7 +303,6 @@ src/
     catalog.ts               catalogus: schema, zoeken, statistieken, wachtende wijzigingen
     auth.ts                  wachtwoorden, sessies en cookie
     photo.ts                 uploadvalidatie en opslag als BLOB
-    picklist.ts              port van de originele generator
     db.ts                    SQLite-schema, queries en seeding
     globals.ts               constanten uit globals.py
     minerals.ts              calciumbanden, terugvalwaarden en de mineralenberekening
@@ -356,8 +313,6 @@ scripts/lib/darf-parse.mjs   DARF-pagina's lezen (cheerio) en producten afleiden
 scripts/set-admin.mjs        account promoveren tot beheerder
 db/catalog.sql               opbouw van de catalogustabellen (app én scanner)
 data/darf-products.json      snapshot van de DARF-producten voor de app
-data/product-nutrition.csv   eigen calcium- en fosforanalyses per SKU (g per 100 g)
-test/products.csv            productbron voor de initiële voorraad
 oervoer/, gtk/               originele Python 2 / GTK-app (archief)
 data/                        DARF-snapshot en archiefbestanden
 oervoer-django/              originele Django-poging (archief)
@@ -368,14 +323,14 @@ oervoer-django/              originele Django-poging (archief)
 De SQLite-database staat in `.data/oervoer.db` en is git-ignored. Verwijder het bestand om
 opnieuw te beginnen; de volgende start zaait opnieuw.
 
-De tabellen zijn `products`, `orders`, `picklists`, `advices`, `users`, `pets`, `sessions`,
-`photos`, `shop_products` en de catalogustabellen `catalog_sources`, `catalog_products`,
-`catalog_runs`, `catalog_changes` en `catalog_aliases`. In `advices.likes` staan de gekozen smaken; `users.role` bepaalt
-wie beheer mag openen. `products.calcium` en `products.fosfor` (g per 100 g product) worden bij
-het starten gevuld uit `data/product-nutrition.csv` en blijven staan bij een herseed; ontbreekt
-een waarde, dan geldt de terugval per vleestype uit `src/lib/minerals.ts`. Een picklijst bewaart een snapshot van de regels en een advies bewaart
-de volledige uitkomst, zodat printen altijd hetzelfde resultaat geeft, ook als de voorraad of
-de rekenregels daarna veranderen. Een advies van een ingelogde bezoeker verwijst naar het
+De tabellen zijn `orders`, `advices`, `users`, `pets`, `sessions`,
+`photos`, `shop_products`, `diet_items`, `diet_reports` en de catalogustabellen
+`catalog_sources`, `catalog_products`, `catalog_runs`, `catalog_changes` en `catalog_aliases`.
+De tabellen `products` en `picklists` van de oude voorraadfunctie staan in bestaande databases
+nog leeg rond; de code gebruikt ze niet meer. In `advices.likes` staan de gekozen smaken; `users.role` bepaalt
+wie beheer mag openen. Een advies bewaart de volledige uitkomst en het dagboek bewaart per regel
+de voedingswaarden van dat moment, zodat printen en terugkijken altijd hetzelfde resultaat geven
+als de catalogus of de rekenregels daarna veranderen. Een advies van een ingelogde bezoeker verwijst naar het
 account en, indien gekozen, naar het opgeslagen dier.
 
 Wachtwoorden worden met scrypt gehasht; de sessiecookie is httpOnly en bevat alleen een token
